@@ -29,7 +29,9 @@ class Log(View):
         return HttpResponsePermanentRedirect("/lounge")
     
     def post(self, request):
-        form = SignForm(request.POST)
-        if
+        # if request.POST
+        new_user = SignForm(request.POST)
+        if new_user.is_valid():
+            new_user.save()
         return HttpResponseRedirect("/register/sign/in")
 
