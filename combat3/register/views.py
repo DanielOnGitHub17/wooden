@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.http import Http404\
     , HttpResponseRedirect, HttpResponsePermanentRedirect
+from django.views import View
 
 from register.forms import SignForm
 
@@ -23,12 +24,8 @@ def register_page(request, which="up"):
     else:
         raise Http404("Nothing here")
 
-def log(request):
-    print("you called me")
-    method = request.method
-    if method == "POST":
-        # create a database instance
-        return HttpResponseRedirect("/register/sign/in")
-    elif method == "GET":
+class Log(View):
+    def get(self, request):
         return HttpResponsePermanentRedirect("/lounge")
-    
+    def post(self, request):
+        return HttpResponseRedirect("/register/sign/in")

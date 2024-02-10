@@ -31,10 +31,9 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    "homepage",
-    "register",
-    "combat3",
-    "game",
+    "homepage.apps.HomepageConfig",
+    "game.apps.GameConfig",
+    "register.apps.RegisterConfig",
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
