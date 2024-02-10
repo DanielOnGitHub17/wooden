@@ -1,11 +1,33 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Combat 3.0</title>
-</head>
-<body>
-    
-</body>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Combat 3.0</title>
+        <style>
+            @import url("{% static 'baseStyles.css' %}");
+        </style>
+    </head>
+    <body>
+        <header>
+            <nav>
+                <ul>
+                    <li><a href="">Daniel</a></li>
+                    <li><a href="">Enesi's</a></li>
+                    <li><a href="">Game</a></li>
+                </ul>
+            </nav>
+            <div  id="showSettings" style="color: red">
+            {% block settings %}
+            {% endblock %}
+            </div>
+        </header>
+        {% block content %}
+        {% endblock%}
+        <footer>
+            All rights reserved. This game was made by Daniel Enesi (Backend)
+            and Solomon Enesi (Design)
+        </footer>
+    </body>
 </html>
