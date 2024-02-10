@@ -4,6 +4,7 @@ from django.http import Http404\
 from django.views import View
 
 from register.forms import SignForm
+from register.models import Player
 
 # Create your views here.
 
@@ -19,6 +20,7 @@ def register_page(request, which="up"):
         context = {
             "form": form,
             "which": get_which(which),
+            "message": '',
         }
         return render(request, 'signs.html', context)
     else:
@@ -26,6 +28,16 @@ def register_page(request, which="up"):
 
 class Log(View):
     def get(self, request):
+        user = request.GET
+        # eafp
+        try:
+            Player.objects.get(pk=user["username"])
+        except Player.DoesNotExist:
+            return HttpResponseRedirect(
+                "/register/sign/in", {
+                    "message": f"Username {user.username} does not exist"
+                })
+        every = Player.objects.all()
         return HttpResponsePermanentRedirect("/lounge")
     
     def post(self, request):
