@@ -6,6 +6,8 @@ class Player(models.Model):
     email = models.EmailField()
     username = models.CharField(maxlength=30, pk=True)
     password = models.CharField(maxlength=50)
+    game = models.TextField() # json text, I guess.
+    
 
     def __str__(self):
         return self.fullname
