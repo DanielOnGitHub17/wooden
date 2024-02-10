@@ -1,8 +1,9 @@
 {% extends "base.html" %}
 {% block content %}
-<form>
-        <!-- model form here... -->
-        Daniel
-
+<form action="/register/log/" method="{{ which.0 }}">
+    <legend>{{ which.1 }}</legend>
+    {% csrf_token %}
+    {{ form.as_ul }}
+    <input type="submit" value="{{ which.2 }}">
 </form>
-{% endblock%}
+{% endblock %}

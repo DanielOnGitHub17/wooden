@@ -1,4 +1,21 @@
 body{
-    background: darkblue;
+    background: rgb(223, 198, 175);
     color: white;
+}
+nav ul{
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    list-style-type: none;
+    /* align-items: center; */
+}
+nav a{
+    display: block;
+    background: brown;
+    padding: 10px;
+    color: blanchedalmond;
+}
+nav a{
+    color: white;
+    text-decoration: none;
 }
