@@ -27,5 +27,9 @@ def register_page(request, which="up"):
 class Log(View):
     def get(self, request):
         return HttpResponsePermanentRedirect("/lounge")
+    
     def post(self, request):
+        form = SignForm(request.POST)
+        if
         return HttpResponseRedirect("/register/sign/in")
+
