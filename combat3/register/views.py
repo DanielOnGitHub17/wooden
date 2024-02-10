@@ -35,7 +35,7 @@ class Log(View):
         except Player.DoesNotExist:
             return HttpResponseRedirect(
                 "/register/sign/in", {
-                    "message": f"Username {user.username} does not exist"
+                    "message": f"Username {user["username"]} does not exist"
                 })
         every = Player.objects.all()
         return HttpResponsePermanentRedirect("/lounge")
