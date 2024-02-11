@@ -40,7 +40,9 @@ class Log(View):
             player = Player.objects.get(pk=user["username"])
             if player.password == user["password"]:
                 response["Location"] = "/lounge"
-        except Player.DoesNotExist:
+            else:
+                raise PermissionError("Wrong Password")
+        except Exception as e:
             response["X-message"] = "Invalid username or wrong password"
             response["Location"] = f"/register/sign/in?message={response["X-message"]}"
         return response
@@ -51,5 +53,7 @@ class Log(View):
         new_user = SignForm(request.POST)
         if new_user.is_valid():
             new_user.save()
-        return HttpResponseRedirect("/register/sign/in")
-
+            return HttpResponseRedirect("/register/sign/in")
+        else:
+            message = "Invalid credentials."
+            return HttpResponse("/register/sign/up?message={message}")
