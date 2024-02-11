@@ -4,7 +4,7 @@ function handleMessage(){
 
 function removeFullname(){
     if (location.href.includes("in")){
-        document.forms.querySelector("input").remove()
+        document.forms[0].querySelector("[name=fullname]").parentElement.remove()
     }
 }
 function doAll(){
