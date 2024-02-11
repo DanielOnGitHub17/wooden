@@ -31,6 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    "lounge.apps.LoungeConfig",
     "homepage.apps.HomepageConfig",
     "game.apps.GameConfig",
     "register.apps.RegisterConfig",
@@ -129,3 +130,5 @@ STATICFILES_DIRS = [
     BASE_DIR / "static",
     "register/static",
 ]
+
+LOGIN_URL = "/register/sign/in"

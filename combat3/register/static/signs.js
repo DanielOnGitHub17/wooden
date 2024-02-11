@@ -9,5 +9,6 @@ function removeFullname(){
 }
 function doAll(){
     handleMessage()
+    removeFullname()
 }
 doAll()
