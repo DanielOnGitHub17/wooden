@@ -1,8 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
 {% if message %}
-Daniel
-<h3 class="message">{{ MESSAGE }}</h3>
+<h3 class="message">{{ message }}</h3>
 {% endif %}
 <form action="/register/log/" method="{{ which.0 }}">
     <legend>{{ which.1 }}</legend>

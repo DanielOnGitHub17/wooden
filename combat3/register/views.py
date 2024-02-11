@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.http import Http404\
-    , HttpResponseRedirect, HttpResponsePermanentRedirect
+    , HttpResponseRedirect, HttpResponsePermanentRedirect,\
+    HttpResponse
 from django.views import View
 
 from register.forms import SignForm
@@ -19,15 +20,15 @@ def register_page(request, which="up"):
         form = SignForm()
         with open("headers.txt", 'w') as file:
             file.write('\n'.join(f"{key}: {request.META[key]}" for key in request.META))
-        if "HTTP_MESSAGE" in request.META:
+        if "HTTP_MESSAGE" in request.headers:
             print("HTTP_MESSAGEing")
-            HTTP_MESSAGE = request.META["HTTP_MESSAGE"]
+            message = request.META["HTTP_MESSAGE"]
         else:
-            HTTP_MESSAGE = ''
+            message = 'jk'
         context = {
             "form": form,
             "which": get_which(which),
-            "HTTP_MESSAGE": HTTP_MESSAGE,
+            "message": message,
         }
         return render(request, 'signs.html', context)
     else:
@@ -36,15 +37,15 @@ def register_page(request, which="up"):
 class Log(View):
     def get(self, request):
         user = request.GET
+        response = HttpResponse(status=302, headers={"message": "Daniel"})
         try:
             player = Player.objects.get(pk=user["username"])
             if player.password == user["password"]:
-                return HttpResponsePermanentRedirect("/lounge")
+                pass
         except Player.DoesNotExist:
-            response = HttpResponseRedirect("/register/sign/in")
-            response.headers["HTTP_MESSAGE"] = f"Invalid username or wrong password"
-            return response
-
+            response["Location"] = "/register/sign/in"
+            response.headers["message"] = f"Invalid username or wrong password"
+        return response
         
     
     def post(self, request):
