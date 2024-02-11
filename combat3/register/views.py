@@ -17,10 +17,17 @@ def get_which(which):
 def register_page(request, which="up"):
     if which in ("up", "in"):
         form = SignForm()
+        with open("headers.txt", 'w') as file:
+            file.write('\n'.join(f"{key}: {request.META[key]}" for key in request.META))
+        if "MESSAGE" in request.META:
+            print("MESSAGEing")
+            MESSAGE = request.META["MESSAGE"]
+        else:
+            MESSAGE = ''
         context = {
             "form": form,
             "which": get_which(which),
-            "message": '',
+            "MESSAGE": MESSAGE,
         }
         return render(request, 'signs.html', context)
     else:
@@ -29,16 +36,16 @@ def register_page(request, which="up"):
 class Log(View):
     def get(self, request):
         user = request.GET
-        # eafp
         try:
-            Player.objects.get(pk=user["username"])
+            player = Player.objects.get(pk=user["username"])
+            if player.password == user["password"]:
+                return HttpResponsePermanentRedirect("/lounge")
         except Player.DoesNotExist:
-            return HttpResponseRedirect(
-                "/register/sign/in", {
-                    "message": f"Username {user["username"]} does not exist"
-                })
-        every = Player.objects.all()
-        return HttpResponsePermanentRedirect("/lounge")
+            response = HttpResponseRedirect("/register/sign/in")
+            response.headers["MESSAGE"] = f"Invalid username or wrong password"
+            return response
+
+        
     
     def post(self, request):
         # if request.POST
