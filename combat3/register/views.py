@@ -19,15 +19,15 @@ def register_page(request, which="up"):
         form = SignForm()
         with open("headers.txt", 'w') as file:
             file.write('\n'.join(f"{key}: {request.META[key]}" for key in request.META))
-        if "MESSAGE" in request.META:
-            print("MESSAGEing")
-            MESSAGE = request.META["MESSAGE"]
+        if "HTTP_MESSAGE" in request.META:
+            print("HTTP_MESSAGEing")
+            HTTP_MESSAGE = request.META["HTTP_MESSAGE"]
         else:
-            MESSAGE = ''
+            HTTP_MESSAGE = ''
         context = {
             "form": form,
             "which": get_which(which),
-            "MESSAGE": MESSAGE,
+            "HTTP_MESSAGE": HTTP_MESSAGE,
         }
         return render(request, 'signs.html', context)
     else:
@@ -42,7 +42,7 @@ class Log(View):
                 return HttpResponsePermanentRedirect("/lounge")
         except Player.DoesNotExist:
             response = HttpResponseRedirect("/register/sign/in")
-            response.headers["MESSAGE"] = f"Invalid username or wrong password"
+            response.headers["HTTP_MESSAGE"] = f"Invalid username or wrong password"
             return response
 
         
