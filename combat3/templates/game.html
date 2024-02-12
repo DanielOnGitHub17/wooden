@@ -1,5 +1,7 @@
 {% load static %}
-
+<style>
+    @import url("{% static 'game.css' %}");
+</style>
 <div id="world">
     {% for x in game %}
     <pre>{{ x }}</pre>
