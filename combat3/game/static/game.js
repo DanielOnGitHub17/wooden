@@ -16,3 +16,4 @@ class Game{
         3
     }
 }
+let game = new Game()
