@@ -1,9 +1,10 @@
-const GAMERAWMATERIAL = [...world.children].map(i=>JSON.parse(i.textContent))
 // world.innerHTML = ''
 class Game{
     constructor(){
         this.world = get('world');
-        this.backgrounds = ["blank", "wood", "iron"]
+        this.gameRawMaterial = [...world.children].map(i=>JSON.parse(i.textContent))
+        this.world.innerHTML = '';
+        this.backgrounds = ["blank", "wood", "iron"];
         for (let i in GAMERAWMATERIAL){
             GAMERAWMATERIAL[i].forEach(element => {
                 4
