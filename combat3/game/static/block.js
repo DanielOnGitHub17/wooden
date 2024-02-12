@@ -1,6 +1,6 @@
 class Block{
     constructor(kind){
-        // kind: 0 is blank, 1 is wood, 2 is iron
+        // kind: 0 is sand, 1 is wood, 2 is iron
         this.kind = kind;
         Block.blocks[kind].push(this);
         this.build();
@@ -12,6 +12,6 @@ class Block{
         this.block.object = this;
     };
     static blocks = [[], [], []];
-    static backgrounds = ["blank", "wood", "iron"];
+    static backgrounds = ["sand", "wood", "iron"];
     static dimension = 50;
 }

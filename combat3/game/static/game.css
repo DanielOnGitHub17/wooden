@@ -16,12 +16,15 @@ body{
     width: 50px;
     height: 50px;
 }
-.space{
+.sand{
     background-color: sandybrown;
+    background-image: url("texture/sand.png");
 }
 .wood{
     background-color: brown;
+    background-image: url("texture/wood.png");
 }
 .iron{
     background-color: gray;
+    background-image: url("texture/iron.png");
 }
