@@ -1,6 +1,10 @@
 {% load static %}
 
-<div id="world">{{ game }}</div>
+<div id="world">
+    {% for x in game %}
+    <pre>{{ x }}</pre>
+    {% endfor %}
+</div>
 <script src="{% static 'player.js' %}"></script>
 <script src="{% static 'bullet.js' %}"></script>
 <script src="{% static 'enemy.js' %}"></script>
