@@ -1,7 +1,7 @@
 from django.shortcuts import render
 
 # Create your views here.
-from helpers import make_game
+from game.helpers import make_game
 
 def game(request):
     # check if request is valid, ..., then finally
