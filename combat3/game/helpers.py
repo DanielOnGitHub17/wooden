@@ -9,7 +9,7 @@ def around(m, r, c):
             zero_length += 1
     return zero_length
 
-zero_based_choosing = [(0, 0), (0, 0), (0, 1), (0, 2), (1, 2)]
+zero_based_choosing = [(0, 0), (0, 0), (0, 2), (0, 2), (1, 2)]
 
 def make_game(dim):
     # set result to up and down borders
@@ -18,6 +18,8 @@ def make_game(dim):
         *[[2]+[randint(0, 2) for i in range(dim)]+[2] for i in range(dim)],
         [2] * (dim+2),
     ]
+    with open("maze.txt", 'w') as maze:
+        maze.write('\n'.join(str(line) for line in result))
     for r in range(1, dim+1):
         for c in range(1, dim+1):
             #  self      up       down      left     right
