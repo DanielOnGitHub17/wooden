@@ -7,10 +7,11 @@ class Block{
     };
     
     build(){
-        this.block = add(make(), game.world).className 
-             = `.block .${Block.backgrounds[this.kind]}`;
+        this.block = add(make(), Game.world);
+        this.block.className = `block ${Block.backgrounds[this.kind]}`;
         this.block.object = this;
     };
     static blocks = [[], [], []];
     static backgrounds = ["blank", "wood", "iron"];
+    static dimension = 50;
 }
