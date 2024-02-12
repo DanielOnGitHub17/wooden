@@ -5,8 +5,8 @@ class Game{
         this.gameRawMaterial = [...world.children].map(i=>JSON.parse(i.textContent))
         this.world.innerHTML = '';
         this.backgrounds = ["blank", "wood", "iron"];
-        for (let i in GAMERAWMATERIAL){
-            GAMERAWMATERIAL[i].forEach(element => {
+        for (let i in this.gameRawMaterial){
+            this.gameRawMaterial[i].forEach(element => {
                 4
             });
         }
