@@ -3,6 +3,7 @@ class Player{
         Player.players.push(this);
         this.ground = ground;
         this.hits = 0;
+        this.blocksBroken = 0;
         this.next = ground.position;
         this.build();
         this.event();
@@ -37,10 +38,17 @@ class Player{
                 if (this.hits >= game.hitsToBreak){ // the > is unneccesary
                     this.hits = 0;
                     potentialGround.crack();
+                    this.blocksBroken += 1; // will be the one sent
+                    // thank you God for helping me fix the 'who broke it'.
+                    // all players will have scores attributed to them
+                    // if their JavaScript says they broke it.
+                    // which means that, if there is a clash, both teams get a point.
                 }
             } else{
-                // set the hits to zero because it is not hitting the same wooden block
-                this.hits = 0;
+                // set the hits to one because it just started hitting this one
+                this.hits = 1;
+                // now, set it to make this it's next
+                this.next = potentialGround.position;
             }
         }
     }
@@ -52,6 +60,15 @@ class Player{
             }
         })
     }
+
+    data(){
+        // return [] every useful thing of this player
+    }
+
+    send(){
+        // send this.data() to server
+    }
+
     static moves = [[-1, 0], [0, 1], [1, 0], [0, -1]];
     static controls = ["ArrowUp", "ArrowRight", "ArrowDown", "ArrowLeft"];
     static players = [];
@@ -60,3 +77,10 @@ class Player{
 // for the other players, the movement updating should be by setInterval
 // getting the key of that database in the game to get it's position
 // instead of shooting, the game could be who broke the most number of blocks, better (i think)
+
+// Block cracking
+// algorithm for left right could check next element and previous element... 
+// if a 'path' is defined, algorithm could walk through that path (which would mean that broken blocks will
+// be added to a specific position in the path. (if the path contains only sand))
+// if the path is of all blocks, movement will move till it reaches sand.
+// I think the present algorithm is okay.
