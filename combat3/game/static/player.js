@@ -84,3 +84,13 @@ class Player{
 // be added to a specific position in the path. (if the path contains only sand))
 // if the path is of all blocks, movement will move till it reaches sand.
 // I think the present algorithm is okay.
+
+// moveRight = () =>{
+//     return new KeyboardEvent("keyup", {
+//         key: "ArrowRight"
+//     })
+// }
+// later, implement AI movement that will move right... down... left. till it reaches the end
+// and breaks all blocks
+// remember that game.js should put the players in actual positions given to them by the server
+// not just random.
