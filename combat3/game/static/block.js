@@ -11,6 +11,11 @@ class Block{
         this.block.className = `block ${Block.backgrounds[this.kind]}`;
         this.block.object = this;
     };
+
+    crack(){
+        this.kind = 0;
+        this.block.className = 'block sand';
+    }
     static blocks = [[], [], []];
     static backgrounds = ["sand", "wood", "iron"];
     static dimension = 50;
