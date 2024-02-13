@@ -51,10 +51,12 @@ class Player{
                 this.next = potentialGround.position;
             }
         }
+        return potentialGround.kind;
     }
 
     event(){
         window.addEventListener("keyup", (event)=>{
+            event.preventDefault();
             if (Player.controls.includes(event.key)){
                 this.move(Player.controls.indexOf(event.key));
             }
@@ -94,3 +96,48 @@ class Player{
 // and breaks all blocks
 // remember that game.js should put the players in actual positions given to them by the server
 // not just random.
+
+// dispatchEvent(new KeyboardEvent("keyup", {
+//     key: Player.controls[dir]
+//     , stopPropagation: true
+// }));
+class AI extends Player{
+    constructor(ground){
+        super(ground);
+        this.moving = false;
+        this.dirs = {x: 0, y: 0};
+        this.movInterval = setInterval(()=>{
+            this.moveRandom();
+        }, 100);
+    }
+
+    moveCircular(){
+        // turning algorithm
+         
+    }
+
+    event(){}
+    moveRandom(){
+        // 'random' algorithm (chooses a random block and goes to break it)
+        if (this.moving){
+            // 2
+            console.log(this.dirs);
+            if (this.dirs.x && this.move(2-this.dirs.dx) != 2){ //-1: 3, 1: 1. left, right
+                this.dirs.x -= this.dirs.dx;
+            } else if (this.dirs.y && this.move(1+this.dirs.dy)){ //-1: 0, 1: 2. up, down
+                this.dirs.y -= this.dirs.dy;
+            } else{
+                this.moving = false;
+                clearInterval(this.movInterval);
+            }
+        } else{
+            this.moving = true;
+            let randomWood = choice(Block.blocks[1]).position;
+            console.log(this.ground.position, randomWood);
+            this.dirs.x = randomWood[0] - this.ground.position[0]; 
+            this.dirs.y = randomWood[1] - this.ground.position[1];
+            this.dirs.dx = Math.sign(this.dirs.x);
+            this.dirs.dy = Math.sign(this.dirs.y);
+        }
+    }
+}
