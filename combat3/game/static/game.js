@@ -20,8 +20,8 @@ class Game{
 
     createPlayer(){
         // choose a ra
-        let n = Block.blocks.length;
-        new Player(Block.blocks[0][randInt(1, n)]);
+        new Player(choice(Block.blocks[0]));
+        new AI(choice(Block.blocks[0]));
     }
 
     start(){
@@ -29,5 +29,5 @@ class Game{
     }
     static world = get('world');
 }
-let game = new Game(10);
+let game = new Game(5);
 game.start();
