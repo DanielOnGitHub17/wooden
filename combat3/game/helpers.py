@@ -20,3 +20,4 @@ def make_game(dim):
             ]+[2] for i in range(dim)],
         [2] * (dim+2),
     ]
+
