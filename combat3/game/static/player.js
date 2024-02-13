@@ -2,7 +2,7 @@ class Player{
     constructor(ground){
         Player.players.push(this);
         this.ground = ground;
-        this.block = 0;
+        this.hits = 0;
         this.next = ground.position;
         this.build();
         this.event();
@@ -24,22 +24,23 @@ class Player{
             next[i] = this.ground.position[i] + Player.moves[dir][i];
         }
         let potentialGround = game.blocks.get(...next);
-        if (potentialGround != 1){
-            if (!potentialGround.kind){
+        if (potentialGround.kind != 1){
+            this.hits = 0; // it turned away from a wood block.
+            if (!potentialGround.kind){ // sand (change position)
                 this.ground = potentialGround;
                 this.ground.block.append(this.body);
+            }
         } else {// wood
             // if it hits the block ten times, the block breaks
-            if (JSON.stringify(this.next) == JSON.stringify(next)){
-                this.bullet += 1;
-                if (this.bullet == game.hitsToBreak){
-                    this.bullet = 0;
+            if (JSON.stringify(this.next) == JSON.stringify(next)){ // checks if it's still hitting the same wooden block
+                this.hits += 1;
+                if (this.hits >= game.hitsToBreak){ // the > is unneccesary
+                    this.hits = 0;
                     potentialGround.crack();
                 }
-                // set the bullet to zero
-                this.bullet = 0;
             } else{
-                this.bullet = 0;
+                // set the hits to zero because it is not hitting the same wooden block
+                this.hits = 0;
             }
         }
     }
