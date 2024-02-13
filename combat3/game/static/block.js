@@ -15,6 +15,8 @@ class Block{
     crack(){
         if (this.kind != 1){
             return;
+            // should send this position to server to tell it to change accross all
+            // better, maybe, than refreshing everytime.
         }
         // remove from initial kind, then add to space
         Block.blocks[0].push(Block.blocks[1].splice(Block.blocks[1].indexOf(this), 1)[0]);
