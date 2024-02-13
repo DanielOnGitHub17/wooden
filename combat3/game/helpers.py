@@ -9,7 +9,7 @@ def around(m, r, c):
             zero_length += 1
     return zero_length
 
-zero_based_choosing = [(0, 0), (0, 0), (0, 2), (0, 2), (1, 2)]
+zero_based_choosing = [(0, 0), (0, 0), (0, 2), (0, 2), (0, 2)]
 
 def make_game(dim):
     # set result to up and down borders
