@@ -3,18 +3,29 @@ body{
     display: flex;
     justify-content: center;
     align-items: center;
+    overflow: hidden;
+}
+
+*{
+    background-position: center;
+    /* background-repeat: no-repeat; */
+    /* background-size: contain; */
 }
 
 #world{
-    width: 700px;
-    height: 700px;
+    width: 680px;
+    height: 680px;
     display: flex;
     flex-wrap: wrap;
+    overflow: hidden;
 }
 /* blocks */
 .block{
-    width: 50px;
-    height: 50px;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 .sand{
     background-color: sandybrown;
@@ -27,4 +38,21 @@ body{
 .iron{
     background-color: gray;
     background-image: url("texture/iron.png");
+}
+
+.player .you{
+    background-color: white;
+    background-image: url("texture/player.svg");
+    width: 35px;
+    height: 35px;
+}
+
+.enemy{
+    background-color: red;
+    background-image: url("texture/enemy.svg");
+}
+
+.comrade{
+    background-color: blue;
+    background-image: url("texture/comrade.svg");
 }
