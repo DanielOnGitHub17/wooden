@@ -4,3 +4,11 @@ combat3/register/__pycache__/models.cpython-312.pyc
 combat3/register/__pycache__/views.cpython-312.pyc
 combat3/combat3/__pycache__/settings.cpython-312.pyc
 combat3/maze.txt
+combat3/game/static/texture/player1.png
+combat3/game/__pycache__/views.cpython-312.pyc
+combat3/game/__pycache__/helpers.cpython-312.pyc
+combat3/combat3/__pycache__/urls.cpython-312.pyc
+combat3/game/__pycache__/urls.cpython-312.pyc
+combat3/combat3/__pycache__/settings.cpython-312.pyc
+combat3/combat3/__pycache__/urls.cpython-312.pyc
+combat3/maze.txt
