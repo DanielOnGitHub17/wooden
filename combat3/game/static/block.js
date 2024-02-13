@@ -13,6 +13,11 @@ class Block{
     };
 
     crack(){
+        if (this.kind != 1){
+            return;
+        }
+        // remove from initial kind, then add to space
+        Block.blocks[0].push(Block.blocks[1].splice(Block.blocks[1].indexOf(this), 1)[0]);
         this.kind = 0;
         this.block.className = 'block sand';
     }
