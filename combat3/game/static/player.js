@@ -14,17 +14,22 @@ class Player{
         this.body.className = "player";
         this.body.object = this;
     }
+
+    nextGround(dir){
+        let next = [];
+        for (let i=0; i<2; i++){
+            next[i] = this.ground.position[i] + Player.moves[dir][i];
+        }
+        return [game.blocks.get(...next), next];
+    }
+
     move(dir){
         // up: 0, right: 1, down: 2, left: 3
         // first it looks towards where it wants to go
         this.body.style.transform = `rotate(${dir*90}deg`;
         // moves by navigating through blocks
         // given the direction. it adds
-        let next = [];
-        for (let i=0; i<2; i++){
-            next[i] = this.ground.position[i] + Player.moves[dir][i];
-        }
-        let potentialGround = game.blocks.get(...next);
+        let [potentialGround, next] = this.nextGround(dir);
         if (potentialGround.kind != 1){
             this.hits = 0; // it turned away from a wood block.
             if (!potentialGround.kind){ // sand (change position)
@@ -108,7 +113,7 @@ class AI extends Player{
         this.dirs = {x: 0, y: 0};
         this.movInterval = setInterval(()=>{
             this.moveRandom();
-        }, 100);
+        }, 200);
     }
 
     moveCircular(){
@@ -120,24 +125,33 @@ class AI extends Player{
     moveRandom(){
         // 'random' algorithm (chooses a random block and goes to break it)
         if (this.moving){
-            // 2
-            console.log(this.dirs);
-            if (this.dirs.x && this.move(2-this.dirs.dx) != 2){ //-1: 3, 1: 1. left, right
+            // console.log(this.dirs);
+            //-1: 3, 1: 1. left, right
+            if (this.dirs.x && !this.nextGround(2-this.dirs.dx)[0].kind){
+                this.move(2-this.dirs.dx) // decrease only if space
                 this.dirs.x -= this.dirs.dx;
-            } else if (this.dirs.y && this.move(1+this.dirs.dy)){ //-1: 0, 1: 2. up, down
+                
+            } else if (this.dirs.y && !this.nextGround(1+this.dirs.dy)[0].kind){ //-1: 0, 1: 2. up, down
+                this.move(1+this.dirs.dy);
                 this.dirs.y -= this.dirs.dy;
-            } else{
+            }
+            if (this.dirs.x == 0 && this.dirs.y == 0){//maze
                 this.moving = false;
-                clearInterval(this.movInterval);
+                // clearInterval(this.movInterval);
+            } else{
             }
         } else{
             this.moving = true;
             let randomWood = choice(Block.blocks[1]).position;
             console.log(this.ground.position, randomWood);
-            this.dirs.x = randomWood[0] - this.ground.position[0]; 
-            this.dirs.y = randomWood[1] - this.ground.position[1];
-            this.dirs.dx = Math.sign(this.dirs.x);
+            this.dirs.y = randomWood[0] - this.ground.position[0]; 
+            this.dirs.x = randomWood[1] - this.ground.position[1];
             this.dirs.dy = Math.sign(this.dirs.y);
+            this.dirs.dx = Math.sign(this.dirs.x);
         }
     }
 }
+
+// style blocks according to number of breaks friendly blocks to hard ones
+// blocks change on hit to other type
+// wood.strength
