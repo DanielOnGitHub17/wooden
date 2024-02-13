@@ -9,7 +9,7 @@ body{
 *{
     background-position: center;
     /* background-repeat: no-repeat; */
-    /* background-size: contain; */
+    background-size: contain;   
 }
 
 #world{
@@ -18,6 +18,7 @@ body{
     display: flex;
     flex-wrap: wrap;
     overflow: hidden;
+    color: sandybrown;
 }
 /* blocks */
 .block{
@@ -40,19 +41,16 @@ body{
     background-image: url("texture/iron.png");
 }
 
-.player .you{
-    background-color: white;
+.player{
     background-image: url("texture/player.svg");
     width: 35px;
     height: 35px;
 }
 
 .enemy{
-    background-color: red;
     background-image: url("texture/enemy.svg");
 }
 
 .comrade{
-    background-color: blue;
     background-image: url("texture/comrade.svg");
 }
