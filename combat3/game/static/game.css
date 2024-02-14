@@ -1,5 +1,5 @@
 body{
-    background: sandybrown;
+    background: #ceaf86;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -18,7 +18,7 @@ body{
     display: flex;
     flex-wrap: wrap;
     overflow: hidden;
-    color: sandybrown;
+    color: #ceaf86;
 }
 /* blocks */
 .block{
@@ -29,15 +29,15 @@ body{
     align-items: center;
 }
 .sand{
-    background-color: sandybrown;
+    background-color: #ceaf86;
     background-image: url("texture/sand.png");
 }
 .wood{
-    background-color: brown;
+    background-color: #8b4b31;
     background-image: url("texture/wood.png");
 }
 .iron{
-    background-color: gray;
+    background-color: silver;
     background-image: url("texture/iron.png");
 }
 
