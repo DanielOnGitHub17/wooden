@@ -130,7 +130,7 @@ class AI extends Player{
                 this.dirs.x -= (!this.move(2-this.dirs.dx) ? this.dirs.dx : this.dirs.dx/5)
                 // decrease fully if space (0) decrease by 1/5 if block
             } else if (this.dirs.y && this.nextGround(1+this.dirs.dy)[0].kind != 2){ //-1: 0, 1: 2. up, down
-                this.dirs.y -= (!this.move(2-this.dirs.dy) ? this.dirs.dy : this.dirs.dy/5)
+                this.dirs.y -= (!this.move(1+this.dirs.dy) ? this.dirs.dy : this.dirs.dy/5)
             }
             if (near(this.dirs.x, 0) && near(this.dirs.y, 0)){// make the if whatevers non redundant later.
                 this.moving = false;
