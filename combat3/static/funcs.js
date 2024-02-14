@@ -13,7 +13,8 @@ let get = (id) => document.getElementById(id)
 // misc
 
 let copy = (array) => JSON.parse(JSON.stringify(array)) 
-, logTurn = (obj) => console.log(obj), obj;
+, logTurn = (obj) => (console.log(obj), obj)
+, transfer = (object, from, to) => to.push(from.splice(from.indexOf(object), 1)[0]);
 
 //   h.ondragstart = ()=>{
 //     h.x = event.screenX;

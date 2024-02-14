@@ -114,6 +114,8 @@ class AI extends Player{
         this.movInterval = setInterval(()=>{
             this.moveRandom();
         }, 200);
+        transfer(this, Player.players, AI.ais);
+        this.body.className += " ai";
     }
 
     moveCircular(){
@@ -156,6 +158,7 @@ class AI extends Player{
             // 1+-1=0(up):1+1(2)
         }
     }
+    static ais = [];
 }
 
 // style blocks according to number of breaks friendly blocks to hard ones
