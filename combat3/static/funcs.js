@@ -1,6 +1,6 @@
 // math
 let randInt = (x, y) => parseInt((y-x+1)*Math.random() + x)
-, choice = (array) => array[randInt(0, array.length)] 
+, choice = (array) => array[randInt(0, array.length-1)] 
 , near = (x, y) => Math.abs(x-y) < 0.00001;
 
 // DOM
