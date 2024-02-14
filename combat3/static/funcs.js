@@ -1,8 +1,7 @@
 // math
 let randInt = (x, y) => parseInt((y-x+1)*Math.random() + x)
-, choice = (array) => array[randInt(0, array.length)]
-, copy = (array) => JSON.parse(JSON.stringify(array)) 
-, logTurn = (obj) => console.log(obj), obj;
+, choice = (array) => array[randInt(0, array.length)] 
+, near = (x, y) => Math.abs(x-y) < 0.00001;
 
 // DOM
 let get = (id) => document.getElementById(id)
@@ -12,6 +11,9 @@ let get = (id) => document.getElementById(id)
   , add = (element, to=document.body) => to.appendChild(element);
 
 // misc
+
+let copy = (array) => JSON.parse(JSON.stringify(array)) 
+, logTurn = (obj) => console.log(obj), obj;
 
 //   h.ondragstart = ()=>{
 //     h.x = event.screenX;

@@ -142,18 +142,17 @@ class AI extends Player{
         } else{
             this.moving = true;
             try{
-                let randomWood = choice(Block.blocks[1]).position;
+                this.randomWood = choice(Block.blocks[1]).position;
             } catch (error){
                 clearInterval(this.movInterval);
                 return;
             }
             for (let i=0; i<2; i++){
                 // 0,2 for up/down. 3/1 for right/left
-                this.dirs[i] = i + 2*(randomWood[i] - this.ground.position[i] >= 0);
+                this.dirs[i] = i + 2*(this.randomWood[i] - this.ground.position[i] >= 0);
             }
             this.dirs[1] = 4 - this.dirs[1]; // set things right (or left)
-            console.log(this.ground.position, randomWood, this.dirs);
-            this.randomWood = randomWood;
+            console.log(this.ground.position, this.randomWood, this.dirs);
             // 1+-1=0(up):1+1(2)
         }
     }
@@ -162,4 +161,3 @@ class AI extends Player{
 // style blocks according to number of breaks friendly blocks to hard ones
 // blocks change on hit to other type
 // wood.strength
-addEventListener("keyup", (event)=>{event.key=='p' && clearInterval(1)})

@@ -21,7 +21,7 @@ class Game{
     createPlayer(){
         // choose a ra
         new Player(choice(Block.blocks[0]));
-        new AI(choice(Block.blocks[0]));
+        window.ai = new AI(choice(Block.blocks[0]));
     }
 
     start(){
