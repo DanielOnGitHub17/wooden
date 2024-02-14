@@ -125,29 +125,28 @@ class AI extends Player{
     moveRandom(){
         // 'random' algorithm (chooses a random block and goes to break it)
         if (this.moving){
-            // console.log(this.dirs);
             //-1: 3, 1: 1. left, right
-            if (this.dirs.x && !this.nextGround(2-this.dirs.dx)[0].kind){
-                this.move(2-this.dirs.dx) // decrease only if space
-                this.dirs.x -= this.dirs.dx;
-                
-            } else if (this.dirs.y && !this.nextGround(1+this.dirs.dy)[0].kind){ //-1: 0, 1: 2. up, down
-                this.move(1+this.dirs.dy);
-                this.dirs.y -= this.dirs.dy;
+            if (this.dirs.x && this.nextGround(2-this.dirs.dx)[0].kind != 2){
+                this.dirs.x -= (!this.move(2-this.dirs.dx) ? this.dirs.dx : this.dirs.dx/5)
+                // decrease fully if space (0) decrease by 1/5 if block
+            } else if (this.dirs.y && this.nextGround(1+this.dirs.dy)[0].kind != 2){ //-1: 0, 1: 2. up, down
+                this.dirs.y -= (!this.move(2-this.dirs.dy) ? this.dirs.dy : this.dirs.dy/5)
             }
-            if (this.dirs.x == 0 && this.dirs.y == 0){//maze
+            if (near(this.dirs.x, 0) && near(this.dirs.y, 0)){// make the if whatevers non redundant later.
                 this.moving = false;
-                // clearInterval(this.movInterval);
-            } else{
+                clearInterval(this.movInterval);
             }
+            console.log(this.dirs, this.ground.position);
         } else{
             this.moving = true;
             let randomWood = choice(Block.blocks[1]).position;
-            console.log(this.ground.position, randomWood);
-            this.dirs.y = randomWood[0] - this.ground.position[0]; 
-            this.dirs.x = randomWood[1] - this.ground.position[1];
-            this.dirs.dy = Math.sign(this.dirs.y);
+            this.dirs.y = randomWood[0] - this.ground.position[0]; // how many till down
+            this.dirs.x = randomWood[1] - this.ground.position[1]; // how many till right (change to 'till left' later so you can use this.dir)
+            this.dirs.dy = Math.sign(this.dirs.y); // move negative or positive
             this.dirs.dx = Math.sign(this.dirs.x);
+            this.dir = 2 // 2 for left right. 1 for up down
+            console.log(this.ground.position, randomWood);
+            // 1+-1=0(up):1+1(2)
         }
     }
 }
