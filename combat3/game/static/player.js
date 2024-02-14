@@ -138,11 +138,15 @@ class AI extends Player{
             }
             if (!change){
                 this.moving = false;
-                clearInterval(this.movInterval);
             }
         } else{
             this.moving = true;
-            let randomWood = choice(Block.blocks[1]).position;
+            try{
+                let randomWood = choice(Block.blocks[1]).position;
+            } catch (error){
+                clearInterval(this.movInterval);
+                return;
+            }
             for (let i=0; i<2; i++){
                 // 0,2 for up/down. 3/1 for right/left
                 this.dirs[i] = i + 2*(randomWood[i] - this.ground.position[i] >= 0);
