@@ -128,15 +128,15 @@ class AI extends Player{
             let  change = 0;
             for (let i=0; i<2; i++){
                 // !change ensures that left/right won't run if up/down has before.
-                // up/down will always run until it is good enough
+                // up/down will always run first until it is good enough
+                // !=. trust the process. // trust that it will not increase more than it is supposed to
+                // if you have doubts, you can use near from funcs.js.
                 if (!change && this.ground.position[i] != this.randomWood[i]){
                     this.move(this.dirs[i]);
-                } else{
                     change += 1;
                 }
-                console.log(this.dirs[i]);
             }
-            if (change == 2){
+            if (!change){
                 this.moving = false;
                 clearInterval(this.movInterval);
             }
