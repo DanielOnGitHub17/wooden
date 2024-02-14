@@ -110,7 +110,7 @@ class AI extends Player{
     constructor(ground){
         super(ground);
         this.moving = false;
-        this.dirs = {x: 0, y: 0};
+        this.dirs = [];
         this.movInterval = setInterval(()=>{
             this.moveRandom();
         }, 200);
@@ -125,27 +125,31 @@ class AI extends Player{
     moveRandom(){
         // 'random' algorithm (chooses a random block and goes to break it)
         if (this.moving){
-            //-1: 3, 1: 1. left, right
-            if (this.dirs.x && this.nextGround(2-this.dirs.dx)[0].kind != 2){
-                this.dirs.x -= (!this.move(2-this.dirs.dx) ? this.dirs.dx : this.dirs.dx/5)
-                // decrease fully if space (0) decrease by 1/5 if block
-            } else if (this.dirs.y && this.nextGround(1+this.dirs.dy)[0].kind != 2){ //-1: 0, 1: 2. up, down
-                this.dirs.y -= (!this.move(1+this.dirs.dy) ? this.dirs.dy : this.dirs.dy/5)
+            let  change = 0;
+            for (let i=0; i<2; i++){
+                // !change ensures that left/right won't run if up/down has before.
+                // up/down will always run until it is good enough
+                if (!change && this.ground.position[i] != this.randomWood[i]){
+                    this.move(this.dirs[i]);
+                } else{
+                    change += 1;
+                }
+                console.log(this.dirs[i]);
             }
-            if (near(this.dirs.x, 0) && near(this.dirs.y, 0)){// make the if whatevers non redundant later.
+            if (change == 2){
                 this.moving = false;
                 clearInterval(this.movInterval);
             }
-            console.log(this.dirs, this.ground.position);
         } else{
             this.moving = true;
             let randomWood = choice(Block.blocks[1]).position;
-            this.dirs.y = randomWood[0] - this.ground.position[0]; // how many till down
-            this.dirs.x = randomWood[1] - this.ground.position[1]; // how many till right (change to 'till left' later so you can use this.dir)
-            this.dirs.dy = Math.sign(this.dirs.y); // move negative or positive
-            this.dirs.dx = Math.sign(this.dirs.x);
-            this.dir = 2 // 2 for left right. 1 for up down
-            console.log(this.ground.position, randomWood);
+            for (let i=0; i<2; i++){
+                // 0,2 for up/down. 3/1 for right/left
+                this.dirs[i] = i + 2*(randomWood[i] - this.ground.position[i] >= 0);
+            }
+            this.dirs[1] = 4 - this.dirs[1]; // set things right (or left)
+            console.log(this.ground.position, randomWood, this.dirs);
+            this.randomWood = randomWood;
             // 1+-1=0(up):1+1(2)
         }
     }
@@ -154,3 +158,4 @@ class AI extends Player{
 // style blocks according to number of breaks friendly blocks to hard ones
 // blocks change on hit to other type
 // wood.strength
+addEventListener("keyup", (event)=>{event.key=='p' && clearInterval(1)})
