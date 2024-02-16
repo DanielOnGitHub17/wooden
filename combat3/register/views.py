@@ -4,9 +4,6 @@ from django.http import Http404\
     HttpResponse
 from django.views import View
 
-from register.forms import SignForm
-from register.models import Player
-
 # Create your views here.
 
 def get_which(which):
@@ -17,13 +14,11 @@ def get_which(which):
 
 def register_page(request, which="up"):
     if which in ("up", "in"):
-        form = SignForm()
         if "message" in request.GET:
             message = request.GET["message"]
         else:
             message = ''
         context = {
-            "form": form,
             "which": get_which(which),
             "message": message,
         }
@@ -35,7 +30,6 @@ class Log(View):
     def get(self, request):
         user = request.GET
         response = HttpResponse(status=302)
-        # response = HttpResponse(status=302, headers={"message": "Daniel"})
         try:
             player = Player.objects.get(pk=user["username"])
             if player.password == user["password"]:
@@ -50,7 +44,6 @@ class Log(View):
     
     def post(self, request):
         # if request.POST
-        new_user = SignForm(request.POST)
         if new_user.is_valid():
             new_user.save()
             return HttpResponseRedirect("/register/sign/in")

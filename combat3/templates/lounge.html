@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>{{ user.name }} Lounge</title>
+        <style>
+            @import url("{% static 'lounge.css' %}");
+        </style>
+    </head>
+    <body>
+        <div id="others">
+            Things for others
+        </div>
+        <div id="games">
+            Things about game creation game joining, etc
+        </div>
+        <div id="user">
+            Things about the user. Stats, progress, ranking.
+        </div>
+        <script src="{% static 'events.js'}"></script>
+    </body>
+</html>
