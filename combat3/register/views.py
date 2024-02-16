@@ -28,25 +28,10 @@ def register_page(request, which="up"):
 
 class Log(View):
     def get(self, request):
-        user = request.GET
-        response = HttpResponse(status=302)
-        try:
-            player = Player.objects.get(pk=user["username"])
-            if player.password == user["password"]:
-                response["Location"] = "/lounge"
-            else:
-                raise PermissionError("Wrong Password")
-        except Exception as e:
-            response["X-message"] = "Invalid username or wrong password"
-            response["Location"] = f"/register/sign/in?message={response["X-message"]}"
-        return response
+        details = request.GET
+        pass
         
     
     def post(self, request):
-        # if request.POST
-        if new_user.is_valid():
-            new_user.save()
-            return HttpResponseRedirect("/register/sign/in")
-        else:
-            message = "Invalid credentials."
-            return HttpResponse("/register/sign/up?message={message}")
+        details = request.POST
+        pass
