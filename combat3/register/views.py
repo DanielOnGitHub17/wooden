@@ -1,11 +1,13 @@
-from django.shortcuts import render
-from django.http import Http404\
-    , HttpResponseRedirect, HttpResponsePermanentRedirect,\
-    HttpResponse
+from django.shortcuts import render, redirect
+from django.http import Http404, HttpResponse
+from django.contrib.auth.models import User
+from django.contrib.auth import login, authenticate
+
 from django.views import View
 
 # Create your views here.
 
+needed_parameters = ("first_name", "last_name", "username", "password")
 def get_which(which):
     return {
         "up": ("POST", "Create an account", "Create Account"),
@@ -28,10 +30,35 @@ def register_page(request, which="up"):
 
 class Log(View):
     def get(self, request):
-        details = request.GET
-        pass
+        response = redirect("/register/sign/in?message=Invalid+username+or+password")
+
+        username = request.GET["username"]
+        password = request.GET["password"]
+        if password and username:
+            # check if user is a combat user
+            user = authenticate(request, username=username, password=password)
+            if user:
+                # login()
+                login(request, user)
+                response["Location"] = "/lounge"
+        return response
         
     
     def post(self, request):
-        details = request.POST
-        pass
+        details = {}
+        message = "Account created successfully"
+        response = redirect(f"/register/sign/in?message={message}")
+        print(*dir(response), sep='\n')
+        for param in needed_parameters:
+            if request.POST[param]:
+                details[param] = request.POST[param]
+            else:
+                message = f"Please enter your {' '.join(param.split('_'))}"
+                response["Location"] = f"/register/sign/up?message={message}"
+                break
+        else:
+            # create a user
+            new_user = User.objects.create_user(**details)
+            new_user.save()
+
+        return response
