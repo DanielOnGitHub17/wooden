@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.http import Http404, HttpResponse
 from django.contrib.auth.models import User
-from django.contrib.auth import login, authenticate
+from django.contrib.auth import login, authenticate, logout
 
 from django.views import View
 
@@ -15,6 +15,7 @@ def get_which(which):
      }[which]
 
 def register_page(request, which="up"):
+    which = which.lower()
     if which in ("up", "in"):
         if "message" in request.GET:
             message = request.GET["message"]
@@ -25,6 +26,9 @@ def register_page(request, which="up"):
             "message": message,
         }
         return render(request, 'signs.html', context)
+    elif which == "out":
+        logout(request)
+        return redirect("/")
     else:
         raise Http404("Nothing here")
 
