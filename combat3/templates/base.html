@@ -4,7 +4,11 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Combat 3.0</title>
+        <title>
+            {% block title %}
+            Combat 3.0
+            {% endblock %}
+        </title>
         <style>
             @import url("{% static 'baseStyles.css' %}");
         </style>
@@ -13,8 +17,8 @@
         <header>
             <nav>
                 <ul>
-                    <li><a href="/">Daniel</a></li>
-                    <li><a href="/">Enesi's</a></li>
+                    <li><a href="/register/sign/up">Sign up</a></li>
+                    <li><a href="/register/sign/in">Sign in</a></li>
                     <li><a href="/game">Game</a></li>
                 </ul>
             </nav>
@@ -27,7 +31,7 @@
         {% endblock%}
         <footer>
             All rights reserved. This game was made by Daniel Enesi (Backend)
-            and Solomon Enesi (Design)
+            and Andrew Emeghebo (Front-end design)
         </footer>
     </body>
 </html>
