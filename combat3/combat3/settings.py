@@ -128,7 +128,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 STATICFILES_DIRS = [
     BASE_DIR / "static",
-    *(x+"/static" for x in ("register", "game")),
+    *(x+"/static" for x in ("register", "game", "lounge")),
 ]
 
 LOGIN_URL = "/register/sign/in"
