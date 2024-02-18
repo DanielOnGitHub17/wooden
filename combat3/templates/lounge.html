@@ -4,7 +4,7 @@
     <head>
         <title>{{ user.name }} Lounge</title>
         <style>
-            @import url("{% static 'lounge.css' %}");
+            @import url("{% static 'lounge/lounge.css' %}");
         </style>
     </head>
     <body>
@@ -17,6 +17,6 @@
         <div id="user">
             Things about the user. Stats, progress, ranking.
         </div>
-        <script src="{% static 'events.js' %}"></script>
+        <script src="{% static 'lounge/events.js' %}"></script>
     </body>
 </html>

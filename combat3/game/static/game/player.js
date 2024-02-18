@@ -154,7 +154,6 @@ class AI extends Player{
                 this.dirs[i] = i + 2*(this.randomWood[i] - this.ground.position[i] >= 0);
             }
             this.dirs[1] = 4 - this.dirs[1]; // set things right (or left)
-            console.log(this.ground.position, this.randomWood, this.dirs);
             // 1+-1=0(up):1+1(2)
         }
     }
