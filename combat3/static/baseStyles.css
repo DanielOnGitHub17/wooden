@@ -2,11 +2,13 @@ body{
     background: rgb(223, 198, 175);
     color: white;
 }
+ul{
+    list-style: none;
+}
 nav ul{
     display: flex;
     gap: 20px;
     justify-content: center;
-    list-style-type: none;
     /* align-items: center; */
 }
 nav a{
@@ -21,4 +23,56 @@ nav a{
 }
 .message{
     color: red;
+}
+
+header{
+    display: flex;
+    flex-flow: row;
+    justify-content: center;
+}
+
+#register{
+    display: flex;
+    flex-wrap: wrap-reverse;
+    align-items: baseline;
+}
+
+#register #showRegister{
+    width: 50px;
+    height: 50px;
+    margin: 10px;
+    background-color: rgba(0, 0, 0, 0.321);
+    border: 4px double black;
+}
+
+#register #showRegister:focus{
+    --move: -50px;
+    --display: flex;
+    background-color: rgba(0, 0, 0, 0.801);
+}
+
+#registerLinks.visible{
+    display: flex;
+    /* transform: translateX(-100px); */
+}
+#registerLinks{
+    position: absolute;
+    display: none;
+    flex-flow: column;
+    transform: translateX(0);
+    background-color: rgba(244, 165, 96, 0.705);
+    border: 3px double brown;
+}
+
+#profilePic{
+    width: 50px;
+    height: 50px;
+}
+
+footer{
+    border: 2px solid brown;
+    background-color: burlywood;
+    font-size: .9em;
+    padding: 10px;
+    text-align: center;
 }

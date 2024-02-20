@@ -29,13 +29,13 @@
             </nav>
             <div  id="register">
                 <button id="showRegister">|||</button>
-                <ul>
+                <ul id="registerLinks">
                     {% if user.is_authenticated %}
                     <!-- sprite.png will be a view that will return a sprite saved by the user as his/her profile picture -->
-                    <li><img src="/register/sprite.png"></li>
-                    <li><a href="/register/sign/out">Sign out</a></li>
+                    <li><img id="profilePic" src="{% static '/game/texture/player.svg' %}"></li>
                     <li><a href="/lounge">Lounge</a></li>
-                    <li><a href="/game">Game</a></li>
+                    <li><a href="/game">Game</a></li><!-- for now -->
+                    <li><a href="/register/sign/out">Sign out</a></li>
                     {% else %}
                     <li><a href="/register/sign/up">Sign up</a></li>
                     <li><a href="/register/sign/in">Sign in</a></li>
@@ -49,5 +49,7 @@
             All rights reserved. This game was made by Daniel Enesi (Backend)
             and Andrew Emeghebo (Front-end design)
         </footer>
+        <script src="{% static 'funcs.js' %}"></script>
+        <script src="{% static 'baseScripts.js' %}"></script>
     </body>
 </html>
