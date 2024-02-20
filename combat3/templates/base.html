@@ -18,16 +18,29 @@
             <nav>
                 <ul>
                     <li><a href="/">Combat 3.0</a></li>
-                    <li><a href="/register/sign/up">Sign up</a></li>
-                    <li><a href="/register/sign/in">Sign in</a></li>
+                    <!-- Fasted tappers. People who developed -->
+                    <li><a href="/leaders">Leader board</a></li>
+                    <li><a href="/game_help">How to play</a></li>
+                    <!-- Game support view will send email of issues to Andrew and I -->
+                    <li><a href="/support">Game support</a></li>
+                    <!-- Developers view will have portion to contribute ideas (with recognition on the website) -->
+                    <li><a href="/dev">Developers</a></li>
+                </ul>
+            </nav>
+            <div  id="register">
+                <button id="showRegister">|||</button>
+                <ul>
+                    {% if user.is_authenticated %}
+                    <!-- sprite.png will be a view that will return a sprite saved by the user as his/her profile picture -->
+                    <li><img src="/register/sprite.png"></li>
                     <li><a href="/register/sign/out">Sign out</a></li>
                     <li><a href="/lounge">Lounge</a></li>
                     <li><a href="/game">Game</a></li>
+                    {% else %}
+                    <li><a href="/register/sign/up">Sign up</a></li>
+                    <li><a href="/register/sign/in">Sign in</a></li>
+                    {% endif %}
                 </ul>
-            </nav>
-            <div  id="showSettings">
-            {% block settings %}
-            {% endblock %}
             </div>
         </header>
         {% block content %}

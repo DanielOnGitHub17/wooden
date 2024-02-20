@@ -66,3 +66,8 @@ class Log(View):
             new_user.save()
 
         return response
+
+def profile_pic(request):
+    if request.user.is_authenticated:
+        # will be made differently later. Better. everyone with chosen emoji (or picture)
+        return render(request, '/game/static/game/texture/player.svg', {})
