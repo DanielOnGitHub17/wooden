@@ -5,11 +5,9 @@ showRegister.addEventListener("focus", (event)=>{
     registerLinks.className = "visible";
 })
 
-addEventListener("blur", (event)=>{
-    switch (event.target.id){
-        case ("showRegister"):
-            console.log("Bye")
-            registerLinks.className = ""
-            break
-    }
+
+showRegister.addEventListener("blur", (event)=>{
+    event.stopPropagation();
+    console.log("Hi");
+    setTimeout(()=>registerLinks.className = "", 400);
 })

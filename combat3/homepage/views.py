@@ -7,13 +7,13 @@ def home(request):
     return render(request, "homepage.html", {"user": request.user})
 
 def leaders(request):
-    return render(request, "homepage.html", {"user": request.user})
+    return render(request, "leaders.html", {"user": request.user})
 
 def game_help(request):
-    return render(request, "homepage.html", {"user": request.user})
+    return render(request, "game_help.html", {"user": request.user})
 
 def support(request):
-    return render(request, "homepage.html", {"user": request.user})
+    return render(request, "support.html", {"user": request.user})
 
 def dev(request):
-    return render(request, "homepage.html", {"user": request.user})
+    return render(request, "dev.html", {"user": request.user})

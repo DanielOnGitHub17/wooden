@@ -33,7 +33,6 @@ header{
 
 #register{
     display: flex;
-    flex-wrap: wrap-reverse;
     align-items: baseline;
 }
 
@@ -60,8 +59,18 @@ header{
     display: none;
     flex-flow: column;
     transform: translateX(0);
-    background-color: rgba(244, 165, 96, 0.705);
+    background-color: rgba(244, 165, 96, 0.85);
     border: 3px double brown;
+    transition-duration: .4s;
+    align-items: start;
+    gap: 5px;
+    padding: 5px;
+    width: fit-content
+}
+
+#registerLinks a{
+    text-decoration: none;
+    color: white;
 }
 
 #profilePic{
