@@ -1,11 +1,11 @@
 {% extends "base.html" %}
 {% load static %}
 {% block content %}
-{% if message %}
-<h3 class="message">{{ message }}</h3>
-{% endif %}
 <form action="/register/log/" method="{{ which.0 }}">
     <legend>{{ which.1 }}</legend>
+    {% if message %}
+    <h3 class="message">{{ message }}</h3>
+    {% endif %}
     {% csrf_token %}
     <ul>
         {% if which.0 == "POST" %}

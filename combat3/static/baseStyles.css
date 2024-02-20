@@ -78,6 +78,13 @@ header{
     height: 50px;
 }
 
+
+form{
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+}
+
 footer{
     border: 2px solid brown;
     background-color: burlywood;
