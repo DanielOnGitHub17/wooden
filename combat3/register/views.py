@@ -1,9 +1,17 @@
+import django
 from django.shortcuts import render, redirect
 from django.http import Http404, HttpResponse
 from django.contrib.auth.models import User
 from django.contrib.auth import login, authenticate, logout
 
 from django.views import View
+
+# maybe do a helpers.py later
+import datetime
+from random import randint, choice
+
+
+username_prefixes = ("fighter", "runner", "quick", "super")
 
 # Create your views here.
 
@@ -52,7 +60,6 @@ class Log(View):
         details = {}
         message = "Account created successfully"
         response = redirect(f"/register/sign/in?message={message}")
-        print(*dir(response), sep='\n')
         for param in needed_parameters:
             if request.POST[param]:
                 details[param] = request.POST[param]
@@ -62,8 +69,20 @@ class Log(View):
                 break
         else:
             # create a user
-            new_user = User.objects.create_user(**details)
-            new_user.save()
+            try:
+                new_user = User.objects.create_user(**details)
+                new_user.save()
+            except Exception as e:
+                if type(e) == django.db.utils.IntegrityError:
+                    username = details["username"]
+                    new_name = f"{choice(username_prefixes)}{details['first_name'].capitalize()}{randint(11, 500)}"
+                    message = f"Username {username} is taken. How about {new_name}?"
+                else:
+                    message = "An unknown error occured"
+                    with open("errors.log", 'a') as file:
+                        file.write(f"{datetime.datetime.now()}: {e}")
+                response["Location"] = f"/register/sign/up?message={message}"
+
 
         return response
 
