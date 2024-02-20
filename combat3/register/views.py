@@ -14,6 +14,8 @@ from random import randint, choice
 username_prefixes = ("fighter", "runner", "quick", "super")
 
 # Create your views here.
+# later, do a view for localhost:admin/ to return httperror. while the real admin website will be something totally different
+# -or not, of course. maybe users, when the website has been published, can't access the admin page.
 
 needed_parameters = ("first_name", "last_name", "username", "password")
 def get_which(which):
