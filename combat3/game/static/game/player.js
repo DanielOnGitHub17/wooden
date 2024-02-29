@@ -88,7 +88,7 @@ class Player{
 // Block cracking
 // algorithm for left right could check next element and previous element... 
 // if a 'path' is defined, algorithm could walk through that path (which would mean that broken blocks will
-// be added to a specific position in the path. (if the path contains only sand))
+// be added to a specific position in the path. (if the path contBotns only sand))
 // if the path is of all blocks, movement will move till it reaches sand.
 // I think the present algorithm is okay.
 
@@ -97,7 +97,7 @@ class Player{
 //         key: "ArrowRight"
 //     })
 // }
-// later, implement AI movement that will move right... down... left. till it reaches the end
+// later, implement Bot movement that will move right... down... left. till it reaches the end
 // and breaks all blocks
 // remember that game.js should put the players in actual positions given to them by the server
 // not just random.
@@ -106,59 +106,7 @@ class Player{
 //     key: Player.controls[dir]
 //     , stopPropagation: true
 // }));
-class AI extends Player{
-    constructor(ground){
-        super(ground);
-        this.moving = false;
-        this.dirs = [];
-        this.movInterval = setInterval(()=>{
-            this.moveRandom();
-        }, 200);
-        transfer(this, Player.players, AI.ais);
-        this.body.className += " ai";
-    }
 
-    moveCircular(){
-        // turning algorithm
-         
-    }
-
-    event(){}
-    moveRandom(){
-        // 'random' algorithm (chooses a random block and goes to break it)
-        if (this.moving){
-            let  change = 0;
-            for (let i=0; i<2; i++){
-                // !change ensures that left/right won't run if up/down has before.
-                // up/down will always run first until it is good enough
-                // !=. trust the process. // trust that it will not increase more than it is supposed to
-                // if you have doubts, you can use near from funcs.js.
-                if (!change && this.ground.position[i] != this.randomWood[i]){
-                    this.move(this.dirs[i]);
-                    change += 1;
-                }
-            }
-            if (!change){
-                this.moving = false;
-            }
-        } else{
-            this.moving = true;
-            try{
-                this.randomWood = choice(Block.blocks[1]).position;
-            } catch (error){
-                clearInterval(this.movInterval);
-                return;
-            }
-            for (let i=0; i<2; i++){
-                // 0,2 for up/down. 3/1 for right/left
-                this.dirs[i] = i + 2*(this.randomWood[i] - this.ground.position[i] >= 0);
-            }
-            this.dirs[1] = 4 - this.dirs[1]; // set things right (or left)
-            // 1+-1=0(up):1+1(2)
-        }
-    }
-    static ais = [];
-}
 
 // style blocks according to number of breaks friendly blocks to hard ones
 // blocks change on hit to other type

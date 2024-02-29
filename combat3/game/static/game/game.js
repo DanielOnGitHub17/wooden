@@ -1,6 +1,6 @@
 // world.innerHTML = ''
 class Game{
-    constructor(hits){
+    constructor(hits, players=0){
         this.hitsToBreak = hits;
         this.gameRawMaterial = [...Game.world.children].map(i=>JSON.parse(i.textContent))
         Game.world.innerHTML = '';
@@ -21,7 +21,7 @@ class Game{
     createPlayer(){
         // choose a ra
         new Player(choice(Block.blocks[0]));
-        window.ai = new AI(choice(Block.blocks[0]));
+        window.bot = new Bot(choice(Block.blocks[0]));
     }
 
     start(){
@@ -29,5 +29,5 @@ class Game{
     }
     static world = get('world');
 }
-let game = new Game(5);
+let game = new Game(3);
 game.start();
