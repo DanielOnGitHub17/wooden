@@ -10,7 +10,14 @@
     <body>
         <div id="others">
             <hr>
-            {{ user }}
+            <h2>Online Users</h2>
+            <ul>
+            {% for player in online_users %}
+                <li>
+                    {{ player.first_name }} {{ player.last_name }}
+                </li>
+            {% endfor %}
+            </ul>
             Things for others. Chatting and more (if any more)
         </div>
         <div id="games">

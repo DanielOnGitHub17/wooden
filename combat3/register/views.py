@@ -56,6 +56,7 @@ class Log(View):
             if user:
                 # login()
                 login(request, user)
+                # add user to list of logged in users
                 response["Location"] = "/lounge"
         return response
         
