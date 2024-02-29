@@ -1,3 +1,103 @@
 body{
-    background: black;
+    background: #ceaf86;
+    display: flex;
+    flex-flow: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 1.5vw;
+    height: 100vh;
+    margin: 0;
+}
+body>div{
+    border: 10px double brown;
+    background: ghostwhite;
+    border-radius: 2em;
+    width: 31vw;
+    height: 90vh;
+    padding: 10px;
+    overflow-y: scroll;
+    box-sizing: border-box;
+    scrollbar-width: none;
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    gap: 1em;
+    flex-wrap: nowrap;
+
+}
+body div>hr{
+    width: 25vw;
+    border-color: brown;
+    justify-self: center;
+}
+
+.uiHolder{
+    display: flex;
+    gap: 7px;
+    flex-flow: column;
+    margin: 0;
+    padding: 0;
+    width: -webkit-fill-available;
+}
+.uiHolder>li, .ui{
+    border: 2px solid rgb(165, 77, 42);
+    display: flex;
+    border-radius: .5em;
+    padding: 10px;
+    justify-content: space-between;
+    align-self: flex-start;
+    width: -webkit-fill-available;
+}
+
+.uiHolder>li{
+    border-width: 1px;
+}
+.uiHolder>li>span{
+    color: brown;
+}
+
+h2{
+    margin: 0;
+}
+
+
+#games ul>li>span, #games form>label{
+    border: 1px solid brown;
+    color: black;
+    padding: 5px;
+}
+
+.gameLink{
+    background-color: sienna;
+    border: 1px solid brown;
+    color: white;
+    text-decoration: none;
+    transition: .4s;
+    padding: 5px;
+    cursor: pointer;
+}
+
+.gameLink:focus, .gameLink:hover{
+    background-color: brown;
+}
+
+.gameLink:focus{
+    border-color: black;
+}
+
+#games>form{
+    padding: 5px;
+    gap: 2px;
+    /* justify-content: ; */
+}
+
+#games>form>label{
+    padding: 2px;
+    border: none;
+    border-right: 2px solid brown;
+    /* justify-content: ; */
+}
+.ui>label>input{
+    width: 2em;
 }

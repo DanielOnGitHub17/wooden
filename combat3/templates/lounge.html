@@ -9,13 +9,68 @@
     </head>
     <body>
         <div id="others">
-            Things for others
+            <hr>
+            Things for others. Chatting and more (if any more)
         </div>
         <div id="games">
-            Things about game creation game joining, etc
+            <hr>
+            <h2>Games to join</h2>
+            <ul id="gamesToJoin" class="uiHolder">
+                <!-- will  be actually objects from the server -->
+                <!-- there'll be a if you created, then delete. to remove the game from games list -->
+                <li>
+                    <span class="nTotal">7{{ x }} total players.</span>
+                    <span class="nBots">3{{ x }} bots.</span>
+                    <span class="maxHits">4{{ x }} maximum block hits</span>
+                    <!-- creator <a class='creator' > link to the chats section-->
+                    <a class="gameLink join" href="/game/{{ x }}">JOIN</a>
+                </li>
+            </ul>
+            <h2>Ongoing Games</h2>
+            <ul id="ongoingGames" class="uiHolder">
+                <!-- will  be actually objects from the server -->
+                <li>
+                    <span class="nTotal">6{{ x }} total players.</span>
+                    <span class="nBots">2{{ x }} bots.</span>
+                    <span class="maxHits">5{{ x }} maximum block hits</span>
+                    <a class="gameLink watch" href="/game/{{ x }}">WATCH</a>
+                </li>
+            </ul>
+            <hr>
+            <h2>Create a game</h2>
+            <form id="createGame" class="ui">
+                    <label for="nTotal">
+                        <input type="number" id="nTotal" name="nTotal" min="2" max="8" required> total players
+                    </label>
+                    <label for="nBots">
+                        <input type="number" id="nBots" name="nBots" min="0" max="7" required> bots
+                    </label>
+                    <label for="maxHits">
+                        <input type="number" id="maxHits" name="maxHits" min="2" max="7" required> maximum hits
+                    </label>
+                    <button class="gameLink create" href="/game/{{ x }}" type="submit">CREATE</button>
+            </form>
         </div>
         <div id="user">
-            Things about the user. Stats, progress, ranking.
+            <hr>
+            <img id="profilePic" src="{% static '/game/texture/player.svg' %}">
+            <h2>Profile Details</h2>
+            <ul class="uiHolder">
+                <li>Full name: <span>{{ x }}</span></li>
+                <li>Username: <span>{{ x }}</span></li>
+                <li>New Password: <span>....</span></li>
+                <li>Repeat new password: <span></span></li>
+                <li>Submit: <span>{{ x }}</span></li>
+            </ul>            
+            <hr>    
+            <h2>Stats</h2>
+            <ul class="uiHolder">
+                <li>Games played: <span>{{ x }}</span></li>
+                <li>Games won: <span>{{ x }}</span></li>
+                <li>Games lost: <span>{{ x }}</span></li>
+                <li>Time spent playing: <span>{{ x }}</span></li>
+                <li>Blocks broken: <span>{{ x }}</span></li>
+            </ul>
         </div>
         <script src="{% static 'lounge/events.js' %}"></script>
     </body>
