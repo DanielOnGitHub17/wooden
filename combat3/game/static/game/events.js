@@ -1,0 +1,5 @@
+
+
+oncontextmenu=(event)=>{
+    event.preventDefault()
+}

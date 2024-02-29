@@ -10,7 +10,7 @@ class Bot extends Player{
         this.body.className += " bot";
     }
 
-    moveCircular(){
+moveCircular(){
         // turning algorithm
          
     }

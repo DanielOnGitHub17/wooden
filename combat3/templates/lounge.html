@@ -10,6 +10,7 @@
     <body>
         <div id="others">
             <hr>
+            {{ user }}
             Things for others. Chatting and more (if any more)
         </div>
         <div id="games">
@@ -38,7 +39,8 @@
             </ul>
             <hr>
             <h2>Create a game</h2>
-            <form id="createGame" class="ui">
+            <form id="createGame" class="ui" method="POST" action="/lounge/create/">
+                {% csrf_token %}
                     <label for="nTotal">
                         <input type="number" id="nTotal" name="nTotal" min="2" max="8" required> total players
                     </label>
@@ -48,7 +50,7 @@
                     <label for="maxHits">
                         <input type="number" id="maxHits" name="maxHits" min="2" max="7" required> maximum hits
                     </label>
-                    <button class="gameLink create" href="/game/{{ x }}" type="submit">CREATE</button>
+                    <button class="gameLink create" type="submit">CREATE</button>
             </form>
         </div>
         <div id="user">
@@ -56,11 +58,12 @@
             <img id="profilePic" src="{% static '/game/texture/player.svg' %}">
             <h2>Profile Details</h2>
             <ul class="uiHolder">
-                <li>Full name: <span>{{ x }}</span></li>
-                <li>Username: <span>{{ x }}</span></li>
+                <li>Full name: <span>{{ user.first_name }} {{ user.last_name }}</span></li>
+                <li>Username: <span>{{ user.username }}</span></li>
                 <li>New Password: <span>....</span></li>
                 <li>Repeat new password: <span></span></li>
                 <li>Submit: <span>{{ x }}</span></li>
+                <li><a href="/register/sign/out">Logout</a></li>
             </ul>            
             <hr>    
             <h2>Stats</h2>
@@ -75,3 +78,7 @@
         <script src="{% static 'lounge/events.js' %}"></script>
     </body>
 </html>
+
+<!-- Thank God for telling me. To test with many people. you can just use firefox, chrome, chrome inprivate, edge, edge inprivate.
+or even create multiple profiles on chrome/edge and then share screen with somebody.
+Thank God. I won't need to host on the internet before I can test well. -->

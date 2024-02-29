@@ -11,7 +11,9 @@ import datetime
 from random import randint, choice
 
 
-username_prefixes = ("fighter", "runner", "quick", "super")
+username_prefixes = ("fighter", "runner", "quick"
+                     , "super", "victorius", "smart"
+                     , "kind", "big", "powerful")
 
 # Create your views here.
 # later, do a view for localhost:admin/ to return httperror. while the real admin website will be something totally different
