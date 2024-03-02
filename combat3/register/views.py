@@ -4,7 +4,7 @@ from django.http import Http404, HttpResponse
 from django.contrib.auth.models import User
 from django.contrib.auth import login, authenticate, logout
 
-# from game.models import Player
+from game.models import Player
 
 from django.views import View
 
