@@ -14,8 +14,9 @@ from random import randint, choice
 
 
 username_prefixes = ("fighter", "runner", "quick"
-                     , "super", "victorius", "smart"
-                     , "kind", "big", "powerful")
+                     , "super", "victorious", "smart"
+                     , "kind", "big", "powerful"
+                     , "brave", "mighty", "potent")
 
 # Create your views here.
 # later, do a view for localhost:admin/ to return httperror. while the real admin website will be something totally different
@@ -56,9 +57,10 @@ class Log(View):
             # check if user is a combat user
             user = authenticate(request, username=username, password=password)
             if user:
-                # login()
+                # login user
                 login(request, user)
-                # add user to list of logged in users
+                # login player (ha!)
+                Player.objects 
                 response["Location"] = "/lounge"
         return response
         
@@ -80,16 +82,15 @@ class Log(View):
                 new_user = User.objects.create_user(**details)
                 new_user.save()
                 # now make a Player
-                new_player = Player(user=new_user)
-                new_player.save()
+                new_player = Player()
+                new_player.save(user=details["username"])
             except Exception as e:
+                print(e) # later it will be not only to print, but also to email me
                 if type(e) == django.db.utils.IntegrityError:
                     username = details["username"]
                     new_name = f"{choice(username_prefixes)}{details['first_name'].capitalize()}{randint(11, 500)}"
                     message = f"Username {username} is taken. How about {new_name}?"
                 else:
-                    print(e)
-                    raise(e)
                     message = "An unknown error occured"
                     with open("errors.log", 'a') as file:
                         file.write(f"{datetime.datetime.now()}: {e}")

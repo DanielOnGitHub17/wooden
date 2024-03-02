@@ -10,12 +10,7 @@ def lounge(request):
     online_users = []
     for user in User.objects.all():
         if user.username != "daniel":
-            if user.is_authenticated:
-                online_users.append(user)
-                print(user.first_name)
-            if user.is_active:
-                
-                print("active", user.first_name)
+            pass
 
     # request.user is everything. (or most things). (or one third of things)
     return render(request, "lounge.html", {

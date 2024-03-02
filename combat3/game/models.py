@@ -18,12 +18,12 @@ class Game(models.Model):
 
     
 class Player(models.Model):
-    score = models.IntegerField()
-    y = models.IntegerField()
-    x = models.IntegerField()
+    score = models.IntegerField(default=0)
+    y = models.IntegerField(default=0)
+    x = models.IntegerField(default=0)
     logged_in = models.BooleanField(default=True)
     user = models.CharField(max_length=90)
-    game = models.IntegerField()
+    game = models.IntegerField(default=0)
     # will be given by difference between game.started and ended
     # (or game.started and logged out) Logout will have some work to do
     # it will have to check if the player was playing before he/she left
