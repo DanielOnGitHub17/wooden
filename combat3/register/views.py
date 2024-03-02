@@ -43,6 +43,8 @@ def register_page(request, which="up"):
         return render(request, 'signs.html', context)
     elif which == "out":
         logout(request)
+        if request.user.is_authenticated:
+            Player.objects.get(user=request.user.username).logged_in = False
         return redirect("/")
     else:
         raise Http404("Nothing here")
@@ -59,8 +61,8 @@ class Log(View):
             if user:
                 # login user
                 login(request, user)
-                # login player (ha!)
-                Player.objects 
+                # set Player.logged_in to true
+                Player.objects.get(user=username).logged_in = True
                 response["Location"] = "/lounge"
         return response
         
@@ -82,10 +84,12 @@ class Log(View):
                 new_user = User.objects.create_user(**details)
                 new_user.save()
                 # now make a Player
-                new_player = Player()
-                new_player.save(user=details["username"])
+                new_player = Player(user=details["username"])
+                new_player.save()
             except Exception as e:
                 print(e) # later it will be not only to print, but also to email me
+                with open("errors.log", 'a') as error_log:
+                    error_log.write(f"\n{e}")
                 if type(e) == django.db.utils.IntegrityError:
                     username = details["username"]
                     new_name = f"{choice(username_prefixes)}{details['first_name'].capitalize()}{randint(11, 500)}"
