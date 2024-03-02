@@ -26,6 +26,9 @@ body>div{
     flex-wrap: nowrap;
 
 }
+ul{
+    list-style-type: none;
+}
 body div>hr{
     width: 25vw;
     border-color: brown;
@@ -62,7 +65,7 @@ h2{
 }
 
 
-#games ul>li>span, #games form>label{
+#games ul>li>span, #games form>label, #others>ul>li>span{
     border: 1px solid brown;
     color: black;
     padding: 5px;

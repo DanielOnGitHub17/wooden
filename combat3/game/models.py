@@ -10,17 +10,20 @@ class Game(models.Model):
     n_bots = models.IntegerField()
     started = models.DateTimeField(auto_now=True)
     ended = models.DateTimeField()
-    winner = models.ForeignKey(User, on_delete=models.CASCADE)  # will be used for 'leaderboarding' (maybe)
+    # creator = models.ManyToOneRel(User, on_delete=models.CASCADE)
+    # will be used for 'leaderboarding' (maybe)
+    winner = models.ForeignKey(User, on_delete=models.CASCADE)
     # primary key should be the link slash. (it will always change)
 
 
     
 class Player(models.Model):
-    username = models.ForeignKey(User, on_delete=models.CASCADE)
-    current_game = models.ForeignKey(Game, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    game = models.ForeignKey(Game, on_delete=models.CASCADE)
     score = models.IntegerField()
     y = models.IntegerField()
     x = models.IntegerField()
+    logged_in = models.BooleanField(default=True)
 
 
 # should seamlessly connect to Game and User

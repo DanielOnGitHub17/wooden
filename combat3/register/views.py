@@ -4,6 +4,8 @@ from django.http import Http404, HttpResponse
 from django.contrib.auth.models import User
 from django.contrib.auth import login, authenticate, logout
 
+# from game.models import Player
+
 from django.views import View
 
 # maybe do a helpers.py later
@@ -77,12 +79,17 @@ class Log(View):
             try:
                 new_user = User.objects.create_user(**details)
                 new_user.save()
+                # now make a Player
+                new_player = Player(user=new_user)
+                new_player.save()
             except Exception as e:
                 if type(e) == django.db.utils.IntegrityError:
                     username = details["username"]
                     new_name = f"{choice(username_prefixes)}{details['first_name'].capitalize()}{randint(11, 500)}"
                     message = f"Username {username} is taken. How about {new_name}?"
                 else:
+                    print(e)
+                    raise(e)
                     message = "An unknown error occured"
                     with open("errors.log", 'a') as file:
                         file.write(f"{datetime.datetime.now()}: {e}")

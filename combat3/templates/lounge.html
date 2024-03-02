@@ -11,10 +11,18 @@
         <div id="others">
             <hr>
             <h2>Online Users</h2>
-            <ul>
+            <ul id="onlinePlayers" class="uiHolder">
             {% for player in online_users %}
                 <li>
-                    {{ player.first_name }} {{ player.last_name }}
+                    <span class="pName">
+                        {{ player.username }}
+                    </span>
+                    <span class="pRank">
+                        {{ rank }}
+                    </span>
+                    <button class="gameLink pMessage">
+                        Message
+                    </button>
                 </li>
             {% endfor %}
             </ul>
@@ -70,7 +78,7 @@
                 <li>New Password: <span>....</span></li>
                 <li>Repeat new password: <span></span></li>
                 <li>Submit: <span>{{ x }}</span></li>
-                <li><a href="/register/sign/out">Logout</a></li>
+                <li><a href="/register/sign/out">Logout</a> <a href="/">Home Page</a></li>
             </ul>            
             <hr>    
             <h2>Stats</h2>
