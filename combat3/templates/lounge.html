@@ -15,13 +15,19 @@
             {% for player in online_users %}
                 <li>
                     <span class="pName">
-                        {{ player.username }}
+                        Username: {{ player.user }}
                     </span>
                     <span class="pRank">
-                        {{ rank }}
+                        <!-- calculation based on wins, losses, created, etc -->
+                        Ranking: {{ player.rank }}
                     </span>
                     <button class="gameLink pMessage">
-                        Message
+                        Message 
+                        {% if player.user == request.user.username %}
+                        yourself
+                        {% else %}
+                        {{ player.user }}
+                        {% endif %}
                     </button>
                 </li>
             {% endfor %}
@@ -79,8 +85,8 @@
                 <li>Repeat new password: <span></span></li>
                 <li>Submit: <span>{{ x }}</span></li>
                 <li><a href="/register/sign/out">Logout</a> <a href="/">Home Page</a></li>
-            </ul>            
-            <hr>    
+            </ul>
+            <hr>
             <h2>Stats</h2>
             <ul class="uiHolder">
                 <li>Games played: <span>{{ x }}</span></li>
@@ -89,6 +95,14 @@
                 <li>Games lost: <span>{{ x }}</span></li>
                 <li>Time spent playing: <span>{{ x }}</span></li>
                 <li>Blocks broken: <span>{{ x }}</span></li>
+            </ul>
+            <hr>
+            <h2>Messages</h2>
+            <ul class="uiHolder">
+                <!-- for from, message in zip(reverse(messages))... -->
+                <!-- oldest last -->
+                <li>{{ from }}: {{ message }}</li>
+                <!-- endfor -->
             </ul>
         </div>
         <script src="{% static 'lounge/events.js' %}"></script>

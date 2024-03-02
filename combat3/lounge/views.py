@@ -8,7 +8,7 @@ from random import randint
 # Create your views here.
 @login_required
 def lounge(request):
-    online_users = []
+    online_users = [*Player.objects.filter(logged_in=True)]
     # request.user is everything. (or most things). (or one third of things)
     return render(request, "lounge.html", {
         "user": request.user,

@@ -4,19 +4,26 @@ from django.contrib.auth.models import User
 # Create your models here.
 
 class Game(models.Model):
-    size = models.IntegerField()
-    max_hits = models.IntegerField()
-    n_real = models.IntegerField()
-    n_bots = models.IntegerField()
-    started = models.DateTimeField(auto_now=True)
-    ended = models.DateTimeField()
+    size = models.IntegerField(default=15)
+    initial_data = models.TextField(default="0")
+    data = models.TextField(default="0") # will change by json.loadsing and dumpsing
+    max_hits = models.IntegerField(default=3)
+    n_real = models.IntegerField(default=2)
+    n_bots = models.IntegerField(default=2)
+    started_time = models.DateTimeField(auto_now=True)
+    ended_time = models.DateTimeField(auto_now=True)
+    started = models.BooleanField(default=False)
+    ended = models.BooleanField(default=False)
     creator = models.CharField(max_length=30)
     # will be used for 'leaderboarding' (maybe)
-    winner = models.IntegerField()
+    winner = models.CharField(max_length=30)
     # primary key should be the link slash. (it will always change)
     def __str__(self):
         return f"Game {self.creator} {self.pk}"
-        
+    
+    # The Game class will be frequently accessed by users, changed till there are no
+    # '1s' in it's data.
+    # if needed, the Game class will be turned to JSON later
 
 
     
@@ -31,6 +38,10 @@ class Player(models.Model):
     # (or game.started and logged out) Logout will have some work to do
     # it will have to check if the player was playing before he/she left
     # and other loopholes I will have to fill.
+
+    def rank(self):
+        me = Game.objects.filter
+        return len(me(creator=self.user)) + 2*len(me(winner=self.user))
 
     def __str__(self):
         return f"Player {self.user}"

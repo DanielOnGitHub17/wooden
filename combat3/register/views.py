@@ -42,9 +42,12 @@ def register_page(request, which="up"):
         }
         return render(request, 'signs.html', context)
     elif which == "out":
-        logout(request)
         if request.user.is_authenticated:
-            Player.objects.get(user=request.user.username).logged_in = False
+            print(f"Out {request.user}")
+            player = Player.objects.get(user=request.user.username)
+            player.logged_in = False
+            player.save()
+        logout(request)
         return redirect("/")
     else:
         raise Http404("Nothing here")
@@ -62,7 +65,10 @@ class Log(View):
                 # login user
                 login(request, user)
                 # set Player.logged_in to true
-                Player.objects.get(user=username).logged_in = True
+                print(f"In {request.user}")
+                player = Player.objects.get(user=username)
+                player.logged_in = True
+                player.save()
                 response["Location"] = "/lounge"
         return response
         
@@ -90,7 +96,7 @@ class Log(View):
                 print(e) # later it will be not only to print, but also to email me
                 with open("errors.log", 'a') as error_log:
                     error_log.write(f"\n{e}")
-                if type(e) == django.db.utils.IntegrityError:
+                if str(e).startswith("UNIQUE constraint failed"):
                     username = details["username"]
                     new_name = f"{choice(username_prefixes)}{details['first_name'].capitalize()}{randint(11, 500)}"
                     message = f"Username {username} is taken. How about {new_name}?"
