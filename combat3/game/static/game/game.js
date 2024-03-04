@@ -3,7 +3,7 @@ class Game{
     constructor(hits, real, bots){
         this.hitsToBreak = hits;
         this.gameRawMaterial = JSON.parse(Game.world.innerHTML)
-        this.positions = JSON.parse(get("positions").textContent)
+        this.positions = eval(get("positions").textContent)
         Game.world.innerHTML = '';
         this.length = this.gameRawMaterial.length;
         // Game.world.style.width = Game.world.style.height = this.length*Block.dimension + 'px';
@@ -31,5 +31,5 @@ class Game{
     static world = get("world");
     static player = get("username").textContent;
 }
-let game = new Game([...get("gameInfo").children].slice(1, -1).map(info=>+info.textContent))
+let game = new Game(...getAll("#gameInfo>span").slice(1, -1).map(info=>+info.textContent))
 game.start();

@@ -55,7 +55,6 @@ body{
     background-image: url("texture/comrade.svg");
 }
 
-#gameInfo{
-    position: absolute;
-    left: 0;
+#gameInfo, #username{
+    display: none;
 }

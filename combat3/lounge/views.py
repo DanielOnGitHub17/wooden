@@ -35,7 +35,6 @@ def create_game(request):
     n_total = int(request.POST["nTotal"])
     n_bots = int(request.POST["nBots"])
     creator = request.user.username
-    print(type(n_total))
     initial_data = json.dumps(make_game(15))
     while initial_data.count('0') < 15:
         initial_data = json.dumps(make_game(15)) # space for everybody
@@ -60,32 +59,30 @@ def create_game(request):
     game.save()
     with open(f"game/static/game{game.pk}_players.json", 'w') as file:
         json.dump(first_positions, file)
-    creator = Player.objects.get(pk=creator)
-    creator.game = game.pk
-    creator.save()
-    return HttpResponseRedirect(f"/game/{game.pk}") # game will say "waiting for players"
+    return HttpResponseRedirect(f"/lounge/join/{game.pk}")
 
 @login_required
 def join_game(request, site):
-    player = Player.objects.get(pk=request.user.username) # write a model method for this
+    player = Player.username(request)
     game = Game.objects.filter(pk=site)
     if player.game:
         # could be this game
-        return HttpResponseRedirect("/lounge?message=You+cannot+join+this+game+You+are+in+another+game")
+        return HttpResponseRedirect("/lounge?message=You+cannot+join+this+game+You+are+in+a+game")
     elif not game:
         return HttpResponseRedirect("/lounge?message=Invalid+Game")
     elif game[0].n_real == len(Player.objects.filter(game=site)):
         return HttpResponseRedirect("/lounge?message=Game+is+full+Watch+instead")
+    print(site, type(site))
     player.game = site
     # set position
-    with open(f"game/static/game{game.pk}_players.json") as file:
+    with open(f"game/static/game{game[0].pk}_players.json") as file:
         positions = json.load(file)
         for position in positions:
-            if position[0]: # not yet taken
+            if not position[0]: # not yet taken
                 position[0] = player.user
                 player.x, player.y = position[1:]
                 break
-    with open(f"game/static/game{game.pk}_players.json", 'w') as file:
-        json.dumps(positions, file)
+    with open(f"game/static/game{game[0].pk}_players.json", 'w') as file:
+        json.dump(positions, file)
     player.save()
     return HttpResponseRedirect(f"/game/{site}")

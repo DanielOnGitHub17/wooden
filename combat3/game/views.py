@@ -14,17 +14,17 @@ def play(request, site):
     message = "No game here"
     try:
         game = Game.objects.get(pk=site)
-        n_players = len(Player.objects.filter(game=game.pk))
+        # if game has ended, just leave
+        if game.ended:
+            raise Exception("This game has ended, so you can neither play nor watch it.")
+        with open(f"game/static/game{game.pk}_players.json") as file:
+            positions = json.load(file)
         # game has started if enough players have joined
+        n_players = len(Player.objects.filter(game=game.pk))
         game.started = game.n_real == n_players
         if game.started: # don't want to call .save too much.
-            # give global bots positions if needed
-            if game.n_real-1:
-                with open(f"game/static/game{game.pk}_players.json") as file:
-                    positions = json.load(file)
-                # maybe there should be a bot model (it will make things easy)
             game.save()
-        can_play = (request.user.game == site)
+        can_play = (Player.username(request).game == site)
 
         return render(request, "game.html", {
             "game": game,

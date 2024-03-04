@@ -45,6 +45,10 @@ class Player(models.Model):
 
     def __str__(self):
         return f"Player {self.user}"
+    
+    @classmethod
+    def username(self, request):
+        return Player.objects.get(pk=request.user.username)
 
 
 # should seamlessly connect to Game and User (or not)
