@@ -1,12 +1,22 @@
 {% load static %}
+{% if game.started %}
+    {% if game.ended %}
+This game has ended, so you cannot play or watch it.
+    {% else %}
 <style>
     @import url("{% static 'game/game.css' %}");
 </style>
-<div id="world">
-    {{ game.data }}
+<span id="username">{{ request.user.username }}</span>
+<div id="gameInfo">
+    <span id="size">{{ game.size }}</span>
+    <span id="real">{{ game.n_real }}</span>
+    <span id="hits">{{ game.max_hits }}</span>
+    <span id="bots">{{ game.n_bots }}</span>
+    <span id="positions">{{ positions }}</span>
 </div>
+<div id="world">{{ game.data }}</div>
 <script>
-    let can_play = eval("{{ can_play|lower }}")
+    let can_play = {{ request.user.game == site |lower }}
     // will determine a lot. Enemy only. Bot will have another movement type
     // moveByServer.
 </script>
@@ -18,3 +28,13 @@
 <script src="{% static 'game/enemy.js' %}"></script>
 <script src="{% static 'game/game.js' %}"></script>
 <script src="{% static 'game/events.js' %}"></script>
+    {% endif %}
+{% else %}
+<!-- do the waiting, should restart after 2 seconds -->
+Only {{ n_players }} real players out of {{ game.n_real }} real players
+have joined. Refreshing...
+<script>
+    // waiting logic
+    onload = setTimeout(location.reload, 2000);
+</script>
+{% endif %}

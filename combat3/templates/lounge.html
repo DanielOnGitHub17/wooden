@@ -23,7 +23,7 @@
                     </span>
                     <button class="gameLink pMessage">
                         Message 
-                        {% if player.user == request.user.username %}
+                        {% if player.user == user.username %}
                         yourself
                         {% else %}
                         {{ player.user }}

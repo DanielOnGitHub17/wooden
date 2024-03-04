@@ -29,8 +29,8 @@ class Game(models.Model):
     
 class Player(models.Model):
     score = models.IntegerField(default=0)
-    y = models.IntegerField(default=0)
-    x = models.IntegerField(default=0)
+    r = models.IntegerField(default=0)
+    c = models.IntegerField(default=0)
     logged_in = models.BooleanField(default=False)
     user = models.CharField(max_length=30, primary_key=True)
     game = models.IntegerField(default=0)

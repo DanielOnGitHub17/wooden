@@ -4,7 +4,7 @@ from django.http import Http404, HttpResponse
 
 # Create your views here.
 # from game.helpers import make_game
-from game.models import Game
+from game.models import Game, Player
 import json
 
 @login_required
@@ -14,20 +14,28 @@ def play(request, site):
     message = "No game here"
     try:
         game = Game.objects.get(pk=site)
-        waiting = False
-        if not game.started:
-            waiting = True
-        elif game.ended:
-            raise Exception("This game has ended, so you cannot watch it")
-        else:
-            can_play = (request.user.game == site)
-            
+        n_players = len(Player.objects.filter(game=game.pk))
+        # game has started if enough players have joined
+        game.started = game.n_real == n_players
+        if game.started: # don't want to call .save too much.
+            # give global bots positions if needed
+            if game.n_real-1:
+                with open(f"game/static/game{game.pk}_players.json") as file:
+                    positions = json.load(file)
+                # maybe there should be a bot model (it will make things easy)
+            game.save()
+        can_play = (request.user.game == site)
 
         return render(request, "game.html", {
             "game": game,
             "can_play": can_play, # if can't play, you'll just watch.
-            "waiting": waiting
+            "n_players": n_players,
+            "positions": positions,
         })
     except Exception as e:
         return HttpResponse(str(e))
     
+# @login_required
+# def check_can_start(request):
+#     game_id = request.GET[""]
+#     game_id*2

@@ -1,6 +1,6 @@
 class Bot extends Player{
-    constructor(ground){
-        super(ground);
+    constructor(ground, name){
+        super(ground, name);
         this.moving = false;
         this.dirs = [];
         this.movInterval = setInterval(()=>{

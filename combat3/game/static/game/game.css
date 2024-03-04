@@ -54,3 +54,8 @@ body{
 .comrade{
     background-image: url("texture/comrade.svg");
 }
+
+#gameInfo{
+    position: absolute;
+    left: 0;
+}

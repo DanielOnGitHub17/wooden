@@ -1,6 +1,7 @@
 class Player{
-    constructor(ground){
+    constructor(ground, name){
         Player.players.push(this);
+        this.name = name;
         this.ground = ground;
         this.hits = 0;
         this.blocksBroken = 0;
