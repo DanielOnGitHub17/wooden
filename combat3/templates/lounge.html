@@ -37,36 +37,38 @@
         <div id="games">
             <hr>
             <h2>Games to join</h2>
-            <ul id="gamesToJoin" class="uiHolder">
-                <!-- will  be actually objects from the server -->
-                <!-- there'll be a if you created, then delete. to remove the game from games list -->
+            <ul id="gamesToJoin" class="uiHolder">{% for game in games.0 %}
                 <li>
-                    <span class="nTotal">7{{ x }} total players.</span>
-                    <span class="nBots">3{{ x }} bots.</span>
-                    <span class="maxHits">4{{ x }} maximum block hits</span>
+                    <span class="nReal">{{ game.n_real }} real players.</span>
+                    <span class="nBots">{{ game.n_bots }} bots.</span>
+                    <span class="maxHits">{{ game.max_hits }} maximum block hits</span>
                     <!-- creator <a class='creator' > link to the chats section-->
-                    <a class="gameLink join" href="/game/{{ x }}">JOIN</a>
+                    <a class="gameLink join" href="/game/{{ game.pk }}">JOIN</a>
                 </li>
-            </ul>
+                {% endfor %}</ul>
             <h2>Ongoing Games</h2>
             <ul id="ongoingGames" class="uiHolder">
-                <!-- will  be actually objects from the server -->
+                {% for game in games.1 %}
                 <li>
-                    <span class="nTotal">6{{ x }} total players.</span>
-                    <span class="nBots">2{{ x }} bots.</span>
-                    <span class="maxHits">5{{ x }} maximum block hits</span>
-                    <a class="gameLink watch" href="/game/{{ x }}">WATCH</a>
+                    <span class="nReal">{{ game.n_real }} real players.</span>
+                    <span class="nBots">{{ game.n_bots }} bots.</span>
+                    <span class="maxHits">{{ game.max_hits }} maximum block hits</span>
+                    <!-- creator <a class='creator' > link to the chats section-->
+                    <a class="gameLink join" href="/game/{{ game.pk }}">WATCH</a>
+
                 </li>
+                {% endfor %}
             </ul>
             <hr>
             <h2>Create a game</h2>
+            <h4 id="message">{{ message }}</h4>
             <form id="createGame" class="ui" method="POST" action="/lounge/create/">
                 {% csrf_token %}
                     <label for="nTotal">
-                        <input type="number" id="nTotal" name="nTotal" min="2" max="8" required> total players
+                        <input type="number" id="nTotal" name="nTotal" min="2" max="6" required> total players
                     </label>
                     <label for="nBots">
-                        <input type="number" id="nBots" name="nBots" min="0" max="7" required> bots
+                        <input type="number" id="nBots" name="nBots" min="0" max="5" required> bots
                     </label>
                     <label for="maxHits">
                         <input type="number" id="maxHits" name="maxHits" min="2" max="7" required> maximum hits
@@ -106,6 +108,7 @@
             </ul>
         </div>
         <script src="{% static 'lounge/events.js' %}"></script>
+        <script src="{% static 'funcs.js' %}"></script>
     </body>
 </html>
 

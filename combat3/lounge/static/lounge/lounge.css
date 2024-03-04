@@ -33,8 +33,11 @@ body div>hr{
     width: 25vw;
     border-color: brown;
     justify-self: center;
+    border-style: solid;
 }
-
+.message{
+    color: red;
+}
 .uiHolder{
     display: flex;
     gap: 7px;
@@ -69,6 +72,9 @@ h2{
     border: 1px solid brown;
     color: black;
     padding: 5px;
+}
+#gamesToJoin{
+    text-align: center;
 }
 
 .gameLink{

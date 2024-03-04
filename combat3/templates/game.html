@@ -3,10 +3,13 @@
     @import url("{% static 'game/game.css' %}");
 </style>
 <div id="world">
-    {% for x in game %}
-    <pre>{{ x }}</pre>
-    {% endfor %}
+    {{ game.data }}
 </div>
+<script>
+    let can_play = eval("{{ can_play|lower }}")
+    // will determine a lot. Enemy only. Bot will have another movement type
+    // moveByServer.
+</script>
 <script src="{% static 'funcs.js' %}"></script>
 <script src="{% static 'game/block.js' %}"></script>
 <script src="{% static 'game/player.js' %}"></script>
