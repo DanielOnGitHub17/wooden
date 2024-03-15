@@ -38,7 +38,6 @@ class Player{
                 this.ground.block.append(this.body);
                 // time to learn about websockets in JS
                 // and, apparently, Django channels
-                // let me try using fetch first (and two players only)
             }
         } else {// wood
             // if it hits the block ten times, the block breaks
