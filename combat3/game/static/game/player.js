@@ -36,6 +36,9 @@ class Player{
             if (!potentialGround.kind){ // sand (change position)
                 this.ground = potentialGround;
                 this.ground.block.append(this.body);
+                // time to learn about websockets in JS
+                // and, apparently, Django channels
+                // let me try using fetch first (and two players only)
             }
         } else {// wood
             // if it hits the block ten times, the block breaks
@@ -44,7 +47,9 @@ class Player{
                 if (this.hits >= game.hitsToBreak){ // the > is unneccesary
                     this.hits = 0;
                     potentialGround.crack();
-                    this.blocksBroken += 1; // will be the one sent
+                    this.blocksBroken += 1;
+                    // tell server that a block has broken with the blocks r,c
+                    // will be the one sent
                     // thank you God for helping me fix the 'who broke it'.
                     // all players will have scores attributed to them
                     // if their JavaScript says they broke it.

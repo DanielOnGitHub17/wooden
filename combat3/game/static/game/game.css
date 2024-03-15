@@ -27,6 +27,17 @@ body{
     display: flex;
     justify-content: center;
     align-items: center;
+    /*    to make one show not all.
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: stretch;
+    flex-wrap: wrap;
+    flex-direction: column;
+    overflow: hidden;
+    align-content: stretch;
+    gap: 10px;*/
 }
 .sand{
     background-color: #ceaf86;
@@ -51,8 +62,8 @@ body{
     background-image: url("texture/enemy.svg");
 }
 
-.comrade{
-    background-image: url("texture/comrade.svg");
+.bot{
+    background-image: url("texture/enemy.svg");
 }
 
 #gameInfo, #username{

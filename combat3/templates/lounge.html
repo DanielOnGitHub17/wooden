@@ -43,7 +43,7 @@
                     <span class="nBots">{{ game.n_bots }} bots.</span>
                     <span class="maxHits">{{ game.max_hits }} maximum block hits</span>
                     <!-- creator <a class='creator' > link to the chats section-->
-                    <a class="gameLink join" href="/game/{{ game.pk }}">JOIN</a>
+                    <a class="gameLink join" href="/lounge/join/{{ game.pk }}">JOIN</a>
                 </li>
                 {% endfor %}</ul>
             <h2>Ongoing Games</h2>
@@ -54,7 +54,7 @@
                     <span class="nBots">{{ game.n_bots }} bots.</span>
                     <span class="maxHits">{{ game.max_hits }} maximum block hits</span>
                     <!-- creator <a class='creator' > link to the chats section-->
-                    <a class="gameLink join" href="/game/{{ game.pk }}">WATCH</a>
+                    <a class="gameLink join" href="/lounge/?message=Not+supported+yet">WATCH</a>
 
                 </li>
                 {% endfor %}
