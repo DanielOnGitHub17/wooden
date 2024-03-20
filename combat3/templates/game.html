@@ -10,11 +10,11 @@
 </style>
 <span id="username">{{ request.user.username }}</span>
 <div id="gameInfo">
-    Size: <span id="size">{{ game.size }}</span><br>
-    Site: <span id="site">{{ game.pk }}</span><br>
     Max Hits: <span id="hits">{{ game.max_hits }}</span><br>
     Real: <span id="real">{{ game.n_real }}</span><br>
     Bots: <span id="bots">{{ game.n_bots }}</span><br>
+    Size: <span id="size">{{ game.size }}</span><br>
+    Site: <span id="site">{{ game.pk }}</span><br>
     <span id="positions">{{ positions }}</span>
 </div>
 <div id="world">{{ game.data }}</div>

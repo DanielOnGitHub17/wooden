@@ -38,5 +38,5 @@ class Game{
     static world = get("world");
     static player = get("username").textContent;
 }
-let game = new Game(...getAll("#gameInfo>span").slice(1, -1).map(info=>+info.textContent))
+let game = new Game(...getAll("#gameInfo>span").map(info=>+info.textContent))
 game.start();
