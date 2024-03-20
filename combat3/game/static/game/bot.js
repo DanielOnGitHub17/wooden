@@ -10,11 +10,13 @@ class Bot extends Player{
         this.body.className += " bot";
     }
 
-moveCircular(){
+    moveSpiral(){
         // turning algorithm
          
     }
-
+    moveLinear(){
+        // up to down algorithm
+    }
     event(){}
     moveRandom(){
         // 'random' algorithm (chooses a random block and goes to break it

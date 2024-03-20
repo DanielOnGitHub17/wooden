@@ -16,7 +16,7 @@ class Game(models.Model):
     ended = models.BooleanField(default=False)
     creator = models.CharField(max_length=30)
     # will be used for 'leaderboarding' (maybe)
-    winner = models.CharField(max_length=30)
+    winners = models.CharField(max_length=200)
     # primary key should be the link slash. (it will always change)
     def __str__(self):
         return f"Game {self.creator} {self.pk}"
@@ -34,6 +34,7 @@ class Player(models.Model):
     logged_in = models.BooleanField(default=False)
     user = models.CharField(max_length=30, primary_key=True)
     game = models.IntegerField(default=0)
+    won = models.IntegerField(default=0)
     # will be given by difference between game.started and ended
     # (or game.started and logged out) Logout will have some work to do
     # it will have to check if the player was playing before he/she left
@@ -41,7 +42,7 @@ class Player(models.Model):
 
     def rank(self):
         me = Game.objects.filter
-        return len(me(creator=self.user)) + 2*len(me(winner=self.user))
+        return len(me(creator=self.user)) + 2*self.won
 
     def __str__(self):
         return f"Player {self.user}"

@@ -68,6 +68,7 @@ class Log(View):
                 print(f"In {request.user}")
                 player = Player.objects.get(user=username)
                 player.logged_in = True
+                player.score = 0
                 player.save()
                 response["Location"] = "/lounge"
         return response
@@ -76,6 +77,9 @@ class Log(View):
     def post(self, request):
         details = {}
         message = "Account created successfully"
+        # if request.POST["username"]:
+        #     if len(request.POST["username"]) > 20:
+        #         message = f"Your username does not meet requirements"
         response = redirect(f"/register/sign/in?message={message}")
         for param in needed_parameters:
             if request.POST[param]:

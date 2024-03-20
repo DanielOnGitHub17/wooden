@@ -1,6 +1,8 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.http import Http404, HttpResponse
+
+import os
 
 # Create your views here.
 # from game.helpers import make_game
@@ -35,6 +37,38 @@ def play(request, site):
     except Exception as e:
         return HttpResponse(str(e))
     
+@login_required
+def end_game(request):
+    player = Player.username(request)
+    if "GAME" in request.GET:
+        if player.game == int(request.GET["GAME"]):
+            # end game
+            game = Game.objects.get(player.game)
+            max_score = max(gamer.score for gamer in Player.objects.filter(game=player.game))
+            if not game.ended:
+                game.ended = True
+                game.winners =  ' '.join(gamer.username \
+                        for gamer in Player.objects.filter(game=player.game, score=max_score))
+                os.remove(f"static/game{game.pk}_players.json")
+                game.save()
+            return back_to_lounge(request, player, max_score)
+    return redirect("/lounge")
+
+def back_to_lounge(request, player, max_score):
+    print(player.score)
+    if player.game == 0:
+        return redirect("/lounge")
+    if player.score == max_score:
+        player.won += 1
+        message = f"You won game {player.game} with a score of {player.score}"
+    else:
+        message = f"You did not win game {player.game}. Your score is {player.score}. The highest score was {max_score}."
+
+    player.game = 0
+    player.score = 0
+    player.save()
+    return redirect(f"/lounge?message={message}")
+
 # @login_required
 # def check_can_start(request):
 #     game_id = request.GET[""]

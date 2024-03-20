@@ -22,6 +22,7 @@ class Block{
         transfer(this, Block.blocks[1], Block.blocks[0]);
         this.kind = 0;
         this.block.className = 'block sand';
+        game.end() // will get called a lot
     }
     static blocks = [[], [], []];
     static backgrounds = ["sand", "wood", "iron"];

@@ -28,6 +28,13 @@ class Game{
             }
         }
     }
+    end(){
+        if (!Block.blocks[1].length){
+            // alert box to tell user that game has ended
+            // with button to 'save game'
+            location = "/game/end"
+        }
+    }
     static world = get("world");
     static player = get("username").textContent;
 }
