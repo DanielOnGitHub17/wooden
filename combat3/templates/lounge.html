@@ -39,6 +39,7 @@
             <h2>Games to join</h2>
             <ul id="gamesToJoin" class="uiHolder">{% for game in games.0 %}
                 <li>
+                    <span>{{ game.pk }}.</span>
                     <span class="nReal">{{ game.n_real }} real players.</span>
                     <span class="nBots">{{ game.n_bots }} bots.</span>
                     <span class="maxHits">{{ game.max_hits }} maximum block hits</span>
@@ -61,7 +62,7 @@
             </ul>
             <hr>
             <h2>Create a game</h2>
-            <h4 id="message">{{ message }}</h4>
+            <h4 id="message">{{ message|safe }}</h4>
             <form id="createGame" class="ui" method="POST" action="/lounge/create/">
                 {% csrf_token %}
                     <label for="nTotal">
@@ -84,7 +85,7 @@
                 <li>Full name: <span>{{ user.first_name }} {{ user.last_name }}</span></li>
                 <li>Username: <span>{{ user.username }}</span></li>
                 <li>New Password: <span>....</span></li>
-                <li>Repeat new password: <span></span></li>
+                <li>Repeat new password: <span>...</span></li>
                 <li>Submit: <span>{{ x }}</span></li>
                 <li><a href="/register/sign/out">Logout</a> <a href="/">Home Page</a></li>
             </ul>
@@ -92,7 +93,7 @@
             <h2>Stats</h2>
             <ul class="uiHolder">
                 <li>Games played: <span>{{ x }}</span></li>
-                <li>Games created: <span>{{ x }}</span></li>
+                <li>Games created: <span>{{ 2 }}</span></li>
                 <li>Games won: <span>{{ x }}</span></li>
                 <li>Games lost: <span>{{ x }}</span></li>
                 <li>Time spent playing: <span>{{ x }}</span></li>

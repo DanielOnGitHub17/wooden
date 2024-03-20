@@ -32,7 +32,7 @@ class Game{
         if (!Block.blocks[1].length){
             // alert box to tell user that game has ended
             // with button to 'save game'
-            location = "/game/end"
+            location = `/game/end?GAME=${get("site").textContent}`
         }
     }
     static world = get("world");

@@ -25,12 +25,19 @@ def lounge(request):
 
 @login_required
 def create_game(request):
+    message = ''
+    player = Player.username(request)
     # check if a user is already in a game
-    in_game = Game.objects.filter(pk=Player.objects.get(pk=request.user).game)
+    in_game = Game.objects.filter(pk=player.game, ended=False)
+    # check if user has not played a created game
+    created_not_played = Game.objects.filter(creator=player.user, started=False)
+    print(player.user)
+    if created_not_played:
+        message = f"You already created game {created_not_played[0].pk}. "
     if in_game:
-        message = f"You are already in game {in_game[0].pk}.\
-              You can go back <a href=f'/game/{in_game[0].pk}'>here</a>"
-        HttpResponseRedirect(f"/lounge?message={message}")
+        message += f"Go back to game <a href=/game/{in_game[0].pk}>here</a>"
+    if message:
+        return HttpResponseRedirect(f"/lounge?message={message}")
     first_positions = []
     n_total = int(request.POST["nTotal"])
     n_bots = int(request.POST["nBots"])

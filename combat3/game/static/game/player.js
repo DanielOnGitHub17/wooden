@@ -6,6 +6,7 @@ class Player{
         this.hits = 0;
         this.blocksBroken = 0;
         this.next = ground.position;
+        this.name = name
         this.build();
         this.event();
     }
@@ -47,6 +48,7 @@ class Player{
                     this.hits = 0;
                     potentialGround.crack();
                     this.blocksBroken += 1;
+                    if (this.name == Game.player) this.setScore()
                     // tell server that a block has broken with the blocks r,c
                     // will be the one sent
                     // thank you God for helping me fix the 'who broke it'.
@@ -79,6 +81,10 @@ class Player{
 
     send(){
         // send this.data() to server
+    }
+
+    setScore(){
+        fetch(`/game/score?score=${this.blocksBroken}`)
     }
 
     static moves = [[-1, 0], [0, 1], [1, 0], [0, -1]];

@@ -41,22 +41,27 @@ def play(request, site):
 def end_game(request):
     player = Player.username(request)
     if "GAME" in request.GET:
+        print("Game in")
         if player.game == int(request.GET["GAME"]):
             # end game
-            game = Game.objects.get(player.game)
+            game = Game.objects.get(pk=player.game)
             max_score = max(gamer.score for gamer in Player.objects.filter(game=player.game))
+            # might have to add a "game over" to Player model
+            print("max_score", player.user, max_score)
             if not game.ended:
                 game.ended = True
-                game.winners =  ' '.join(gamer.username \
+                game.winners =  ' '.join(gamer.user \
                         for gamer in Player.objects.filter(game=player.game, score=max_score))
-                os.remove(f"static/game{game.pk}_players.json")
+                os.remove(f"game/static/game{game.pk}_players.json")
                 game.save()
             return back_to_lounge(request, player, max_score)
+    print("jkj")
     return redirect("/lounge")
 
+@login_required
 def back_to_lounge(request, player, max_score):
     print(player.score)
-    if player.game == 0:
+    if player.game == 0: # has passed through this function once
         return redirect("/lounge")
     if player.score == max_score:
         player.won += 1
@@ -64,10 +69,20 @@ def back_to_lounge(request, player, max_score):
     else:
         message = f"You did not win game {player.game}. Your score is {player.score}. The highest score was {max_score}."
 
-    player.game = 0
-    player.score = 0
+    player.r = player.c = player.score = player.game = 0
     player.save()
+    print(f"Took {player.user} back to lounge")
     return redirect(f"/lounge?message={message}")
+
+# for the player immediate communication
+@login_required
+def score(request):
+    if "score" in request.GET:
+        player = Player.username(request)
+        player.score = int(request.GET["score"])
+        player.save()
+        return HttpResponse(request.GET["score"])
+    return HttpResponse("failed")
 
 # @login_required
 # def check_can_start(request):
