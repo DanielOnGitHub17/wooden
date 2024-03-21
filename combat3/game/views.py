@@ -84,6 +84,26 @@ def score(request):
         return HttpResponse(request.GET["score"])
     return HttpResponse("failed")
 
+@login_required
+def pos(request):
+    if 'r' in request.GET and 'c' in request.GET:
+        player = Player.username(request)
+        player.r, player.c = request.GET['r'], request.GET['c']
+        player.save()
+        return HttpResponse('')
+    return HttpResponse("failed")
+
+@login_required
+def position(request):
+    # instead of constantly calling this, there should be a
+    # connection that says WHEN to call this, that whenever position
+    # is set by others, this is called by others except others.
+    if "player" in request.GET:
+        player = Player.objects.get(user=request.GET["player"])
+        return HttpResponse(f"{[player.r, player.c]}")
+    return HttpResponse('failed')
+    
+
 # @login_required
 # def check_can_start(request):
 #     game_id = request.GET[""]

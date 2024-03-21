@@ -37,24 +37,19 @@ class Player{
             if (!potentialGround.kind){ // sand (change position)
                 this.ground = potentialGround;
                 this.ground.block.append(this.body);
+                if (this.name == Game.player) this.pos = this.ground.position;
                 // time to learn about websockets in JS
                 // and, apparently, Django channels
             }
         } else {// wood
-            // if it hits the block ten times, the block breaks
+            // if it hits the block game.hitsToBreak times, the block breaks
             if (JSON.stringify(this.next) == JSON.stringify(next)){ // checks if it's still hitting the same wooden block
                 this.hits += 1;
                 if (this.hits >= game.hitsToBreak){ // the > is unneccesary
                     this.hits = 0;
                     potentialGround.crack();
                     this.blocksBroken += 1;
-                    if (this.name == Game.player) this.setScore()
-                    // tell server that a block has broken with the blocks r,c
-                    // will be the one sent
-                    // thank you God for helping me fix the 'who broke it'.
-                    // all players will have scores attributed to them
-                    // if their JavaScript says they broke it.
-                    // which means that, if there is a clash, both teams get a point.
+                    if (this.name == Game.player) this.score = this.blocksBroken;
                 }
             } else{
                 // set the hits to one because it just started hitting this one
@@ -83,8 +78,13 @@ class Player{
         // send this.data() to server
     }
 
-    setScore(){
-        fetch(`/game/score?score=${this.blocksBroken}`)
+    set pos(value){
+        let [r, c] = value;
+        fetch(`/game/pos?r=${r}&c=${c}`).catch(error=>{});
+    }
+
+    set score(value){
+        fetch(`/game/score?score=${value}`).catch(error=>{});
     }
 
     static moves = [[-1, 0], [0, 1], [1, 0], [0, -1]];

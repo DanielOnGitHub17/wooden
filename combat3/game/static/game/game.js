@@ -29,14 +29,13 @@ class Game{
         }
     }
     end(){
-        if (!Block.blocks[1].length){
-            // alert box to tell user that game has ended
-            // with button to 'save game'
-            location = `/game/end?GAME=${get("site").textContent}`
-        }
+        // alert box to tell user that game has ended
+        // with button to 'save game'
+        location = `/game/end?GAME=${get("site").textContent}`
     }
     static world = get("world");
     static player = get("username").textContent;
 }
 let game = new Game(...getAll("#gameInfo>span").map(info=>+info.textContent))
-game.start();
+
+setTimeout(()=>game.start(), 3000) // should say three two one.

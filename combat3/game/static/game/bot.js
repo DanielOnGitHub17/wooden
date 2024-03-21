@@ -3,19 +3,45 @@ class Bot extends Player{
         super(ground, name);
         this.moving = false;
         this.dirs = [];
-        this.movInterval = setInterval(()=>{
-            this.moveRandom();
-        }, 200);
+        this.moveMethod()
         transfer(this, Player.players, Bot.bots);
         this.body.className += " bot";
     }
-
+    moveMethod(){
+        let moveBy = "move" + (this.name ? "ByServer" : choice(["Random"])) // "Spiral", "Linear";
+        console.log(moveBy)
+        this.movInterval = setInterval(()=>{
+            this[moveBy]();
+        }, this.name ? 50 : 200)
+    }
     moveSpiral(){
         // turning algorithm
-         
     }
     moveLinear(){
         // up to down algorithm
+    }
+    moveByServer(){
+        fetch(`/game/position?player=${this.name}`).then(resp=>{
+            resp.json().then(pos=>{
+                let [r, c] = pos
+                , [R, C] = this.ground.position
+                , dir = NaN;
+                // logic to get dir for pointing
+                if (R > r){
+                    dir = 0
+                } else if (r > R){
+                    dir = 2
+                } else if (C > c){
+                    dir = 3
+                } else if (c > C){
+                    dir = 1
+                }
+                console.log(dir)
+                if (!isNaN(dir)){
+                    this.move(dir);
+                }
+            })
+        }).catch(error=>{})
     }
     event(){}
     moveRandom(){
