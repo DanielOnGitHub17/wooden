@@ -59,7 +59,7 @@ class Log(View):
         username = request.GET["username"]
         password = request.GET["password"]
         if password and username:
-            # check if user is a combat user
+            # check if user is a wooden user
             user = authenticate(request, username=username, password=password)
             if user:
                 # login user
