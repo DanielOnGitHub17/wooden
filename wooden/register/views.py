@@ -26,7 +26,7 @@ needed_parameters = ("first_name", "last_name", "username", "password")
 def get_which(which):
     return {
         "up": ("POST", "Create an account", "Create Account"),
-        "in": ("GET", "Log into your combat account", "Log in"),
+        "in": ("GET", "Log into your wooden account", "Log in"),
      }[which]
 
 def register_page(request, which="up"):
