@@ -6,20 +6,22 @@ import os
 
 # Create your views here.
 # from game.helpers import make_game
+from lounge.views import base_path
+
 from game.models import Game, Player
 import json
 
 @login_required
 def play(request, site):
     # site will check model.
-    
+
     message = "No game here"
     try:
         game = Game.objects.get(pk=site)
         # if game has ended, just leave
         if game.ended:
             raise Exception("This game has ended, so you can neither play nor watch it.")
-        with open(f"game/static/game{game.pk}_players.json") as file:
+        with open(f"{base_path}{game.pk}_players.json") as file:
             positions = json.load(file)
         # game has started if enough players have joined
         n_players = len(Player.objects.filter(game=game.pk))
@@ -36,7 +38,7 @@ def play(request, site):
         })
     except Exception as e:
         return HttpResponse(str(e))
-    
+
 @login_required
 def end_game(request):
     player = Player.username(request)
@@ -52,7 +54,7 @@ def end_game(request):
                 game.ended = True
                 game.winners =  ' '.join(gamer.user \
                         for gamer in Player.objects.filter(game=player.game, score=max_score))
-                os.remove(f"game/static/game{game.pk}_players.json")
+                os.remove(f"{base_path}{game.pk}_players.json")
                 game.save()
             return back_to_lounge(request, player, max_score)
     print("jkj")
@@ -74,7 +76,8 @@ def back_to_lounge(request, player, max_score):
     print(f"Took {player.user} back to lounge")
     return redirect(f"/lounge?message={message}")
 
-# for the player immediate communication
+# for the player immediate communication.
+# maybe join all to one.
 @login_required
 def score(request):
     if "score" in request.GET:
@@ -102,7 +105,7 @@ def position(request):
         player = Player.objects.get(user=request.GET["player"])
         return HttpResponse(f"{[player.r, player.c]}")
     return HttpResponse('failed')
-    
+
 
 # @login_required
 # def check_can_start(request):

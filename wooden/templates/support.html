@@ -4,8 +4,12 @@
 Game Support
 {% endblock %}
 {% block content %}
-Enter your issue: <textarea name="issue"></textarea>
-<input type="submit" value="Submit your issue">
+{{ message }}
+<form method="POST" action="">
+    {% csrf_token %}
+    Enter your issue: <textarea name="issue" cols=50 rows=10 minlength=10 autocapitalize="characters" required></textarea>
+    <input type="submit" value="Submit your issue">
+</form>
 faqs
 how do i create an account<br>
 how do i delete my account.<br>
@@ -15,9 +19,3 @@ will playing alone hinder my progress<br>
 area
 {% endblock %}
 
-<!-- when you bring the support.html from
-python anywhere, add in the views file
-that it will write the
-username of the person who
-sent it
-or anonymous -->

@@ -9,13 +9,14 @@ from random import randint, sample, choice
 from game.helpers import make_game
 
 
+base_path = "static/game/players/"
 # Create your views here.
 @login_required
 def lounge(request):
     online_users = [*Player.objects.filter(logged_in=True)]
     games_to_join = [*Game.objects.filter(started=False, ended=False)]
     ongoing_games = [*Game.objects.filter(started=True, ended=False)]
-    message = request.GET["message"] if "message" in request.GET else '' 
+    message = request.GET["message"] if "message" in request.GET else ''
     return render(request, "lounge.html", {
         "user": request.user,
         "games": [games_to_join, ongoing_games],
@@ -64,7 +65,7 @@ def create_game(request):
           creator=creator,
           )
     game.save()
-    with open(f"game/static/game{game.pk}_players.json", 'w') as file:
+    with open(f"{base_path}{game.pk}_players.json", 'w') as file:
         json.dump(first_positions, file)
     return HttpResponseRedirect(f"/lounge/?message={'game created successfully'}")
 
@@ -74,18 +75,14 @@ def join_game(request, site):
     game = Game.objects.filter(pk=site)
     if player.game:
         # could be this game
-        return HttpResponseRedirect(f"/lounge?message={\
-            'You cannot join this game since you are already in one.'\
-        }")
+        return HttpResponseRedirect(f"/lounge?message={'You cannot join this game since you are already in one.'}")
     elif not game:
         return HttpResponseRedirect("/lounge?message=Invalid+Game")
     elif game[0].n_real == len(Player.objects.filter(game=site)):
-        return HttpResponseRedirect(f"/lounge?message={\
-            'Game is full, choose to watch it instead'\
-        }")
+        return HttpResponseRedirect(f"/lounge?message={'Game is full, choose to watch it instead'}")
     player.game = site
     # set position
-    with open(f"game/static/game{game[0].pk}_players.json") as file:
+    with open(f"{base_path}{game[0].pk}_players.json") as file:
         positions = json.load(file)
         for position in positions:
             if not position[0]: # not yet taken
@@ -93,11 +90,10 @@ def join_game(request, site):
                 player.r, player.c = position[1:]
                 print("got here", site, type(site))
                 break
-    with open(f"game/static/game{game[0].pk}_players.json", 'w') as file:
+    with open(f"{base_path}{game[0].pk}_players.json", 'w') as file:
         json.dump(positions, file)
     player.save()
     return HttpResponseRedirect(f"/game/{site}")
 
 # to implement 'watching' AIs + Me matches will have to be persisted (or indicated as non watchable)
 # i.e if game.n_real == 1
- 

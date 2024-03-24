@@ -131,4 +131,12 @@ STATICFILES_DIRS = [
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 LOGIN_URL = "/register/sign/in"
-# print(Path(STATIC_URL).absolute())
+
+"""
+Things to change in production environment:
+
+1. Settings.py STATICFILES_DIRS --> STATIC_ROOT
+2. lounge.views base_path = "/home/DanielFirstWebsite/wooden/static/game/players/
+3. Debug = False
+4. Allowed hosts: mainwebsite"
+"""
