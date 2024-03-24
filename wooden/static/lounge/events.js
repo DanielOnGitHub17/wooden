@@ -8,7 +8,7 @@ onload = () =>{
     // and other thins
 }
 onchange=(event)=>{
-    n = +event.target.value
+    let n = +event.target.value
     switch (event.target.id){
         case "nTotal":
             get("maxHits").min = (get("nBots").max = n-1)+2
@@ -16,6 +16,9 @@ onchange=(event)=>{
         
         case "nBots":
             event.target.nextSibling.textContent = ` bot${'s'.repeat(n!=1)} `;
+            if (n > 0){
+                get("nTotal").value = n+1 // if there are bots there must be only 1 player.
+            }
             break
         
         case "maxHits":
