@@ -7,11 +7,12 @@ onload = () =>{
     }
     // and other thins
 }
-onchange=(event)=>{
+onchange=oninput=(event)=>{
     let n = +event.target.value
     switch (event.target.id){
         case "nTotal":
-            get("maxHits").min = (get("nBots").max = n-1)+2
+            get("maxHits").min = (get("nBots").max = n-1)+2;
+            get("nBots").value = 0;
             break
         
         case "nBots":

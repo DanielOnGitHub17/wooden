@@ -7,4 +7,5 @@ urlpatterns = [
     path('score/', views.score, name="Set Score"),
     path('pos/', views.pos, name="Set Position"),
     path('position/', views.position, name="Get Position"),
+    path('crack/', views.crack, name="Crack Block"),
 ]

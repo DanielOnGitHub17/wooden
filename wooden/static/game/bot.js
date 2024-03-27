@@ -12,7 +12,7 @@ class Bot extends Player{
         console.log(moveBy)
         this.movInterval = setInterval(()=>{
             this[moveBy]();
-        }, this.name ? 50 : 200)
+        }, 200)
     }
     moveSpiral(){
         // turning algorithm
@@ -36,9 +36,11 @@ class Bot extends Player{
                 } else if (c > C){
                     dir = 1
                 }
-                console.log(dir)
+                // place without checking block
                 if (!isNaN(dir)){
-                    this.move(dir);
+                    this.body.style.rotate = `${dir*90}deg`
+                    this.ground = game.blocks.get(r, c);
+                    this.ground.block.append(this.body);
                 }
             })
         }).catch(error=>{})

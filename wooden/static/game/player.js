@@ -28,7 +28,7 @@ class Player{
     move(dir){
         // up: 0, right: 1, down: 2, left: 3
         // first it looks towards where it wants to go
-        this.body.style.transform = `rotate(${dir*90}deg`;
+        this.body.style.rotate = `${dir*90}deg`;
         // moves by navigating through blocks
         // given the direction. it adds
         let [potentialGround, next] = this.nextGround(dir);

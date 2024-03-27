@@ -76,6 +76,7 @@ def join_game(request, site):
     if player.game:
         # could be this game
         return HttpResponseRedirect(f"/lounge?message={'You cannot join this game since you are already in one.'}")
+        # make a function to do this, message will be an argument
     elif not game:
         return HttpResponseRedirect("/lounge?message=Invalid+Game")
     elif game[0].n_real == len(Player.objects.filter(game=site)):

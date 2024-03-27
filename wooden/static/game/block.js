@@ -19,11 +19,16 @@ class Block{
             // better, maybe, than refreshing everytime.
         }
         // remove from initial kind, then add to space
+        let [r, c] = this.position;
+        fetch(`/game/crack?r=${r}&c=${c}`)
         transfer(this, Block.blocks[1], Block.blocks[0]);
+        game.gameRawMaterial[r][c] = 0
         this.kind = 0;
         this.block.className = 'block sand';
-        if (!Block.blocks[0].length)
+        if (!Block.blocks[0].length){
+            console.log("ended")
             game.end()
+        }
     }
     static blocks = [[], [], []];
     static backgrounds = ["sand", "wood", "iron"];

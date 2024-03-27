@@ -3,13 +3,13 @@ from django.contrib.auth.decorators import login_required
 from django.http import Http404, HttpResponse
 
 import os
+import json
 
 # Create your views here.
 # from game.helpers import make_game
 from lounge.views import base_path
 
 from game.models import Game, Player
-import json
 
 @login_required
 def play(request, site):
@@ -104,10 +104,19 @@ def position(request):
     if "player" in request.GET:
         player = Player.objects.get(user=request.GET["player"])
         return HttpResponse(f"{[player.r, player.c]}")
-    return HttpResponse('failed')
+    return HttpResponse("failed")
 
-
-# @login_required
-# def check_can_start(request):
-#     game_id = request.GET[""]
-#     game_id*2
+@login_required
+def crack(request):
+    # can be hacked by just inputing the url in a browser window correctly
+    game_id = Player.username(request).game
+    if game_id and 'r' in request.GET and 'c' in request.GET:
+        r, c = [int(request.GET[x]) for x in ('r', 'c')]
+        game = Game.objects.get(pk=game_id)
+        data = json.loads(game.data)
+        data[r][c] = 0 # cracking
+        game.data = json.dumps(data)
+        game.save()
+        return HttpResponse('')
+    print("failed")
+    return HttpResponse("failed")
