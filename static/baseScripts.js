@@ -1,11 +1,13 @@
-let registerLinks = get("registerLinks")
-showRegister.addEventListener("focus", (event)=>{
+identify();
+addEventListener("click", (event)=>{
     event.stopPropagation();
-    registerLinks.className = "visible";
+    if (event.target.id == "showRegister") {
+        console.log("OUCH")
+        registerLinks.className = "visible";
+    }
 })
 
 
-showRegister.addEventListener("blur", (event)=>{
-    event.stopPropagation();
-    setTimeout(()=>registerLinks.className = "", 400);
+addEventListener("click", (event)=>{
+    if (![showRegister, registerLinks].includes(event.target)) registerLinks.className = "";
 })

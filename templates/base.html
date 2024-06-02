@@ -4,52 +4,40 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-        <title>
-            {% block title %}
-            Wooden
-            {% endblock %}
-        </title>
-        <style>
-            @import url("{% static 'baseStyles.css' %}");
-        </style>
+        <title>{% block title %}Wooden{% endblock %}</title>
+        <link rel="stylesheet" href="{% static 'baseStyles.css' %}">
     </head>
     <body>
-        <header>
-            <nav>
-                <ul>
-                    <li><a href="/">Wooden</a></li>
-                    <!-- Fasted tappers. People who developed -->
-                    <li><a href="/leaders">Leader board</a></li>
-                    <li><a href="/game_help">How to play</a></li>
-                    <!-- Game support view will send email of issues to Andrew and I -->
-                    <li><a href="/support">Game support</a></li>
-                    <!-- Developers view will have portion to contribute ideas (with recognition on the website) -->
-                    <li><a href="/dev">Developers</a></li>
-                </ul>
-            </nav>
-            <div  id="register">
-                <button id="showRegister">|||</button>
-                <ul id="registerLinks">
-                    {% if user.is_authenticated %}
-                    <!-- sprite.png will be a view that will return a sprite saved by the user as his/her profile picture -->
-                    <li><img id="profilePic" src="{% static '/game/texture/player.svg' %}"></li>
-                    <li><a href="/lounge">Lounge</a></li>
-                    <li><a href="/register/sign/out">Sign out</a></li>
-                    {% else %}
-                    <li><a href="/register/sign/up">Sign up</a></li>
-                    <li><a href="/register/sign/in">Sign in</a></li>
-                    {% endif %}
-                </ul>
-            </div>
-        </header>
-        {% block content %}
-        {% endblock %}
+        <nav>
+            <ul>
+                <li><a href="/">Wooden</a></li>
+                <li><a href="/game_help">How to play</a></li>
+                <!-- Game support view will send email of issues to Andrew and I -->
+                <li><a href="/support">Game support</a></li>
+                <!-- Developers view will have portion to contribute ideas (with recognition on the website) -->
+                <li><a href="/dev">Developers</a></li>
+                {% if user.is_authenticated %}
+                <!-- sprite.png will be a view that will return a sprite saved by the user as his/her profile picture -->
+                <li><img id="profilePic" src="{% static '/game/texture/player.svg' %}"></li>
+                <li><a href="/lounge">Lounge</a></li>
+                <li><a href="/register/sign/out">Sign out</a></li>
+                {% else %}
+                <li><a href="/register/sign/up">Sign up</a></li>
+                <li><a href="/register/sign/in">Sign in</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+        <div class="message">{{ message }}</div>
+        <div class="container">
+            {% block content %}
+            This game is awesome
+            {% endblock %}
+        </div>
         <footer>
             All rights reserved. This game was made by Daniel Enesi (Backend)
             and Andrew Emeghebo (Front-end design)
         </footer>
-        <script src="{% static 'funcs.js' %}"></script>
+        <script src="https://danielongithub17.github.io/funcs.js"></script>
         <script src="{% static 'baseScripts.js' %}"></script>
     </body>
 </html>

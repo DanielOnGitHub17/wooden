@@ -4,18 +4,20 @@
 Game Support
 {% endblock %}
 {% block content %}
-{{ message }}
+<ul>
+    <li>How do i create an account?</li>
+    <li>How do i delete my account?</li>
+    <li>Can I have multiple accounts?</li>
+    <li>Will playing alone hinder my progress?</li>
+    <li>Should I play alone or with others?</li>
+</ul>
 <form method="POST" action="">
     {% csrf_token %}
-    Enter your issue: <textarea name="issue" cols=50 rows=10 minlength=10 autocapitalize="characters" required></textarea>
+    <textarea name="issue"
+     cols=30 rows=5 minlength=10
+      autocapitalize="characters"
+       required placeholder="Enter your issue"></textarea>
     <input type="submit" value="Submit your issue">
 </form>
-faqs
-how do i create an account<br>
-how do i delete my account.<br>
-can I have multiple accounts.<br>
-should I play alone or with others<br>
-will playing alone hinder my progress<br>
-area
 {% endblock %}
 
