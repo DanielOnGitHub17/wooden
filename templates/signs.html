@@ -1,38 +1,14 @@
 {% extends "base.html" %}
 {% load static %}
+{% block title %}Access your account{% endblock%}
 {% block content %}
-<form action="/register/log/" method="{{ which.0 }}">
+<form action="/{{ which.0 }}/" method="POST">
     <legend>{{ which.1 }}</legend>
-    {% if message %}
-    <h3 class="message">{{ message }}</h3>
-    {% endif %}
     {% csrf_token %}
     <ul>
-        {% if which.0 == "POST" %}
-        <li>
-            <label for="firstName">First Name</label>
-            <input type="text" placeholder="Daniel" name="first_name" id="firstName">
-        </li>
-        <li>
-            <label for="lastName">Last Name</label>
-            <input type="text" placeholder="Enesi" name="last_name" id="lastName">
-        </li>
-        {% endif %}
-        <li>
-            <label for="username">User Name: </label>
-            <input type="text" placeholder="User Name" name="username" maxlength="20" id="username">
-        </li>
-        <li>
-            <label for="password">Password: </label>
-            <input type="password" name="password" id="password">
-        </li>
+        {{ form.as_ul }}
     </ul>
     <input type="submit" value="{{ which.2 }}">
 </form>
-<script src="{% static 'register/signs.js' %}">
-</script>
+<script src="{% static 'register/signs.js' %}"></script>
 {% endblock %}
-
-{% block title %}
-Access your account
-{% endblock%}

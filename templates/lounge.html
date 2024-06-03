@@ -87,11 +87,17 @@
             <ul class="uiHolder">
                 <li>Full name: <span>{{ user.first_name }} {{ user.last_name }}</span></li>
                 <li>Username: <span>{{ user.username }}</span></li>
+                <!-- change_password_form.as_ul -->
                 <li>New Password: <span>....</span></li>
                 <li>Repeat new password: <span>...</span></li>
                 <li>Submit: <span>{{ x }}</span></li>
-                <li><a href="/register/sign/out">Logout</a> <a href="/">Home Page</a></li>
             </ul>
+            {% if not user.player.game %}
+            <form action="/signout/" method="post">
+                {% csrf_token %}
+                <input type="submit" value="Logout">
+            </form>
+            {% endif %}
             <hr>
             <h2>Stats</h2>
             <ul class="uiHolder">
