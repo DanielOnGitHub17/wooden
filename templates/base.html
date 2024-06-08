@@ -18,7 +18,7 @@
                 <li><a href="/dev">Developers</a></li>
                 {% if user.is_authenticated %}
                 <!-- sprite.png will be a view that will return a sprite saved by the user as his/her profile picture -->
-                <li><img id="profilePic" src="{% static '/game/texture/player.svg' %}"></li>
+                <!-- <li><img id="profilePic" src="{% static '/game/texture/player.svg' %}"></li> -->
                 <li><a href="/lounge">Lounge</a></li>
                 <li><a href="/signout">Sign out</a></li>
                 {% else %}
@@ -28,7 +28,7 @@
             </ul>
         </nav>
         <div class="message">{{ message }}</div>
-        <div class="container">
+        <div id="container">
             {% block content %}
             This game is awesome
             {% endblock %}
