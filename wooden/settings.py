@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-5skfeha6dpma^x7jra8nmquxy!wj1-gi#n2n+ix_b##e)ci_)$
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["localhost", "127.0.0.1"]
+ALLOWED_HOSTS = ["localhost", "127.0.0.1", "danielfirstwebsite.pythonanywhere.com"]
 
 
 # Application definition
@@ -130,7 +130,7 @@ STATICFILES_DIRS = [
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-LOGIN_URL = "/register/sign/in"
+LOGIN_URL = "/signin"
 
 """
 Things to change in production environment:
