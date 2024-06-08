@@ -85,6 +85,12 @@ class SignOut(View):
         player.logged_in = False
         player.save()
         return redirect("/")
+    
+    def get(self, request):
+        if request.user.player.game:
+            request.session["message"] = "You cannot sign out now. You are in a game"
+            return redirect("/lounge/")
+        return render(request, "signout.html", {})
 
 
 def sign(function, failed: lambda error: None):
