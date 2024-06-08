@@ -1,126 +1,52 @@
+{% extends "base.html" %}
 {% load static %}
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>{{ user.name }} Lounge</title>
-        <meta http-equiv="cache-control" content="no-cache">
-        <meta http-equiv="expires" content="0">
-        <meta http-equiv="pragma" content="no-cache">
-        <style>
-            @import url("{% static 'lounge/lounge.css' %}");
-        </style>
-    </head>
-    <body>
-        <div id="others">
-            <hr>
-            <h2>Online Users</h2>
-            <ul id="onlinePlayers" class="uiHolder">
-            {% for player in online_users %}
-                <li>
-                    <span class="pName">
-                        Username: {{ player.user }}
-                    </span>
-                    <span class="pRank">
-                        <!-- calculation based on wins, losses, created, etc -->
-                        Ranking: {{ player.rank }}
-                    </span>
-                    <button class="gameLink pMessage">
-                        Message 
-                        {% if player.user == user.username %}
-                        yourself
-                        {% else %}
-                        {{ player.user }}
-                        {% endif %}
-                    </button>
-                </li>
-            {% endfor %}
-            </ul>
-            Things for others. Chatting and more (if any more)
-        </div>
-        <div id="games">
-            <hr>
-            <h2>Games to join</h2>
-            <ul id="gamesToJoin" class="uiHolder">{% for game in games.0 %}
-                <li>
-                    <span>{{ game.pk }}.</span>
-                    <span class="nReal">{{ game.n_real }} real players.</span>
-                    <span class="nBots">{{ game.n_bots }} bots.</span>
-                    <span class="maxHits">{{ game.max_hits }} maximum block hits</span>
-                    <!-- creator <a class='creator' > link to the chats section-->
-                    <a class="gameLink join" href="/lounge/join/{{ game.pk }}">JOIN</a>
-                </li>
-                {% endfor %}</ul>
-            <h2>Ongoing Games</h2>
-            <ul id="ongoingGames" class="uiHolder">
-                {% for game in games.1 %}
-                <li>
-                    <span class="nReal">{{ game.n_real }} real players.</span>
-                    <span class="nBots">{{ game.n_bots }} bots.</span>
-                    <span class="maxHits">{{ game.max_hits }} maximum block hits</span>
-                    <!-- creator <a class='creator' > link to the chats section-->
-                    <a class="gameLink join" href="/lounge/?message=Not+supported+yet">WATCH</a>
+{% block title %}{{ user.name }} Lounge{% endblock %}
+{% block content %}
+<link rel="stylesheet" href="{% static 'lounge/lounge.css' %}">
+<div id="games">
+    <hr>
+    <ul class="ui">
+        <li>{{ user.username }}</li>
+        <li>{{ user.get_full_name }}</li>
+    </ul>
+    <form id="createGame"method="POST" action="/lounge/">
+        {% csrf_token %}
+        <ul class="ui">
+            {{ game_creation_form.as_ul }}
+            <input type="submit" value="CREATE GAME" class="gameLink create">
+        </ul>
+    </form>
+    <h2>Games to join</h2>
+    <ul id="gamesToJoin" class="uiHolder">
+        {% for game in games.0 %}
+        <li>
+            <span>{{ game.pk }}.</span>
+            <span class="nReal">{{ game.n_real }} real players.</span>
+            <span class="nBots">{{ game.n_bots }} bots.</span>
+            <span class="maxHits">{{ game.max_hits }} maximum block hits</span>
+            <!-- creator <a class='creator' > link to the chats section-->
+            <a class="gameLink join" href="/lounge/join/{{ game.pk }}">JOIN</a>
+        </li>
+        {% endfor %}
+    </ul>
+    <h2>Ongoing Games</h2>
+    <ul id="ongoingGames" class="uiHolder">
+        {% for game in games.1 %}
+        <li>
+            <span class="nReal">{{ game.n_real }} real players.</span>
+            <span class="nBots">{{ game.n_bots }} bots.</span>
+            <span class="maxHits">{{ game.max_hits }} maximum block hits</span>
+            <!-- creator <a class='creator' > link to the chats section-->
+            <a class="gameLink join" href="/lounge/?message=Not+supported+yet">WATCH</a>
 
-                </li>
-                {% endfor %}
-            </ul>
-            <hr>
-            <h2>Create a game</h2>
-            <h4 id="message">{{ message|safe }}</h4>
-            <form id="createGame" class="ui" method="POST" action="/lounge/create/">
-                {% csrf_token %}
-                    <label for="nTotal">
-                        <input type="number" id="nTotal" name="nTotal" min="2" max="6" required> total players
-                    </label>
-                    <label for="nBots">
-                        <input type="number" id="nBots" name="nBots" min="0" max="5" required> bots
-                    </label>
-                    <label for="maxHits">
-                        <input type="number" id="maxHits" name="maxHits" min="2" max="7" required> maximum hits
-                    </label>
-                    <button class="gameLink create" type="submit">CREATE</button>
-            </form>
-        </div>
-        <div id="user">
-            <hr>
-            <img id="profilePic" src="{% static '/game/texture/player.svg' %}">
-            <h2>Profile Details</h2>
-            <ul class="uiHolder">
-                <li>Full name: <span>{{ user.first_name }} {{ user.last_name }}</span></li>
-                <li>Username: <span>{{ user.username }}</span></li>
-                <!-- change_password_form.as_ul -->
-                <li>New Password: <span>....</span></li>
-                <li>Repeat new password: <span>...</span></li>
-                <li>Submit: <span>{{ x }}</span></li>
-            </ul>
-            {% if not user.player.game %}
-            <form action="/signout/" method="post">
-                {% csrf_token %}
-                <input type="submit" value="Logout">
-            </form>
-            {% endif %}
-            <hr>
-            <h2>Stats</h2>
-            <ul class="uiHolder">
-                <li>Games played: <span>{{ x }}</span></li>
-                <li>Games created: <span>{{ 2 }}</span></li>
-                <li>Games won: <span>{{ x }}</span></li>
-                <li>Games lost: <span>{{ x }}</span></li>
-                <li>Time spent playing: <span>{{ x }}</span></li>
-                <li>Blocks broken: <span>{{ x }}</span></li>
-            </ul>
-            <hr>
-            <h2>Messages</h2>
-            <ul class="uiHolder">
-                <!-- for from, message in zip(reverse(messages))... -->
-                <!-- oldest last -->
-                <li>{{ from }}: {{ message }}</li>
-                <!-- endfor -->
-            </ul>
-        </div>
-        <script src="{% static 'lounge/events.js' %}"></script>
-        <script src="{% static 'funcs.js' %}"></script>
-    </body>
-</html>
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+<script src="{% static 'lounge/events.js' %}"></script>
+<script src="{% static 'funcs.js' %}"></script>
+{% endblock %}
+
 
 <!-- Thank God for telling me. To test with many people. you can just use firefox, chrome, chrome inprivate, edge, edge inprivate.
 or even create multiple profiles on chrome/edge and then share screen with somebody.
