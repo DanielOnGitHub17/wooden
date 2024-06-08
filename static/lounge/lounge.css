@@ -1,43 +1,32 @@
-body{
-    background: #ceaf86;
+#container{
     display: flex;
-    flex-flow: row;
-    flex-wrap: wrap;
-    justify-content: center;
     align-items: center;
-    gap: 1.5vw;
-    height: 100vh;
-    margin: 0;
+    gap: 10px;
+    padding: 5px;
+    justify-content: center;
 }
-body>div{
-    border: 10px double brown;
-    background: ghostwhite;
-    border-radius: 2em;
-    width: 31vw;
+#container>div{
+    background: white;
     height: 90vh;
     padding: 10px;
     overflow-y: scroll;
-    box-sizing: border-box;
     scrollbar-width: none;
     display: flex;
     flex-flow: column;
     align-items: center;
     gap: 1em;
     flex-wrap: nowrap;
+    min-width: 45vw;
+    border-radius: 1em;
+}
 
-}
-ul{
-    list-style-type: none;
-}
 body div>hr{
-    width: 25vw;
-    border-color: brown;
+    width: -webkit-fill-available;
+    border-color: rgb(217, 179, 142);
     justify-self: center;
     border-style: solid;
 }
-.message{
-    color: red;
-}
+
 .uiHolder{
     display: flex;
     gap: 7px;
@@ -47,11 +36,11 @@ body div>hr{
     width: -webkit-fill-available;
 }
 .uiHolder>li, .ui{
-    border: 2px solid rgb(165, 77, 42);
     display: flex;
     border-radius: .5em;
     padding: 10px;
-    justify-content: space-between;
+    justify-content: start;
+    gap: 10px;
     align-self: flex-start;
     width: -webkit-fill-available;
 }
@@ -96,8 +85,8 @@ h2{
 }
 
 #games>form{
-    padding: 5px;
-    gap: 2px;
+    padding: 0;
+    margin: 0;
     /* justify-content: ; */
 }
 
@@ -108,7 +97,11 @@ h2{
     /* justify-content: ; */
 }
 .ui>label>input{
-    width: 2em;
+    width: 3em;
 }
 
 /* feel free to rotate some elements a bit, makes it look gamy I think */
+#container>#others{
+    display: none;
+    position: absolute;
+}
