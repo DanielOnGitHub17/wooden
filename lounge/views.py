@@ -1,28 +1,26 @@
-import json
-
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect
-from django.contrib.auth.models import User
+from django.utils.decorators import method_decorator
+from django.views import View
+
 from game.models import Game, Player
-from random import randint, sample, choice
+from .forms import GameForm
 from game.helpers import make_game
 
+from random import randint, sample, choice
+
+import json
 
 base_path = "static/game/players/"
 # Create your views here.
-@login_required
-def lounge(request):
-    online_users = [*Player.objects.filter(logged_in=True)]
-    games_to_join = [*Game.objects.filter(started=False, ended=False)]
-    ongoing_games = [*Game.objects.filter(started=True, ended=False)]
-    message = request.GET["message"] if "message" in request.GET else ''
-    return render(request, "lounge.html", {
-        "user": request.user,
-        "games": [games_to_join, ongoing_games],
-        "online_users": online_users,
-        "message": message
-    })
+@method_decorator(login_required, name="dispatch")
+class Lounge(View):
+    def get(self, request):
+        context = {
+            "game_creation_form": GameForm(),
+        }
+        return render(request, "lounge.html", context)
 
 @login_required
 def create_game(request):
