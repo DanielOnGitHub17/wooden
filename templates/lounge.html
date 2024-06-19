@@ -5,49 +5,35 @@
 <link rel="stylesheet" href="{% static 'lounge/lounge.css' %}">
 <div id="games">
     <hr>
-    <ul class="ui">
+    <ul>
         <li>{{ user.username }}</li>
         <li>{{ user.get_full_name }}</li>
     </ul>
-    <form id="createGame"method="POST" action="/lounge/">
+    <form id="CREATEGAME" method="POST" action="/lounge/">
         {% csrf_token %}
-        <ul class="ui">
+        <h3>Game creation</h3>
+        <ul>
             {{ game_creation_form.as_ul }}
-            <input type="submit" value="CREATE GAME" class="gameLink create">
+            <input type="submit" value="CREATE GAME">
         </ul>
     </form>
     <h2>Games to join</h2>
-    <ul id="gamesToJoin" class="uiHolder">
-        {% for game in games.0 %}
+    <ul id="gamesToJoin">
+        {% for game in games %}
         <li>
+            <!-- will be a form join will be submit button -->
             <span>{{ game.pk }}.</span>
-            <span class="nReal">{{ game.n_real }} real players.</span>
-            <span class="nBots">{{ game.n_bots }} bots.</span>
-            <span class="maxHits">{{ game.max_hits }} maximum block hits</span>
+            <span>{{ game.n_real }} real players.</span>
+            <span>{{ game.n_bots }} bots.</span>
+            <span>{{ game.max_hits }} maximum block hits</span>
             <!-- creator <a class='creator' > link to the chats section-->
-            <a class="gameLink join" href="/lounge/join/{{ game.pk }}">JOIN</a>
+            <a>JOIN</a>
         </li>
         {% endfor %}
     </ul>
-    <h2>Ongoing Games</h2>
-    <ul id="ongoingGames" class="uiHolder">
-        {% for game in games.1 %}
-        <li>
-            <span class="nReal">{{ game.n_real }} real players.</span>
-            <span class="nBots">{{ game.n_bots }} bots.</span>
-            <span class="maxHits">{{ game.max_hits }} maximum block hits</span>
-            <!-- creator <a class='creator' > link to the chats section-->
-            <a class="gameLink join" href="/lounge/?message=Not+supported+yet">WATCH</a>
-
-        </li>
-        {% endfor %}
-    </ul>
+    <!-- Add support for watching ongoing games later. -->
+    <!-- add support for chatting later - online players will be in this page -->
 </div>
 <script src="{% static 'lounge/events.js' %}"></script>
-<script src="{% static 'funcs.js' %}"></script>
+<!-- <script src="{% static 'funcs.js' %}"></script> -->
 {% endblock %}
-
-
-<!-- Thank God for telling me. To test with many people. you can just use firefox, chrome, chrome inprivate, edge, edge inprivate.
-or even create multiple profiles on chrome/edge and then share screen with somebody.
-Thank God. I won't need to host on the internet before I can test well. -->

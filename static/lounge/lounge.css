@@ -1,101 +1,11 @@
-#container{
+/* Learn to accept that you do not want to do something */
+body{
+    margin: 10px;
+}
+[type="number"]{
+    width: 2em;
+}
+#CREATEGAME ul{
     display: flex;
-    /* align-items: center; */
-    gap: 10px;
-    padding: 5px;
-    justify-content: center;
-}
-#container>div{
-    background: white;
-    height: 90vh;
-    padding: 10px;
-    overflow-y: scroll;
-    scrollbar-width: none;
-    display: flex;
-    flex-flow: column;
-    /* align-items: center; */
-    flex-wrap: nowrap;
-    min-width: 45vw;
-    border-radius: 1em;
-}
-
-body div>hr{
-    width: -webkit-fill-available;
-    border-color: rgb(217, 179, 142);
-    justify-self: center;
-    border-style: solid;
-}
-
-.uiHolder{
-    display: flex;
-    flex-flow: column;
-    margin: 0;
-    padding: 0;
-    width: -webkit-fill-available;
-}
-.uiHolder>li, .ui{
-    display: flex;
-    border-radius: .5em;
-    padding: 10px;
-    justify-content: start;
-    align-self: flex-start;
-    width: -webkit-fill-available;
-}
-
-.uiHolder>li{
-    border-width: 1px;
-}
-.uiHolder>li>span{
-    color: brown;
-}
-
-h2{
-    margin: 0;
-}
-
-
-#games ul>li>span, #games form>label, #others>ul>li>span{
-    border: 1px solid brown;
-    color: black;
-    padding: 5px;
-}
-
-.gameLink{
-    background-color: sienna;
-    border: 1px solid brown;
-    color: white;
-    text-decoration: none;
-    transition: .4s;
-    padding: 5px;
-    cursor: pointer;
-}
-
-.gameLink:focus, .gameLink:hover{
-    background-color: brown;
-}
-
-.gameLink:focus{
-    border-color: black;
-}
-
-#games>form{
-    padding: 0;
-    margin: 0;
-    /* justify-content: ; */
-}
-
-#games>form>label{
-    padding: 2px;
-    border: none;
-    border-right: 2px solid brown;
-    /* justify-content: ; */
-}
-.ui>label>input{
-    width: 3em;
-}
-
-/* feel free to rotate some elements a bit, makes it look gamy I think */
-#container>#others{
-    display: none;
-    position: absolute;
+    gap: 4px;
 }
