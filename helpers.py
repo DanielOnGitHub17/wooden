@@ -21,8 +21,8 @@ Rules
 
 # Constants
 NEAR = 0.1
-CHANNEL_LAYER = get_channel_layer()  # or maybe use channels "default" alias
-dev_mails = ("dosuoha@gsumail.gram.edu", "enesidaniel.120064@gmail.com")
+# CHANNEL_LAYER = get_channel_layer()  # or maybe use channels "default" alias
+dev_mails = ("aemeghebo@gsumail.gram.edu", "enesidaniel.120064@gmail.com")
 
 # Send message to a group
 async def group_send(group_name="walks"
@@ -73,28 +73,9 @@ def handle_error(error, redirect_to=None):
     with open("../errors.log", 'a') as error_file:
         error_file.write(f"{error} | {datetime.now()}\n")
     print(error)
-    raise error
+    # raise error
     if redirect_to:
         return redirect(redirect_to)
-
-# Faye's implementation of Haversine. Will help in checking proximity of locations.
-def distance(lat1, long1, lat2, long2):
-    # locations not points
-    R = 6378
-
-    lat1_rad = radians(lat1)
-    lon1_rad = radians(long1)
-    lat2_rad = radians(lat2)
-    lon2_rad = radians(long2)
-    lat_diff = lat2_rad - lat1_rad
-    lon_d = lon2_rad - lon1_rad
-
-    a = sin(lat_diff / 2) * sin(lat_diff / 2) + cos(lat1_rad) * cos(lat2_rad) * sin(lon_d / 2) * sin(lon_d / 2)
-    c = 2 * asin(sqrt(a))
-
-    dist_km = R * c
-
-    return dist_km
 
 # Convert time to .pm/am string
 def time_to_m(t):
