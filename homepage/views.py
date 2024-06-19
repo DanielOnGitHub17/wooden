@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.views import View
 from django.http import HttpResponse
 from datetime import datetime
-from helpers import show_message
+from django.contrib import messages
 
 # Create your views here.
 
@@ -19,14 +19,12 @@ class Support(View):
     def post(self, request):
         with open("../issues.html", 'a') as file:
             file.write(f"\n<li>{request.user}: {request.POST['issue']} | {datetime.now()}</li>")
-        request.session["message"] = "Thanks for sending a message!"
+        # Email devs
+        messages.add_message(request, messages.INFO, "Thanks for sending a message!")
         return redirect("/support/")
     
     def get(self, request):
-        context = {
-            "message": show_message(request),
-        }
-        return render(request, "support.html", context)
+        return render(request, "support.html")
 
 def dev(request):
     return render(request, "dev.html", {"user": request.user})

@@ -55,12 +55,7 @@ def callon_last(model, method="end"):
     getattr([*model.objects.all()][-1], method)()
 
 # Show message in the browser by getting it from session
-def show_message(request):
-    message = ""
-    if "message" in request.session:
-        message = request.session["message"]
-        request.session["message"] = ""
-    return message
+# No need!!! use messages framework
     
 # Could come in handy
 def printurn(obj):
@@ -91,7 +86,7 @@ def cls():
     os.system("cls") and os.system("clear")
 
 # Generic Exception class for the app
-class WalkError(Exception): pass
+class WoodenError(Exception): pass
 
 # docker run --rm -p 6379:6379 redis:7: for running redis container.
 
