@@ -16,6 +16,18 @@ class Game(models.Model):
     ended = models.BooleanField(default=False)
     # primary key should be the link slash. (it will always change)
 
+    @property
+    def available(self):
+        return not (self.started or not self.ended)
+
+    @property
+    def ongoing(self):
+        return self.started and not self.ended
+
+    @property
+    def players(self):
+        return Player.objects.filter(game=self)
+
     def __str__(self):
         return f"Game {self.pk}"
     
@@ -48,8 +60,3 @@ class Player(models.Model):
 
     def __str__(self):
         return self.full_name
-
-
-# should seamlessly connect to Game and User (or not)
-# should change y and x on move.
-# Player.objects.all() should do a lot.
