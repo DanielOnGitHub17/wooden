@@ -1,14 +1,13 @@
+import os
+import sys
+
+from asgiref.sync import async_to_sync
+from channels.layers import get_channel_layer
+from datetime import datetime
 from django.contrib.auth.models import User
 from django.shortcuts import redirect
-from channels.layers import get_channel_layer
-from asgiref.sync import async_to_sync
-
-import sys
-import os
-from math import radians, cos, asin, sin, sqrt
-from datetime import datetime
 from importlib import reload
-
+from random import choice, randint
 """
 These functions (and class) will help other portions of the code.
 Some are generic, while others will be used at specific portions of the code.
@@ -20,7 +19,11 @@ Rules
 """
 
 # Constants
-NEAR = 0.1
+username_prefixes = ("fighter", "runner", "quick", "super", "victorious",
+                     "cool", "amazing", "fast", "smart", "kind", "big",
+                       "powerful", "brave", "mighty", "potent")
+
+new_username = lambda name: f"{choice(username_prefixes)}{name.capitalize()}{randint(10, 400)}"
 # CHANNEL_LAYER = get_channel_layer()  # or maybe use channels "default" alias
 dev_mails = ("aemeghebo@gsumail.gram.edu", "enesidaniel.120064@gmail.com")
 
