@@ -38,26 +38,6 @@ nav a:hover{
     color: brown;
 }
 
-#showRegister{
-    /* border: 5px double brown; */
-    border-left: none;
-    border-right: none;
-    display: block;
-    height: -webkit-fill-available;
-    width: -webkit-fill-available;
-    cursor: pointer;
-    /* padding: 10px; */
-    background-color: transparent;
-    border: none;
-    color: brown;
-    text-align: center;
-    font-size: 2em
-}
-
-#showRegister:focus{
-    border-color: white;
-}
-
 .visible{
     display: flex;
 }
