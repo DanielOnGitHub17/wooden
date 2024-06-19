@@ -1,127 +1,69 @@
-from django.shortcuts import render, redirect
-from django.http import Http404, HttpResponse, HttpRequest
-from django.contrib.auth.models import User
+from django.contrib import messages  # Maybe add 'as msg :)'
 from django.contrib.auth import login, authenticate, logout
-from django.views import View
-from register.forms import SignInForm, SignUpForm
+from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.contrib.auth.models import User
+from django.contrib.auth.views import LoginView, LogoutView, logout_then_login
+from django.contrib.messages.views import SuccessMessageMixin
+from django.http import Http404, HttpResponse, HttpRequest
+from django.shortcuts import render, redirect
+from django.views.generic.edit import CreateView
 
 from game.models import Player
-from helpers import show_message, handle_error, WalkError
+from helpers import handle_error, WoodenError, new_username
+from register.forms import SignInForm, SignUpForm
 
-# maybe do a helpers.py later
-import datetime
-from random import randint, choice
+# USE CreateView/ Use Message Mixins instead of request.session/whatever
+class SignUp(SuccessMessageMixin, CreateView):
+    template_name = "signup.html"
+    form_class = SignUpForm
+    success_url = "/signin/"
+    success_message = "Hello, %(first_name)s. Your account was created successfully. Please log in"
 
-username_prefixes = ("fighter", "runner", "quick"
-                     , "super", "victorious", "smart"
-                     , "kind", "big", "powerful"
-                     , "brave", "mighty", "potent")
+    def form_valid(self, form):
+        try:
+            Player(user=form.save()).save()
+        finally:
+            return super().form_valid(form)
 
-new_username = lambda name: f"{choice(username_prefixes)}{name.capitalize()}{randint(11, 500)}"
-
-# Create your views here.
-# later, do a view for localhost:admin/ to return httperror. while the real admin website will be something totally different
-# -or not, of course. maybe users, when the website has been published, can't access the admin page.
-
-needed_parameters = ("first_name", "last_name", "username", "password")
-
-class SignUp(View):
-    def post(self, request):
-        # sign function can still be made useful
-        self.POST = request.POST
-        result = sign(self.function, self.failed)
-        request.session["message"] = result["message"]
-        return redirect ("/signin/" if result["success"] else "/signup/")
-
-    def function(self):
-        form = SignUpForm(self.POST)
-        if not form.is_valid():
-            raise WalkError("Invalid form details, make sure all instructions are followed")
-        new_user = form.save()
-        new_player = Player(user=new_user)
-        new_player.save()
-        return "Account created successfully"
+    def form_invalid(self, form):
+        if "username" in form.errors and form.errors["username"][0].endswith("username already exists."):  # Ha!
+            messages.add_message(self.request, messages.ERROR,f"Username {form.data["username"]} is taken. How about {new_username(form.data["first_name"])}?")
+        return super().form_invalid(form)
     
-    def failed(self, error):
-        if str(error).startswith("UNIQUE constraint failed"):
-            username = self.request.POST["username"]
-            return f"Username {username} is taken. How about {new_username(self.request.POST["first_name"])}?"        
-            
     def get(self, request):
-        return register_page(request, "up")
+        return redirect("/lounge/") if self.request.user.is_authenticated else super().get(request)
 
-class SignIn(View):
-    def post(self, request):
-        self.request = request
-        self.POST = request.POST
-        result = sign(self.function, self.failed)
-        request.session["message"] = result["message"]
-        return redirect ("/lounge/" if result["success"] else "/signin/")
+class SignIn(SuccessMessageMixin, LoginView):
+    template_name = "signin.html"
+    success_message = "Signin successful!"
+    redirect_authenticated_user = True
     
-    def function(self):
-        user = authenticate(
-            self.request,
-            username=self.POST["username"],
-            password=self.POST["password"]
-        )
-        player = user.player
-        player.logged_in = True
-        player.score = 0
-        player.save()
-        login(self.request, user)
-    
-    def failed(self, error):
-        return "Invalid username or password"
+    def dispatch(self, *args, **kwargs):
+        if self.request.user.is_authenticated:
+            player = self.request.user.player
+            player.logged_in = True
+            player.score = 0
+            player.save()
+        return super().dispatch(*args, **kwargs)
 
-    def get(self, request):
-        return register_page(request, "in")
 
-class SignOut(View):
+class SignOut(LoginRequiredMixin, LogoutView):
+    template_name = "signed_out.html"
+    LogoutView.http_method_names.append("get")  # HA!
+
     def post(self, request):
         player = request.user.player
         if player.game:
-            return redirect("/lounge/")
-        logout(request)
+            return self.get(request)
         player.logged_in = False
         player.save()
-        return redirect("/")
+        return super().post(request)
     
     def get(self, request):
         if request.user.player.game:
-            request.session["message"] = "You cannot sign out now. You are in a game"
+            messages.add_message(request, messages.ERROR, "You cannot sign out now. You are in a game")
             return redirect("/lounge/")
-        return render(request, "signout.html", {})
+        return render(request, "signout.html")
 
-
-def sign(function, failed: lambda error: None):
-    message = "An unknown error occured"
-    success = False
-    try:
-        message = function()
-        success = True
-    except WalkError as error:
-        message = str(error)
-    except Exception as error:
-        message = failed(error) or message
-        handle_error(error)
-    return {"message": message, "success": success}
-
-def get_which(which):
-    return {
-        "up": ("signup", "Create an account", "Create Account"),
-        "in": ("signin", "Log into your wooden account", "Log in"),
-     }[which]
-
-def register_page(request, which):
-    context = {
-        "which": get_which(which),
-        "message": show_message(request),
-        "form": eval(f"Sign{which.capitalize()}Form"),
-    }
-    return render(request, "signs.html", context)
-
-def profile_pic(self, request):
-    if request.user.is_authenticated:
-        # will be made differently later. Better. everyone with chosen emoji (or picture)
-        # with open()
-        return render(request, {})
+# Maybe define a class that inherits UserPassesTestMixin, and has redirect_url instead of raising 403

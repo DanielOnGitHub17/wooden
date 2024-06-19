@@ -130,7 +130,9 @@ STATICFILES_DIRS = [
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-LOGIN_URL = "/signin"
+LOGIN_URL = "/signin/"
+LOGIN_REDIRECT_URL = "/lounge/"
+LOGOUT_REDIRECT_URL = "/"
 
 """
 Things to change in production environment:
