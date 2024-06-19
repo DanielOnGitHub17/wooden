@@ -31,6 +31,9 @@ class Game(models.Model):
     def __str__(self):
         return f"Game {self.pk}"
     
+    def get_absolute_url(self):
+        return f"/game/{self.id}/"
+
     # The Game class will be frequently accessed by users, changed till there are no
     # '1s' in it's data.
     # if needed, the Game class will be turned to JSON later
@@ -60,3 +63,6 @@ class Player(models.Model):
 
     def __str__(self):
         return self.full_name
+    
+    def get_absolute_url(self):
+        return f"/player/{self.id}/"
