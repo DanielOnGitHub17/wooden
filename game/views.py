@@ -1,15 +1,40 @@
-from django.shortcuts import render, redirect
+import json
+import os
+
 from django.contrib.auth.decorators import login_required
 from django.http import Http404, HttpResponse
+from django.shortcuts import render, redirect
+from django.views import View
 
-import os
-import json
+from  helpers import make_game
 
-# Create your views here.
-# from game.helpers import make_game
 from lounge.views import base_path
 
 from game.models import Game, Player
+
+class GamePlay(View):
+    def get(self, request):
+        game = make_game()
+        context = {"game": game}
+        return render(request, "game_temp.html", context)
+
+@login_required
+# Update view to start  game by updating game data
+class StartGame:
+    # grid = make_game()
+    #         zeros = []
+    #         while len(zeros) < 15:
+    #             zeros = [(i, j) for j in range(1, 16) for i in ran]ge(1, 16) if not grid[i][j]]
+    #         sample(zeros, ...)
+            # Do all these later. Do them in the game app - it will happen
+            # when the game is about to start, it will be the 'loading'
+            # I might not even store the data at all -> until after the game
+            # This will just create the game as an object with data default='0'
+            # It should be easier, like, I will be 'sharing'
+            # Maybe I could pickle the grid...
+            # Make the game grid, a 15 by 15 matrix
+            
+    pass
 
 @login_required
 def play(request, site):
