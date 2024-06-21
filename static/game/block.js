@@ -13,21 +13,16 @@ class Block{
     };
 
     crack(){
-        if (this.kind != 1){
-            return;
-            // should send this position to server to tell it to change accross all
-            // better, maybe, than refreshing everytime.
-        }
+        if (this.kind != 1) return;
         // remove from initial kind, then add to space
         let [r, c] = this.position;
-        fetch(`/game/crack?r=${r}&c=${c}`)
+        // fetch(`/game/crack?r=${r}&c=${c}`)
         transfer(this, Block.blocks[1], Block.blocks[0]);
-        game.gameRawMaterial[r][c] = 0
+        game.grid[r][c] = 0;
         this.kind = 0;
         this.block.className = 'block sand';
-        if (!Block.blocks[0].length){
-            console.log("ended")
-            game.end()
+        if (!Block.blocks[1].length){
+            game.end();
         }
     }
     static blocks = [[], [], []];
