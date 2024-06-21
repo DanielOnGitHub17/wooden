@@ -3,7 +3,7 @@ body{
     margin: 10px;
 }
 [type="number"]{
-    width: 2em;
+    width: 3em;
 }
 #CREATEGAME ul{
     display: flex;
