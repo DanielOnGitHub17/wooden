@@ -2,28 +2,25 @@ onload = () =>{
     // clear url
     history.replaceState (1, "Normal Location", location.href.split('?')[0]);
     // if nothing in games to join, say so.
-    if (!get("gamesToJoin").innerHTML){
-        get("gamesToJoin").innerHTML = "No games available. Try creating one below.";
+    if (!gamesToJoin.innerHTML.trim()){
+        gamesToJoin.innerHTML = "No games available. Try creating one below.";
     }
     // and other thins
 }
-onchange=oninput=(event)=>{
-    let n = +event.target.value
-    switch (event.target.id){
-        case "nTotal":
-            get("maxHits").min = (get("nBots").max = n-1)+2;
-            get("nBots").value = 0;
-            break
-        
-        case "nBots":
-            event.target.nextSibling.textContent = ` bot${'s'.repeat(n!=1)} `;
-            if (n > 0){
-                get("nTotal").value = n+1 // if there are bots there must be only 1 player.
-            }
-            break
-        
-        case "maxHits":
-            event.target.nextSibling.textContent = ` maximum hit${'s'.repeat(n!=1)} `;
-            break
+const gameForm = CREATEGAME.elements
+
+gameForm.count.min = gameForm.max_hits.min = 2;
+gameForm.count.max = gameForm.max_hits.max = 7;
+
+// Games are created in the server only when it is multiplayer.
+onblur=onchange=oninput=(event)=>{
+    let target = event.target
+    , n = +target.value;
+    // For the game creation form - to prevent unbearable changes. Will be repeated in the backend soon.
+    switch (event.target.name){
+        case "count":
+            gameForm.max_hits.min = n;
+            break;
     }
 }
+// "99 // 4 -> 99" (WHY??? - (Python programmer switched to JavaScript))
