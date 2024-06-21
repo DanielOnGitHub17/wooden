@@ -8,12 +8,13 @@
     <ul>
         <li>{{ user.username }}</li>
         <li>{{ user.get_full_name }}</li>
+        <li><a href="/game/practice" target="_blank">Practice</a></li>
     </ul>
     <form id="CREATEGAME" method="POST" action="/lounge/">
         {% csrf_token %}
         <h3>Game creation</h3>
         <ul>
-            {{ game_creation_form.as_ul }}
+            {{ form.as_ul }}
             <input type="submit" value="CREATE GAME">
         </ul>
     </form>
@@ -22,9 +23,8 @@
         {% for game in games %}
         <li>
             <!-- will be a form join will be submit button -->
-            <span>{{ game.pk }}.</span>
-            <span>{{ game.n_real }} real players.</span>
-            <span>{{ game.n_bots }} bots.</span>
+            <span>Game ID: {{ game.id }}.</span>
+            <span>{{ game.players }} players.</span>
             <span>{{ game.max_hits }} maximum block hits</span>
             <!-- creator <a class='creator' > link to the chats section-->
             <a>JOIN</a>
