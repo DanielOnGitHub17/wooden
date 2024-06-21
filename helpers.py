@@ -7,7 +7,8 @@ from datetime import datetime
 from django.contrib.auth.models import User
 from django.shortcuts import redirect
 from importlib import reload
-from random import choice, randint
+from random import choice, randint, sample
+
 """
 These functions (and class) will help other portions of the code.
 Some are generic, while others will be used at specific portions of the code.
@@ -47,6 +48,29 @@ def make_email(request, email):
         full_name = user.get_full_name()
     return f"From {sender}. Name: {full_name}\n"\
            f"Message: {email}"
+
+# Maze algorithm. 0, 1, 2. 0=space. 1=wood(breakable), 2=iron(protective)
+def make_grid(dim=15):
+    # set result to up and down borders
+    return [
+        [2] * (dim+2),
+        *[
+            *map(lambda x: [2]+list(map(lambda i: randint(0, 1), range(dim)))+[2], range(dim))
+        ],
+        [2] * (dim+2),
+    ]
+
+# Get zeros
+def get_zeros(grid):
+    return [(i, j) for j in range(1, 16) for i in range(1, 16) if not grid[i][j]]
+
+# Make Game
+def make_game(n=10):
+    grid = make_grid()
+    zeros = []
+    while len(zeros) < n:
+        zeros = get_zeros(grid)
+    return {"grid": grid, "positions": sample(zeros, 10)}
 
 # User.objects.
 def delete_users():
