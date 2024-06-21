@@ -1,0 +1,42 @@
+<html writingsuggestions=true>
+    <head>
+        <meta http-equiv="cache-control" content="no-cache">
+        <meta http-equiv="expires" content="0">
+        <meta http-equiv="pragma" content="no-cache">
+    </head>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'baseStyles.css' %}">
+    <link rel="stylesheet" href="{% static 'game/game.css' %}">
+    <div id="SETTINGS">
+        {% if multiplayer %}
+        <div id="SERVER"></div>
+        {% else %}
+        <form id="PRACTICE">
+            <h3>Practice Playing with bots</h3>
+            <label>Number of bots: <input type="number" name="botCount" min="0", max="9" value=3 required></label>
+            <label>Maximum Hits: <input type="number" name="maxHits" min="2", max="7" value=4 required></label>
+            <button id="START" type="submit">Start Practice</button>
+        </form>
+        {% endif %}
+    </div>
+    <div id="WORLD"></div>
+    <div id="GAME_OVER">
+        <h2>GAME OVER</h2>
+        <h3>Top Players for game</h3>
+        <ul id="PLAYERS_LIST">
+            <!-- players will be added here -->
+        </ul>
+        {% if multiplayer %}
+        If player won, tell them that they have ranked up - congratulate them
+        {% endif %}
+        <!-- List best players with their username -->
+        
+    </div>
+    {{ game|json_script:"GAME_DATA" }}
+    <script src="https://danielongithub17.github.io/funcs.js"></script>
+    <script src="{% static 'game/block.js' %}"></script>
+    <script src="{% static 'game/player.js' %}"></script>
+    <script src="{% static 'game/bot.js' %}"></script>
+    <script src="{% static 'game/game.js' %}"></script>
+    <script src="{% static 'game/events.js' %}"></script>
+</html>

@@ -9,10 +9,44 @@ body{
 *{
     background-position: center;
     /* background-repeat: no-repeat; */
-    background-size: contain;   
+    background-size: contain;
+    transition: 0.2s;
 }
 
-#world{
+.block{
+    transition: 0.5s;
+}
+
+button{
+    background-color: #8b4b31;
+    color: white;
+    border-radius: 0.5em;
+    padding: 5px;
+    border: 1px solid burlywood;
+    cursor: pointer;
+}
+button:hover{
+    background-color: black;
+}
+
+/* Style settings */
+#SETTINGS, #GAME_OVER{
+    display: flex;
+    flex-flow: column;
+    background-color: white;
+    padding: 10px;
+    border-radius: 0.5em;
+    border: 3px solid brown;
+    box-shadow: inset 7px 6px 11px 0;
+}
+
+#SETTINGS:hover{
+    box-shadow: inset -7px -6px 11px 0;
+}
+/* End settings */
+
+/* GAME */
+#WORLD{
     width: 680px;
     height: 680px;
     display: flex;
@@ -27,17 +61,6 @@ body{
     display: flex;
     justify-content: center;
     align-items: center;
-    /*    to make one show not all.
-    width: 40px;
-    height: 40px;
-    display: flex;
-    justify-content: center;
-    align-items: stretch;
-    flex-wrap: wrap;
-    flex-direction: column;
-    overflow: hidden;
-    align-content: stretch;
-    gap: 10px;*/
 }
 .sand{
     background-color: #ceaf86;
@@ -69,3 +92,33 @@ body{
 #gameInfo, #username{
     display: none;
 }
+
+/* End Game - HA! */
+
+/* Gameover */
+h3{
+    margin: 0;
+}
+#PLAYERS_LIST{
+    padding-left: 3em;
+    list-style: decimal;
+}
+
+#PLAYERS_LIST>li:nth-child(1){
+    font-size: 2em;
+    font-weight: bold;
+    color: gold;
+}
+
+#PLAYERS_LIST>li:nth-child(2){
+    font-size: 1.7em;
+    font-weight: bold;
+    color: silver;
+}
+
+#PLAYERS_LIST>li:nth-child(3){
+    font-size: 1.4em;
+    font-weight: bold;
+    color: #CD7F32;
+}
+/* End Gameover */
