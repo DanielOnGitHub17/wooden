@@ -1,18 +1,28 @@
 class Bot extends Player{
     constructor(ground, name){
         super(ground, name);
+        // this.name.length < 3 && "Bot "+this.name || this.name (Just playing.)
+        if (name.length < 3) this.name = "Bot "+name;  // Normal users must have usernames greater than three chars anyway!
         this.moving = false;
         this.dirs = [];
         this.moveMethod()
         transfer(this, Player.players, Bot.bots);
         this.body.className += " bot";
+        // Imagine making the game big to take millions of players playing at the same time.
+        // Maybe a story/ an endless mode, blocks will be around the city, you just go to break
+        // Real people only (maybe bots too), it will be nice to just go and see a character
+        // And two of you might even chat and decide to clear a place/build a pattern (having build will be cool)
     }
     moveMethod(){
-        let moveBy = "move" + (this.name ? "ByServer" : choice(["Random"])) // "Spiral", "Linear";
-        console.log(moveBy)
-        this.movInterval = setInterval(()=>{
-            this[moveBy]();
-        }, 200)
+        if (!game.isMultiPlayer){
+            moveBy = `move${choice(Bot.moveBy)}`;
+            console.log(moveBy)
+            this.movInterval = setInterval(()=>{
+                this[moveBy]();
+            }, 200);
+            return;
+        }
+        // else...
     }
     moveSpiral(){
         // turning algorithm
@@ -21,6 +31,7 @@ class Bot extends Player{
         // up to down algorithm
     }
     moveByServer(){
+        // Will be called for all... in socket manager
         fetch(`/game/position?player=${this.name}`).then(resp=>{
             resp.json().then(pos=>{
                 let [r, c] = pos
@@ -67,35 +78,11 @@ class Bot extends Player{
                 return;
             }
             // 0,2 for up/down.
-            this.dirs[0] = 2*(this.randomWood[0]>=this.ground.position[0])
+            this.dirs[0] = 2*(this.randomWood[0] >= this.ground.position[0])
             // 1/3 for right/left
-            this.dirs[1] =  1 + 2*(this.ground.position[1]>=this.randomWood[1]);
+            this.dirs[1] =  1 + 2*(this.ground.position[1] >= this.randomWood[1]);
         }
     }
     static bots = [];
+    static moveBy = ["Random"]; // "Spiral", "Linear", "BFS", "DFS", ...
 }
-
-// // https://youtu.be/w4EdnxNjrhc
-// // "Too much code. If else's or repetitions are more reasonable, I think. This is just... too much"
-// for (let i=0; i<2; i++){
-//     // !change ensures that left/right won't run if up/down has before.
-//     // up/down will always run first until it is good enough
-//     // !=. trust the process. // trust that it will not increase more than it is supposed to
-//     // (>= means something else.)
-//     // if you have doubts, you can use near from funcs.js.
-//     if (!change && this.ground.position[i] != this.randomWood[i]){
-//         this.move(this.dirs[i]);
-//         change += 1;
-//         // break (2/23/24) --> check later to see why
-//     }
-// }
-// if (!change){
-//     this.moving = false;
-// }
-// // for (let i=0; i<2; i++){
-// //     // po
-// //     // 0,2 for up/down. 3/1 for right/left
-// //     this.dirs[i] = i + 2*(this.randomWood[i] - this.ground.position[i] >= 0);
-// // }
-// // this.dirs[1] = 4 - this.dirs[1]; // set things right (or left)
-// // 1+-1=0(up):1+1(2)
