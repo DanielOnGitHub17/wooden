@@ -1,28 +1,43 @@
-from django.shortcuts import render
-from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse, HttpResponseRedirect
-from django.utils.decorators import method_decorator
-from django.views import View
-
-from game.models import Game, Player
-from .forms import GameForm
-from game.helpers import make_game
-
-from random import randint, sample, choice
-
 import json
 
-base_path = "static/game/players/"
-# Create your views here.
-@method_decorator(login_required, name="dispatch")
-class Lounge(View):
-    def get(self, request):
-        context = {
-            "game_creation_form": GameForm(),
-        }
-        return render(request, "lounge.html", context)
+from django.contrib import messages  # Maybe add 'as msg :)'
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.messages.views import SuccessMessageMixin
+from django.http import Http404, HttpResponse, HttpRequest
+from django.shortcuts import render, redirect
+from django.views.generic.edit import CreateView
 
-@login_required
+from django.contrib.auth.decorators import login_required
+from django.http import HttpResponse, HttpResponseRedirect
+from django.shortcuts import render
+from django.utils.decorators import method_decorator
+from django.views import View
+from django.views.generic.edit import CreateView
+
+from game.models import Game, Player
+from helpers import make_game
+from random import randint, sample, choice
+
+base_path = "static/game/players/"
+
+class Lounge(LoginRequiredMixin, SuccessMessageMixin, CreateView):
+    template_name = "lounge.html"
+    model = Game
+    fields = ["count", "max_hits"]
+
+    def form_valid(self, form):
+        try:
+            pass
+        finally:
+            return super().form_valid(form)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update({
+            "games": Game.objects.filter(started=False, ended=False)
+        })
+        return context
+
 def create_game(request):
     message = ''
     player = Player.username(request)
