@@ -1,14 +1,14 @@
-// world.innerHTML = ''
+identify()
 class Game{
-    constructor(hits, real, bots){
-        this.hitsToBreak = hits;
-        this.gameRawMaterial = JSON.parse(Game.world.innerHTML)
-        this.positions = eval(get("positions").textContent)
-        Game.world.innerHTML = '';
-        this.length = this.gameRawMaterial.length;
+    constructor(count, hits){
+        [this.hits, this.count] = [hits, count+1];
+        this.grid = copyObj(Game.rawMaterial.grid);
+        this.build_grid();
         // Game.world.style.width = Game.world.style.height = this.length*Block.dimension + 'px';
+    }
+    build_grid(){
         this.blocks = []
-        this.gameRawMaterial.forEach((textureLine, r)=>{
+        this.grid.forEach((textureLine, r)=>{
             this.blocks.push([]);
             textureLine.forEach((kind, c) => {
                 this.blocks[r].push(new Block(kind));
@@ -16,26 +16,49 @@ class Game{
             });
         });
         this.blocks.get = (r, c) => this.blocks[r][c];
-        // Make another reference to blocks
     }
     start(){
-        for (let i in this.positions){
-            let pos = this.positions[+i]
-            if (!(pos[0] == Game.player)){
-                new Bot(this.blocks[pos[1]][pos[2]], pos[0])
-            } else{
-                new Player(this.blocks[pos[1]][pos[2]], pos[0])
-            }
+        switchScreen("WORLD");
+        // There should be a kind of loading now ...
+        setTimeout(()=>{
+            this.setPositions();
+        }, 500)
+    }
+    setPositions(){
+        // If positions is a dict, the game is multiplayer, else, it is one person. 
+        // Chec
+        this.positions = copyObj(Game.rawMaterial.positions).slice(0, this.count);
+        let forPlayer = (this.isMultiplayer = !Array.isArray(this.positions)) ? Game.player : 0
+        , playerPos = this.positions[forPlayer];
+
+        new Player(this.blocks[playerPos[0]][playerPos[1]], forPlayer);
+        delete this.positions[forPlayer];
+        
+        for (let name in this.positions){
+            let pos = this.positions[name];
+            new Bot(this.blocks[pos[0]][pos[1]], name);
         }
     }
     end(){
-        // alert box to tell user that game has ended
-        // with button to 'save game'
-        location = `/game/end?GAME=${get("site").textContent}`
+        // with button to 'save game' -> Maybe get the path you took... (for multiplayer only)
+        // location = `/game/end?GAME=${get("site").textContent}`
+        switchScreen("GAME_OVER");
+        this.listWinners();
     }
-    static world = get("world");
-    static player = get("username").textContent;
-}
-let game = new Game(...getAll("#gameInfo>span").map(info=>+info.textContent))
+    listWinners(){
+        // sort winners (maybe by brute force)
+        let winners = Bot.bots.concat(Player.players).sort((a, b)=>b.blocksBroken - a.blocksBroken)
+        , winnersPush = setInterval(() => {
+            let winner = winners.pop();
+            PLAYERS_LIST.insertBefore(make("li"), PLAYERS_LIST.firstElementChild).textContent = `${winner.name}. Score: ${winner.blocksBroken}`;
+            if (!winners.length) clearInterval(winnersPush);
+        }, 1000);
+    }
 
-setTimeout(()=>game.start(), 3000) // should say three two one.
+    static world = WORLD;
+    static rawMaterial = jsonObj(GAME_DATA.textContent);
+    static player = 0
+}
+// let game = new Game(...getAll("#gameInfo>span").map(info=>+info.textContent))
+
+// setTimeout(()=>game.start(), 3000) // should say three two one.
