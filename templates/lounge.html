@@ -8,8 +8,15 @@
     <ul>
         <li>{{ user.username }}</li>
         <li>{{ user.get_full_name }}</li>
-        <li><a href="/game/practice" target="_blank">Practice</a></li>
+        <li><a href="/game/" target="_blank">Practice</a></li>
     </ul>
+    
+    {% if user.player.game %}
+    <form action="/game/" method="post">
+        {% csrf_token %}
+        <input type="submit" value="Go to Your Game">
+    </form>
+    {% else %}
     <form id="CREATEGAME" method="POST" action="/lounge/">
         {% csrf_token %}
         <h3>Game creation</h3>
@@ -19,20 +26,22 @@
         </ul>
     </form>
     <h2>Games to join</h2>
-    <ul id="gamesToJoin">
-        {% for game in games %}
-        <li>
-            <!-- will be a form join will be submit button -->
-            <span>Game ID: {{ game.id }}.</span>
-            <span>{{ game.players }} players.</span>
-            <span>{{ game.max_hits }} maximum block hits</span>
-            <!-- creator <a class='creator' > link to the chats section-->
-            <a>JOIN</a>
-        </li>
-        {% endfor %}
-    </ul>
-    <!-- Add support for watching ongoing games later. -->
-    <!-- add support for chatting later - online players will be in this page -->
+    <form action="/game/join/" method="post">
+        {% csrf_token %}
+        <ul id="gamesToJoin">
+            {% for game in games %}
+            <li>
+                <label>
+                    <input type="radio" name="game_id" value="{{ game.id }}" required>
+                    <span>{{ game.count }} players.</span>
+                    <span>{{ game.max_hits }} maximum block hits</span>
+                </label>
+            </li>
+            {% endfor %}
+        </ul>
+        {% if games %}<input type="submit" value="Join Game">{% endif %}
+    </form>
+    {% endif %}
 </div>
 <script src="{% static 'lounge/events.js' %}"></script>
 <!-- <script src="{% static 'funcs.js' %}"></script> -->
