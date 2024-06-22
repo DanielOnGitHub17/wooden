@@ -1,22 +1,88 @@
 import json
 import os
 
+import json
+
+from django.contrib import messages as msg
 from django.contrib.auth.decorators import login_required
-from django.http import Http404, HttpResponse
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.messages.views import SuccessMessageMixin
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.views import View
-
-from  helpers import make_game
-
-from lounge.views import base_path
+from django.views.generic.edit import UpdateView
 
 from game.models import Game, Player
+from helpers import make_game, WoodenError
+from lounge.views import base_path
 
-class GamePlay(View):
+
+class GamePlay(LoginRequiredMixin, View):
+    def post(self, request):
+        player = request.user.player
+        game = player.game
+        error_msg = (not game) * "You are not in a game.\n"
+        error_msg = error_msg or (game.ended) * "You can no longer join that game."
+        if error_msg:  # Can't join
+            player.game = None
+            player.save()
+            msg.add_message(request, msg.ERROR, error_msg)
+            return redirect("/lounge/")
+        # Render game, socket and Consumers will create game and 
+        # send data to all users so that JS can build it
+        # It will send their positions to them too.
+        # But first, let me do the waiting for them that will first trigger
+        # Game.start()
+        player.joined = player.present = True
+        player.save()  # Save will channel
+        context = {
+            "multiplayer": True,
+            "players": {player.user.username: [player.joined, player.present] for player in game.players}
+        }
+        return render(request, "game_temp.html", context)
+        
+        """
+        When everybody joins, the data and positions are created and stored.
+        The GAME is created when everybody joins (
+        and there could also be a start early button that can start once more than one person joined)
+        The data will be stored in a JSON file. The changes to the file
+        , as well as data to other, will be tracked later for ML
+        Events for socket:
+        Player JOINED - if the player joined successfully but has no position
+        Player Paused - if, player window is unfocused/player not sending input/sth.
+        Player Resumed - if, you get. (could be to sharpen a blured player name/check an 'available' box)
+        Player LEFT - if, NAVIGATED out of game / logged out.
+          (Blurring window doesn't count...), this will be for later
+        Game Started - when all users have JOINED (I might have to add more fields in DB)
+        Game Ended - when blocks are all cleared
+        Ping might affect these events, of course.
+        Also, no one can join once they leave - game becomes 'unavailable'
+        """
+
+        
+
     def get(self, request):
         game = make_game()
         context = {"game": game}
         return render(request, "game_temp.html", context)
+    
+    
+class JoinGame(LoginRequiredMixin, View):
+    def post(self, request):
+        player = request.user.player
+        if player.game:
+            msg.add_message(request, msg.WARNING, "You are already in a game")
+            return redirect("/lounge/")
+        try:
+            game_id = int(request.POST["game_id"])
+            game = Game.objects.get(id=game_id)
+            if game.available:
+                player.game = game
+                player.save()
+                msg.add_message(request, msg.SUCCESS, "You joined the game successfully")
+        except:
+            msg.add_message(request, msg.ERROR, "An error occured so you could not join the game")
+        return redirect("/lounge/")
 
 @login_required
 # Update view to start  game by updating game data
