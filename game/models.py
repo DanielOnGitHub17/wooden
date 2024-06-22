@@ -13,8 +13,8 @@ class Game(models.Model):
     data = models.TextField(default="0") # will change by json.loadsing and dumpsing
     count = models.IntegerField(default=2, validators=num_valid(2, 7))
     max_hits = models.IntegerField(default=3, validators=num_valid(2, 7))
-    started_time = models.DateTimeField(default=datetime.time())
-    ended_time = models.DateTimeField(default=datetime.time())
+    started_time = models.DateTimeField(null=True)
+    ended_time = models.DateTimeField(null=True)
     started = models.BooleanField(default=False)
     ended = models.BooleanField(default=False)
     # primary key should be the link slash. (it will always change)
@@ -23,7 +23,7 @@ class Game(models.Model):
 
     @property
     def available(self):
-        return not (self.started or self.ended)
+        return not (self.started or self.ended or self.n == self.count)
 
     @property
     def ongoing(self):
@@ -41,7 +41,11 @@ class Game(models.Model):
         return f"Game {self.pk}"
     
     def get_absolute_url(self):
-        return f"/game/{self.id}/"
+        return f"/lounge/"
+    
+    @property
+    def can_start(self):
+        return all(player.joined for player in self.players)
 
     # The Game class will be frequently accessed by users, changed till there are no
     # '1s' in it's data.
@@ -57,6 +61,10 @@ class Player(models.Model):
     winner = models.BooleanField(default=False)
     won = models.IntegerField(default=0)
     creator = models.BooleanField(default=False)
+    # Socket needs
+    present = models.BooleanField(default=False)  # Paused (temporarily unavailable)/Resume
+    joined = models.BooleanField(default=False)  # JOINED (checked once to see if joined)
+    # For a user to join a game. The main thing should be to change the game attribute
     # will be given by difference between game.started and ended
     # (or game.started and logged out) Logout will have some work to do
     # it will have to check if the player was playing before he/she left
