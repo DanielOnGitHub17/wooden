@@ -1,4 +1,4 @@
-from django.contrib import messages  # Maybe add 'as msg :)'
+from django.contrib import messages as msg  # Maybe add 'as msg :)'
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
@@ -28,7 +28,7 @@ class SignUp(SuccessMessageMixin, CreateView):
 
     def form_invalid(self, form):
         if "username" in form.errors and form.errors["username"][0].endswith("username already exists."):  # Ha!
-            messages.add_message(self.request, messages.ERROR,f"Username {form.data["username"]} is taken. How about {new_username(form.data["first_name"])}?")
+            msg.add_message(self.request, msg.ERROR,f"Username {form.data["username"]} is taken. How about {new_username(form.data["first_name"])}?")
         return super().form_invalid(form)
     
     def get(self, request):
@@ -62,7 +62,7 @@ class SignOut(LoginRequiredMixin, LogoutView):
     
     def get(self, request):
         if request.user.player.game:
-            messages.add_message(request, messages.ERROR, "You cannot sign out now. You are in a game")
+            msg.add_message(request, msg.ERROR, "You cannot sign out now. You are in a game")
             return redirect("/lounge/")
         return render(request, "signout.html")
 
