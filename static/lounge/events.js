@@ -3,7 +3,7 @@ onload = () =>{
     history.replaceState (1, "Normal Location", location.href.split('?')[0]);
     // if nothing in games to join, say so.
     if (!gamesToJoin.innerHTML.trim()){
-        gamesToJoin.innerHTML = "No games available. Try creating one below.";
+        gamesToJoin.innerHTML = "No games available. Try creating one above.";
     }
     // and other thins
 }
