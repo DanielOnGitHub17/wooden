@@ -1,16 +1,12 @@
 import json
 
-from django.contrib import messages  # Maybe add 'as msg :)'
+from django.contrib import messages as msg
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
-from django.http import Http404, HttpResponse, HttpRequest
+from django.core.exceptions import ValidationError
+from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect
-from django.views.generic.edit import CreateView
-
-from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render
-from django.utils.decorators import method_decorator
 from django.views import View
 from django.views.generic.edit import CreateView
 
@@ -26,16 +22,19 @@ class Lounge(LoginRequiredMixin, SuccessMessageMixin, CreateView):
     fields = ["count", "max_hits"]
 
     def form_valid(self, form):
-        try:
-            pass
-        finally:
+        player = self.request.user.player 
+        if not player.game:
+            player.game = form.save()
+            player.save()
+            msg.add_message(self.request, msg.SUCCESS, "You created and joined the game successfully")
             return super().form_valid(form)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context.update({
-            "games": Game.objects.filter(started=False, ended=False)
-        })
+        if not self.request.user.player.game:
+            context.update({
+                "games": [game for game in Game.objects.all() if game.available]
+            })
         return context
 
 def create_game(request):
