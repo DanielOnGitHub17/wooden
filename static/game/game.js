@@ -3,7 +3,7 @@ class Game{
     constructor(count, hits){
         [this.hits, this.count] = [hits, count+1];
         this.grid = copyObj(Game.rawMaterial.grid);
-        this.build_grid();
+        Game.isMultiplayer || this.build_grid();
         // Game.world.style.width = Game.world.style.height = this.length*Block.dimension + 'px';
     }
     build_grid(){
@@ -28,7 +28,7 @@ class Game{
         // If positions is a dict, the game is multiplayer, else, it is one person. 
         // Chec
         this.positions = copyObj(Game.rawMaterial.positions).slice(0, this.count);
-        let forPlayer = (this.isMultiplayer = !Array.isArray(this.positions)) ? Game.player : 0
+        let forPlayer = Game.isMultiplayer ? Game.player : 0
         , playerPos = this.positions[forPlayer];
 
         new Player(this.blocks[playerPos[0]][playerPos[1]], forPlayer);
@@ -50,14 +50,15 @@ class Game{
         let winners = Bot.bots.concat(Player.players).sort((a, b)=>b.blocksBroken - a.blocksBroken)
         , winnersPush = setInterval(() => {
             let winner = winners.pop();
-            PLAYERS_LIST.insertBefore(make("li"), PLAYERS_LIST.firstElementChild).textContent = `${winner.name}. Score: ${winner.blocksBroken}`;
+            WINNERS_LIST.insertBefore(make("li"), WINNERS_LIST.firstElementChild).textContent = `${winner.name}. Score: ${winner.blocksBroken}`;
             if (!winners.length) clearInterval(winnersPush);
         }, 1000);
     }
 
     static world = WORLD;
-    static rawMaterial = jsonObj(GAME_DATA.textContent);
     static player = 0
+    static isMultiplayer = Boolean(get("WAIT_ROOM"))
+    static rawMaterial = Game.isMultiplayer ? {"grid":[], "positions":{}} : jsonObj(GAME_DATA.textContent);
 }
 // let game = new Game(...getAll("#gameInfo>span").map(info=>+info.textContent))
 

@@ -1,3 +1,6 @@
+html{
+    background: #ceaf86;
+}
 body{
     background: #ceaf86;
     display: flex;
@@ -99,24 +102,24 @@ button:hover{
 h3{
     margin: 0;
 }
-#PLAYERS_LIST{
+#WINNERS_LIST{
     padding-left: 3em;
     list-style: decimal;
 }
 
-#PLAYERS_LIST>li:nth-child(1){
+#WINNERS_LIST>li:nth-child(1){
     font-size: 2em;
     font-weight: bold;
     color: gold;
 }
 
-#PLAYERS_LIST>li:nth-child(2){
+#WINNERS_LIST>li:nth-child(2){
     font-size: 1.7em;
     font-weight: bold;
     color: silver;
 }
 
-#PLAYERS_LIST>li:nth-child(3){
+#WINNERS_LIST>li:nth-child(3){
     font-size: 1.4em;
     font-weight: bold;
     color: #CD7F32;

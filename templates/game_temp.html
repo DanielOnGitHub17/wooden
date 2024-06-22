@@ -1,15 +1,35 @@
+<!DOCTYPE html>
 <html writingsuggestions=true>
     <head>
         <meta http-equiv="cache-control" content="no-cache">
         <meta http-equiv="expires" content="0">
         <meta http-equiv="pragma" content="no-cache">
+        <title>{% if multiplayer %}{% endif %}</title>
     </head>
     {% load static %}
     <link rel="stylesheet" href="{% static 'baseStyles.css' %}">
     <link rel="stylesheet" href="{% static 'game/game.css' %}">
     <div id="SETTINGS">
         {% if multiplayer %}
-        <div id="SERVER"></div>
+        <div id="WAIT_ROOM">
+            <h2>Players for this game</h2>
+            <table id="PLAYERS_LIST">
+                {{ players|json_script:"GAMERS" }}
+                <script src="{% static 'game/gamer.js' %}"></script>
+                <script src="{% static 'game/socket.js' %}"></script>
+                <tr>
+                    <th>Username</th><th>Joined</th><th>Present</th>
+                </tr>
+                <!--
+                - This one would keep GAMERS
+                - There could be a gamer class
+                - It will manage pausing and playing for Bots/Players
+                - It will be like Gamer(name=username, joined=False, present=False)
+                - It Gamer.gamers will be a mapping from username to Gamer for easy control.
+                - Gamers will be connected to the players/bots from Game.start()
+                 -->
+            </table>
+        </div>
         {% else %}
         <form id="PRACTICE">
             <h3>Practice Playing with bots</h3>
@@ -17,13 +37,14 @@
             <label>Maximum Hits: <input type="number" name="maxHits" min="2", max="7" value=4 required></label>
             <button id="START" type="submit">Start Practice</button>
         </form>
+        {{ game|json_script:"GAME_DATA" }}
         {% endif %}
     </div>
     <div id="WORLD"></div>
     <div id="GAME_OVER">
         <h2>GAME OVER</h2>
         <h3>Top Players for game</h3>
-        <ul id="PLAYERS_LIST">
+        <ul id="WINNERS_LIST">
             <!-- players will be added here -->
         </ul>
         {% if multiplayer %}
@@ -32,7 +53,6 @@
         <!-- List best players with their username -->
         
     </div>
-    {{ game|json_script:"GAME_DATA" }}
     <script src="https://danielongithub17.github.io/funcs.js"></script>
     <script src="{% static 'game/block.js' %}"></script>
     <script src="{% static 'game/player.js' %}"></script>
