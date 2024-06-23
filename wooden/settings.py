@@ -31,6 +31,8 @@ ALLOWED_HOSTS = ["localhost", "127.0.0.1", "danielfirstwebsite.pythonanywhere.co
 # Application definition
 
 INSTALLED_APPS = [
+    "daphne",
+    "channels",
     "homepage",
     "register",
     "lounge",
@@ -72,6 +74,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'wooden.wsgi.application'
+ASGI_APPLICATION = 'wooden.asgi.application'
 
 
 # Database
@@ -134,6 +137,17 @@ LOGIN_URL = "/signin/"
 LOGIN_REDIRECT_URL = "/lounge/"
 LOGOUT_REDIRECT_URL = "/"
 
+
+# Channels
+ASGI_APPLICATION = 'wooden.asgi.application'
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [("127.0.0.1", 5132)],
+        },
+    },
+}
 """
 Things to change in production environment:
 
