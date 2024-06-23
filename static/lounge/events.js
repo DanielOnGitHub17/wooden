@@ -1,16 +1,16 @@
 onload = () =>{
-    // clear url
-    history.replaceState (1, "Normal Location", location.href.split('?')[0]);
     // if nothing in games to join, say so.
+    IN_GAME = !Boolean(get("gamesToJoin"));
+    if (IN_GAME) {
+        return
+    }
     if (!gamesToJoin.innerHTML.trim()){
         gamesToJoin.innerHTML = "No games available. Try creating one above.";
     }
-    // and other thins
+    gameForm = CREATEGAME.elements;
+    gameForm.count.min = gameForm.max_hits.min = 2;
+    gameForm.count.max = gameForm.max_hits.max = 7;
 }
-const gameForm = CREATEGAME.elements
-
-gameForm.count.min = gameForm.max_hits.min = 2;
-gameForm.count.max = gameForm.max_hits.max = 7;
 
 // Games are created in the server only when it is multiplayer.
 onblur=onchange=oninput=(event)=>{
