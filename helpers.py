@@ -25,15 +25,15 @@ username_prefixes = ("fighter", "runner", "quick", "super", "victorious",
                        "powerful", "brave", "mighty", "potent")
 
 new_username = lambda name: f"{choice(username_prefixes)}{name.capitalize()}{randint(10, 400)}"
-# CHANNEL_LAYER = get_channel_layer()  # or maybe use channels "default" alias
+CHANNEL_LAYER = get_channel_layer()  # or maybe use channels "default" alias
 dev_mails = ("aemeghebo@gsumail.gram.edu", "enesidaniel.120064@gmail.com")
 
 # Send message to a group
 async def group_send(group_name="walks"
-        , handler="handle_frontend"
+        , handler="default"
         , data={}):
     await CHANNEL_LAYER.group_send(
-        group_name, {"type": handler, "data": data}
+        str(group_name), {"type": handler, "data": data}
     )
 
 # Copy of group_send for synchronous usage
@@ -65,12 +65,17 @@ def get_zeros(grid):
     return [(i, j) for j in range(1, 16) for i in range(1, 16) if not grid[i][j]]
 
 # Make Game
-def make_game(n=10):
-    grid = make_grid()
+def make_game(n=7, users=[]):
+    n = len(users) or n
     zeros = []
     while len(zeros) < n:
+        grid = make_grid()
         zeros = get_zeros(grid)
-    return {"grid": grid, "positions": sample(zeros, 10)}
+    return {
+        "grid": grid,
+        "positions": {user: pos for user, pos in zip(
+            users, sample(zeros, n))} if users else sample(zeros, n),
+    }
 
 # User.objects.
 def delete_users():
@@ -115,7 +120,7 @@ def cls():
 # Generic Exception class for the app
 class WoodenError(Exception): pass
 
-# docker run --rm -p 6379:6379 redis:7: for running redis container.
+# docker run --rm -p 5132:5132 redis:7: for running redis container.
 
 if __name__ == "__main__":
     if len(sys.argv) == 2:
