@@ -3,7 +3,8 @@ class Game{
     constructor(count, hits){
         [this.hits, this.count] = [hits, count+1];
         this.grid = copyObj(Game.rawMaterial.grid);
-        Game.isMultiplayer || this.build_grid();
+        this.build_grid();
+        this.isMultiplayer && this.setPositions();
         // Game.world.style.width = Game.world.style.height = this.length*Block.dimension + 'px';
     }
     build_grid(){
@@ -19,18 +20,30 @@ class Game{
     }
     start(){
         switchScreen("WORLD");
-        // There should be a kind of loading now ...
+        showLoading("Starting soon...");
+        if (this.isMultiplayer){
+            // Associate Gamers with Players
+            Bot.bots.concat(Player.players).forEach(obj=>Gamer[obj.name].player = obj)
+            // Get time for timeout
+            let startIn = Game.rawMaterial.time;
+            setTimeout(() => {
+                Gamer.user.player.event();  // Start accepting input.
+            }, startIn);
+            return;
+        }
         setTimeout(()=>{
-            this.setPositions();
-        }, 500)
+            this.setPositions();  // could be animated...
+            hideLoading();
+        }, 3000)
     }
     setPositions(){
-        // If positions is a dict, the game is multiplayer, else, it is one person. 
-        // Chec
-        this.positions = copyObj(Game.rawMaterial.positions).slice(0, this.count);
-        let forPlayer = Game.isMultiplayer ? Game.player : 0
-        , playerPos = this.positions[forPlayer];
-
+        // If positions is a dict, the game is multiplayer, else, it is one person.
+        
+        let forPlayer = Game.player;
+        if (!this.isMultiplayer){
+            this.positions = copyObj(Game.rawMaterial.positions).slice(0, this.count);
+        }
+        let playerPos = this.positions[forPlayer];
         new Player(this.blocks[playerPos[0]][playerPos[1]], forPlayer);
         delete this.positions[forPlayer];
         
@@ -58,8 +71,5 @@ class Game{
     static world = WORLD;
     static player = 0
     static isMultiplayer = Boolean(get("WAIT_ROOM"))
-    static rawMaterial = Game.isMultiplayer ? {"grid":[], "positions":{}} : jsonObj(GAME_DATA.textContent);
+    static rawMaterial = Game.isMultiplayer ? {"grid":[], "positions":{}, time: ""} : jsonObj(GAME_DATA.textContent);
 }
-// let game = new Game(...getAll("#gameInfo>span").map(info=>+info.textContent))
-
-// setTimeout(()=>game.start(), 3000) // should say three two one.
