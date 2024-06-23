@@ -25,6 +25,7 @@ class Lounge(LoginRequiredMixin, SuccessMessageMixin, CreateView):
         player = self.request.user.player 
         if not player.game:
             player.game = form.save()
+            player.creator = True
             player.save()
             msg.add_message(self.request, msg.SUCCESS, "You created and joined the game successfully")
             return super().form_valid(form)
