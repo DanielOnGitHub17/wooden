@@ -1,8 +1,18 @@
 class Gamer{
-    constructor(username, joined, present){
+    constructor(username, joined=false, present=false){
         [this.username, this.joined, this.present] = arguments;
         Gamer.gamers[username] = this;
         this.build();
+        Object.defineProperties(this, {
+            "joined": {
+                set: (bool)=>this.joinedCheck.checked = bool,
+                get: ()=>this.joinedCheck.checked
+            },
+            "present": {
+                set: (bool)=>this.presentCheck.checked = bool,
+                get: ()=>this.presentCheck.checked
+            }
+        })
     }
 
     build(){
@@ -14,12 +24,18 @@ class Gamer{
             this[prop+"Check"].disabled = true;
         });
     }
-
+    
     static load(){
         for (let username in Gamer.gamersData){
             new Gamer(username, ...Gamer.gamersData[username]);
         }
     }
+    static get user(){
+        return Gamer.gamers[Gamer.username];
+    }
     static gamers = {};
     static gamersData = jsonObj(GAMERS.textContent);
+    static gameID = +ID.textContent;
+    static username = USERNAME.textContent;
+    static N = +N.textContent;
 }
