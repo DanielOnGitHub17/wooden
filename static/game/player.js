@@ -7,7 +7,7 @@ class Player{
         this.blocksBroken = 0;
         this.next = ground.position;
         this.build();
-        this.event();
+        game.isMultiPlayer || this.event();
     }
     
     build(){
