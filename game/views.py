@@ -1,19 +1,17 @@
 import json
 import os
 
-import json
-
 from django.contrib import messages as msg
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render, redirect
+from django.shortcuts import redirect, render
 from django.views import View
 from django.views.generic.edit import UpdateView
 
 from game.models import Game, Player
-from helpers import make_game, WoodenError
+from helpers import group_send_sync, make_game, WoodenError
 from lounge.views import base_path
 
 
@@ -33,11 +31,13 @@ class GamePlay(LoginRequiredMixin, View):
         # It will send their positions to them too.
         # But first, let me do the waiting for them that will first trigger
         # Game.start()
-        player.joined = player.present = True
-        player.save()  # Save will channel
+        if not (player.joined and player.present):
+            player.joined = player.present = True
+            player.save()
         context = {
             "multiplayer": True,
-            "players": {player.user.username: [player.joined, player.present] for player in game.players}
+            "players": {player.user.username: [player.joined, player.present] for player in game.players},
+            "game": game,
         }
         return render(request, "game_temp.html", context)
         
@@ -48,9 +48,6 @@ class GamePlay(LoginRequiredMixin, View):
         The data will be stored in a JSON file. The changes to the file
         , as well as data to other, will be tracked later for ML
         Events for socket:
-        Player JOINED - if the player joined successfully but has no position
-        Player Paused - if, player window is unfocused/player not sending input/sth.
-        Player Resumed - if, you get. (could be to sharpen a blured player name/check an 'available' box)
         Player LEFT - if, NAVIGATED out of game / logged out.
           (Blurring window doesn't count...), this will be for later
         Game Started - when all users have JOINED (I might have to add more fields in DB)
@@ -62,7 +59,7 @@ class GamePlay(LoginRequiredMixin, View):
         
 
     def get(self, request):
-        game = make_game()
+        game = make_game(10)
         context = {"game": game}
         return render(request, "game_temp.html", context)
     
@@ -80,6 +77,9 @@ class JoinGame(LoginRequiredMixin, View):
                 player.game = game
                 player.save()
                 msg.add_message(request, msg.SUCCESS, "You joined the game successfully")
+                # Send the "Gamer's" username, with event "createGamer"
+                # Channel to all (Message will create an object on all player's platforms with joined=false, present=false)
+                group_send_sync(group_name=game_id, data={"handler": "createGamer", "data": request.user.username})
         except:
             msg.add_message(request, msg.ERROR, "An error occured so you could not join the game")
         return redirect("/lounge/")
