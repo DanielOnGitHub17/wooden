@@ -1,30 +1,31 @@
+{% load static %}
 <!DOCTYPE html>
 <html writingsuggestions=true>
     <head>
         <meta http-equiv="cache-control" content="no-cache">
         <meta http-equiv="expires" content="0">
         <meta http-equiv="pragma" content="no-cache">
+        <link rel="stylesheet" href="{% static 'baseStyles.css' %}">
+        <link rel="stylesheet" href="{% static 'game/game.css' %}">
+        <link rel="stylesheet" href="https://danielongithub17.github.io/loading.css">
+        <script src="https://danielongithub17.github.io/funcs.js"></script>
         <title>{% if multiplayer %}{% endif %}</title>
     </head>
-    {% load static %}
-    <link rel="stylesheet" href="{% static 'baseStyles.css' %}">
-    <link rel="stylesheet" href="{% static 'game/game.css' %}">
     <div id="SETTINGS">
         {% if multiplayer %}
         <div id="WAIT_ROOM">
-            <h2>Players for this game</h2>
+            <h2>Hello, <span id="USERNAME">{{ user.username }}</span></h2>
+            <h3>Players for game #<span id="ID">{{ game.id }}</span><br>
+                <span id="COUNT">{{ game.joined }}</span>/<span id="N">{{ game.count }}</span> joined.
+            </h3>
+            <!-- You could overide Players_list.remove/removeChild/append/appendChild 
+             to change COUNT. Or use MutationObserver-->
             <table id="PLAYERS_LIST">
                 {{ players|json_script:"GAMERS" }}
-                <script src="{% static 'game/gamer.js' %}"></script>
-                <script src="{% static 'game/socket.js' %}"></script>
                 <tr>
                     <th>Username</th><th>Joined</th><th>Present</th>
                 </tr>
                 <!--
-                - This one would keep GAMERS
-                - There could be a gamer class
-                - It will manage pausing and playing for Bots/Players
-                - It will be like Gamer(name=username, joined=False, present=False)
                 - It Gamer.gamers will be a mapping from username to Gamer for easy control.
                 - Gamers will be connected to the players/bots from Game.start()
                  -->
@@ -53,10 +54,13 @@
         <!-- List best players with their username -->
         
     </div>
-    <script src="https://danielongithub17.github.io/funcs.js"></script>
     <script src="{% static 'game/block.js' %}"></script>
     <script src="{% static 'game/player.js' %}"></script>
     <script src="{% static 'game/bot.js' %}"></script>
     <script src="{% static 'game/game.js' %}"></script>
+    {% if multiplayer %}
+    <script src="{% static 'game/gamer.js' %}"></script>
+    <script src="{% static 'game/socket.js' %}"></script>
+    {% endif %}
     <script src="{% static 'game/events.js' %}"></script>
 </html>
