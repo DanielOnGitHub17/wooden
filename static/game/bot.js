@@ -5,7 +5,7 @@ class Bot extends Player{
         if (name.length < 3) this.name = "Bot "+name;  // Normal users must have usernames greater than three chars anyway!
         this.moving = false;
         this.dirs = [];
-        this.moveMethod()
+        this.moveMethod();
         transfer(this, Player.players, Bot.bots);
         this.body.className += " bot";
         // Imagine making the game big to take millions of players playing at the same time.
@@ -14,7 +14,7 @@ class Bot extends Player{
         // And two of you might even chat and decide to clear a place/build a pattern (having build will be cool)
     }
     moveMethod(){
-        if (!game.isMultiPlayer){
+        if (!Game.isMultiplayer){
             moveBy = `move${choice(Bot.moveBy)}`;
             console.log(moveBy)
             this.movInterval = setInterval(()=>{
