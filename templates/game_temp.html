@@ -38,7 +38,6 @@
             <label>Maximum Hits: <input type="number" name="maxHits" min="2", max="7" value=4 required></label>
             <button id="START" type="submit">Start Practice</button>
         </form>
-        {{ game|json_script:"GAME_DATA" }}
         {% endif %}
     </div>
     <div id="WORLD"></div>
@@ -50,10 +49,13 @@
         </ul>
         {% if multiplayer %}
         If player won, tell them that they have ranked up - congratulate them
+        {% else %}
+        <button type="button" onclick="load()">Practice Again</button>
         {% endif %}
         <!-- List best players with their username -->
         
     </div>
+    {{ game_data|json_script:"GAME_DATA" }}
     <script src="{% static 'game/block.js' %}"></script>
     <script src="{% static 'game/player.js' %}"></script>
     <script src="{% static 'game/bot.js' %}"></script>
