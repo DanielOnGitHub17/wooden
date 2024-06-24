@@ -1,6 +1,8 @@
+import asyncio
 import json
 
 from asgiref.sync import async_to_sync, sync_to_async
+from channels.db import database_sync_to_async
 from channels.generic.websocket import AsyncWebsocketConsumer
 from django.contrib.auth.decorators import login_required
 from game.models import Player, Game
@@ -24,23 +26,23 @@ class GameConsumer(AsyncWebsocketConsumer):
         "If all players have joined, send game and positions with start time"
         "SO that everybody starts THAT TIME"
 
+    async def playerMove(self, event):
+        # Some database things...
+        await self.default(event)
+
     async def playerUpdate(self, event):
         data = event["data"]["data"]
-        player = await sync_to_async(Player.from_username)(data["username"])
+        player = await database_sync_to_async(Player.from_username)(data["username"])
         for field in data:
             setattr(player, field, data[field])
-        await sync_to_async(player.save)()
+        await player.asave()
         await self.default(event)
-        game = await sync_to_async(lambda: player.game)()
-        game_data = await sync_to_async(game.try_start)()
-        if game_data:
-            group_send(group_name=self.group_name, handler="start"
-            , data={"handler": "start", "data": game_data})
+        # PS: PLEASE Remember to await your coroutines when necessary - 'bug' took my time.
 
-    async def disconnect(self, close_code):
-        # Leave game... group
-        await self.channel_layer.group_discard(self.group_name, self.channel_name)
-        
+    async def start(self, event):
+        await asyncio.sleep(3)  # Waiting for the last player's page to load...
+        await self.default(event)
+
     async def default(self, event):
         """{
             data: {...},
@@ -49,6 +51,10 @@ class GameConsumer(AsyncWebsocketConsumer):
         """
         await self.send(text_data=json.dumps(event["data"]))
 
+
+    async def disconnect(self, close_code):
+        # Leave game... group
+        await self.channel_layer.group_discard(self.group_name, self.channel_name)
     """
     Whenever the message start is received by the frontend, game = Game() is created, the message will come with the data and positions.
     The data will be stored in game, game stored in database
