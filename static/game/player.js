@@ -7,7 +7,7 @@ class Player{
         this.blocksBroken = 0;
         this.next = ground.position;
         this.build();
-        game.isMultiPlayer || this.event();
+        Game.isMultiplayer || this.event();
     }
     
     build(){
@@ -65,7 +65,7 @@ class Player{
         window.addEventListener("keyup", (event)=>{
             if (Player.controls.includes(event.key)){
                 event.preventDefault();
-                this.move(Player.controls.indexOf(event.key));
+                (Game.isMultiplayer ? gameSocket : this).move(Player.controls.indexOf(event.key));
                 // this.body.scrollIntoView();
             }
         })
