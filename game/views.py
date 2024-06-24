@@ -38,6 +38,7 @@ class GamePlay(LoginRequiredMixin, View):
             "multiplayer": True,
             "players": {player.user.username: [player.joined, player.present] for player in game.players},
             "game": game,
+            "game_data": game.try_start()
         }
         return render(request, "game_temp.html", context)
         
@@ -59,9 +60,7 @@ class GamePlay(LoginRequiredMixin, View):
         
 
     def get(self, request):
-        game = make_game(10)
-        context = {"game": game}
-        return render(request, "game_temp.html", context)
+        return render(request, "game_temp.html", {"game_data": make_game(10)})
     
     
 class JoinGame(LoginRequiredMixin, View):
