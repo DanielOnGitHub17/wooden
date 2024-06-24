@@ -20,16 +20,16 @@ Rules
 """
 
 # Constants
+CHANNEL_LAYER = get_channel_layer()  # or maybe use channels "default" alias
+dev_mails = ("aemeghebo@gsumail.gram.edu", "enesidaniel.120064@gmail.com")
+MAX_WAIT_TIME = 10
+new_username = lambda name: f"{choice(username_prefixes)}{name.capitalize()}{randint(10, 400)}"
 username_prefixes = ("fighter", "runner", "quick", "super", "victorious",
                      "cool", "amazing", "fast", "smart", "kind", "big",
                        "powerful", "brave", "mighty", "potent")
 
-new_username = lambda name: f"{choice(username_prefixes)}{name.capitalize()}{randint(10, 400)}"
-CHANNEL_LAYER = get_channel_layer()  # or maybe use channels "default" alias
-dev_mails = ("aemeghebo@gsumail.gram.edu", "enesidaniel.120064@gmail.com")
-
 # Send message to a group
-async def group_send(group_name="walks"
+async def group_send(group_name="lounge"
         , handler="default"
         , data={}):
     await CHANNEL_LAYER.group_send(
@@ -71,10 +71,11 @@ def make_game(n=7, users=[]):
     while len(zeros) < n:
         grid = make_grid()
         zeros = get_zeros(grid)
+    zeros = sample(zeros, n)
     return {
         "grid": grid,
-        "positions": {user: pos for user, pos in zip(
-            users, sample(zeros, n))} if users else sample(zeros, n),
+        "positions": {user: pos for user, pos in zip(users, zeros)}\
+              if users else zeros,
     }
 
 # User.objects.
