@@ -2,7 +2,7 @@ addEventListener("submit", (event)=>{
     event.preventDefault();
     if(event.target == PRACTICE) {
         let prac = PRACTICE.elements;
-        game = new Game(+prac[0].value, +prac[1].value);
+        game = new Game(+prac[0].value+1, +prac[1].value);
         game.start();
     }
 });
@@ -32,7 +32,9 @@ onload = ()=>{
     if (Game.isMultiplayer) {
         Gamer.load();
         createGameSocket();
-        events();
+        if (Game.rawMaterial.grid && Game.rawMaterial.positions) {  // start immediately - Game is ongoing.
+            gameSocket.start(Game.rawMaterial);
+        }
         return
     }
     // switchScreen("GAME_OVER");
@@ -54,6 +56,7 @@ function openSocket(event){
     console.log("Connection established with channels");
     // Tell everyone I am here...
     gameSocket.sendGamer();
+    events();
 };
 
 function errorSocket(event) {
