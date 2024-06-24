@@ -74,7 +74,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'wooden.wsgi.application'
-ASGI_APPLICATION = 'wooden.asgi.application'
 
 
 # Database
