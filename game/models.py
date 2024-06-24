@@ -28,7 +28,9 @@ class Game(models.Model):
         game_data = {"hits": self.max_hits}
         if not self.started and (self.can_start or force):
             self.started = True
-            game_data = make_game(users=[player.user.username for player in self.players])
+            game_data.update(
+                make_game(users=[player.user.username for player in self.players])
+            )
             self.initial_grid = self.grid = json.dumps(game_data["grid"])
             game_data["time"] = tz.now().timestamp() + MAX_WAIT_TIME
             self.started_time = tz.datetime.fromtimestamp(game_data["time"])
