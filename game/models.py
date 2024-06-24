@@ -1,41 +1,56 @@
-import datetime
 import json
 
-from asgiref.sync import sync_to_async
+# from asgiref.sync import ync_to_async
+from channels.db import database_sync_to_async
 from django.contrib.auth.models import User
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
-
-from helpers import group_send_sync, make_game
+from django.utils import timezone as tz
+from helpers import group_send, group_send_sync, make_game, MAX_WAIT_TIME
 
 num_valid = lambda x, y: [MinValueValidator(x), MaxValueValidator(y)]
 
 # Create your models here.
 class Game(models.Model):
     size = models.IntegerField(default=15)
-    initial_data = models.TextField(default="")
-    data = models.TextField(default="") # will change by json.loadsing and dumpsing
+    initial_grid = models.TextField(default="")
+    grid = models.TextField(default="")
     count = models.IntegerField(default=2, validators=num_valid(2, 7))
     max_hits = models.IntegerField(default=3, validators=num_valid(2, 7))
     started_time = models.DateTimeField(null=True)
     ended_time = models.DateTimeField(null=True)
     started = models.BooleanField(default=False)
     ended = models.BooleanField(default=False)
-    # primary key should be the link slash. (it will always change)
     # do passcode later for private games - join with passcode...
     # It will be so cool, the passcode becomes invalid when game starts
 
-    def try_start(self):
-        if not self.started and self.joined == self.count:
-            game_data = make_game(
-                users=[player.user.username for player in self.players])
-            self.game = json.dumps(game_data)
+    def try_start(self, force=False):
+        game_data = {"hits": self.max_hits}
+        if not self.started and (self.can_start or force):
             self.started = True
-            game_data["time"] = datetime.now().timestamp() + 20
-            self.started_time = datetime.fromtimestamp(game_data["time"])
+            game_data = make_game(users=[player.user.username for player in self.players])
+            self.initial_grid = self.grid = json.dumps(game_data["grid"])
+            game_data["time"] = tz.now().timestamp() + MAX_WAIT_TIME
+            self.started_time = tz.datetime.fromtimestamp(game_data["time"])
+            for player in self.players:
+                player.r, player.c = game_data["positions"][player.user.username]
+                player.winner = False
+                player.score = 0
+                player.save()
             self.save()
-            return game_data
-            
+            group_send_sync(group_name=self.id, handler="start", data={
+                "handler": "start", "data": game_data
+            })
+        elif self.ongoing:
+            game_data.update(self.get_data())
+        return game_data
+
+    def get_data(self):
+        return {
+            "grid": json.loads(self.grid),
+            "positions": {player.user.username: (player.r, player.c) for player in self.players},
+            "time": self.started_time.timestamp(),
+        }
 
     @property
     def available(self):
@@ -65,11 +80,10 @@ class Game(models.Model):
     
     @property
     def can_start(self):
-        return all(player.joined for player in self.players)
+        return self.count == self.joined
 
     # The Game class will be frequently accessed by users, changed till there are no
     # '1s' in it's data.
-    # if needed, the Game class will be turned to JSON later
 
 class Player(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
@@ -84,11 +98,6 @@ class Player(models.Model):
     # Socket needs
     joined = models.BooleanField(default=False)  # JOINED (checked once to see if joined)
     present = models.BooleanField(default=False)  # Paused (temporarily unavailable)/Resume
-    # For a user to join a game. The main thing should be to change the game attribute
-    # will be given by difference between game.started and ended
-    # (or game.started and logged out) Logout will have some work to do
-    # it will have to check if the player was playing before he/she left
-    # and other loopholes I will have to fill.
 
     @staticmethod
     def from_username(username):
