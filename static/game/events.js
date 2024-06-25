@@ -1,4 +1,5 @@
 addEventListener("submit", (event)=>{
+    if (Game.isMultiplayer) return;
     event.preventDefault();
     if(event.target == PRACTICE) {
         let prac = PRACTICE.elements;

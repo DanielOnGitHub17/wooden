@@ -53,6 +53,11 @@ class Game(models.Model):
             "positions": {player.user.username: (player.r, player.c) for player in self.players},
             "time": self.started_time.timestamp(),
         }
+    
+    def end(self):
+        if not self.ended:
+            self.ended = True
+            self.save()
 
     @property
     def available(self):
@@ -118,3 +123,12 @@ class Player(models.Model):
     
     def get_absolute_url(self):
         return f"/player/{self.id}/"
+    
+    def reset(self, won=0):
+        if self.game:
+            self.game.end()
+        self.won += won
+        self.game = None
+        self.r = self.c = 0
+        self.creator = self.joined = self.present = False
+        self.save()

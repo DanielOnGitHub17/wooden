@@ -65,11 +65,21 @@ class Game{
     listWinners(){
         // sort winners (maybe by brute force)
         let winners = Bot.bots.concat(Player.players).sort((a, b)=>b.blocksBroken - a.blocksBroken)
+        , winScore = winners[0].blocksBroken
         , winnersPush = setInterval(() => {
             let winner = winners.pop();
             WINNERS_LIST.insertBefore(make("li"), WINNERS_LIST.firstElementChild).textContent = `${winner.name}. Score: ${winner.blocksBroken}`;
-            if (!winners.length) clearInterval(winnersPush);
+            if (!winners.length) {
+                clearInterval(winnersPush);
+                Game.isMultiplayer && this.sendStatus(Gamer.user.player.blocksBroken >= winScore);
+            };
         }, 1000);
+    }
+
+    sendStatus(won){
+        SEND_STATUS.elements.won.checked = won;
+        STATUS.textContent = won ? "CONGRATULATIONS!!! You won the game!" 
+        : "Sorry, you did not win. Break more wood next time."
     }
 
     static world = WORLD;

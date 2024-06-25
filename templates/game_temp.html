@@ -9,12 +9,12 @@
         <link rel="stylesheet" href="{% static 'game/game.css' %}">
         <link rel="stylesheet" href="https://danielongithub17.github.io/loading.css">
         <script src="https://danielongithub17.github.io/funcs.js"></script>
-        <title>{% if multiplayer %}{% endif %}</title>
+        <title>WOODEN</title>
     </head>
     <div id="SETTINGS">
         {% if multiplayer %}
         <div id="WAIT_ROOM">
-            <h2>Hello, <span id="USERNAME">{{ user.username }}</span></h2>
+            <h2>Hello, <span id="USERNAME">{{ user.username }}</span>.</h2>
             <h3>Players for game #<span id="ID">{{ game.id }}</span><br>
                 <span id="COUNT">{{ game.joined }}</span>/<span id="N">{{ game.count }}</span> joined.
             </h3>
@@ -48,7 +48,12 @@
             <!-- players will be added here -->
         </ul>
         {% if multiplayer %}
-        If player won, tell them that they have ranked up - congratulate them
+        <p id="STATUS"></p>
+        <form action="/game/end/" method="post" id="SEND_STATUS">
+            {% csrf_token %}
+            <input type="checkbox" name="won" hidden>
+            <button type="submit">CONTINUE TO LOUNGE</button>
+        </form>
         {% else %}
         <button type="button" onclick="load()">Practice Again</button>
         {% endif %}
