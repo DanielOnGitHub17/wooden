@@ -28,7 +28,7 @@ class SignUp(SuccessMessageMixin, CreateView):
 
     def form_invalid(self, form):
         if "username" in form.errors and form.errors["username"][0].endswith("username already exists."):  # Ha!
-            msg.add_message(self.request, msg.ERROR,f"Username {form.data["username"]} is taken. How about {new_username(form.data["first_name"])}?")
+            msg.add_message(self.request, msg.ERROR, f"Username {form.data['username']} is taken. How about {new_username(form.data['first_name'])}?")
         return super().form_invalid(form)
     
     def get(self, request):
