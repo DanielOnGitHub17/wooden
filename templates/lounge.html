@@ -1,12 +1,12 @@
 {% extends "base.html" %}
 {% load static %}
-{% block title %}{{ user.name }} Lounge{% endblock %}
+{% block title %}{{ user.first_name }}'s Lounge{% endblock %}
 {% block content %}
 <link rel="stylesheet" href="{% static 'lounge/lounge.css' %}">
 <div id="games">
     <hr>
     <ul>
-        <li>{{ user.username }}</li>
+        <li>Hi, {{ user.username }}. Rank: {{ user.player.rank }}</li>
         <li>{{ user.get_full_name }}</li>
         <li><a href="/game/" target="_blank">Practice</a></li>
     </ul>
