@@ -2,13 +2,17 @@
 {% load static %}
 {% block title %}Login to your wooden account{% endblock%}
 {% block content %}
-<form action="/signin/" method="POST">
-    <legend>Wooden Account Login</legend>
-    {% csrf_token %}
-    <ul>
-        {{ form.as_ul }}
-    </ul>
-    <input type="submit" value="Sign in">
-</form>
+<div id="helps">
+    
+</div>
+<article class="main-sign-up">
+    <div class="sign-up-img"></div>
+    <form action="/signin/" class="sign-up-form" method="POST">
+        <h2>Sign In</h2>
+        {% csrf_token %}
+        {{ form }}
+        <button type="submit">Sign in</button>
+    </form>
+</article>
 <script src="{% static 'register/signs.js' %}"></script>
 {% endblock %}

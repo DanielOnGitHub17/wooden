@@ -2,13 +2,16 @@
 {% load static %}
 {% block title %}Create a wooden account{% endblock%}
 {% block content %}
-<form action="/signup/" method="POST">
-    <legend>Create a wooden account</legend>
-    {% csrf_token %}
-    <ul>
-        {{ form.as_ul }}
-    </ul>
-    <input type="submit" value="Create Account">
-</form>
+<article class="main-sign-up">
+    <div class="sign-up-img"></div>
+    <form action="/signup/" class="sign-up-form" method="POST">
+        <h2>Sign Up</h2>
+        {% csrf_token %}
+        {{ form }}
+        <button type="submit">Create Account</button>
+    </form>
+</article>
+{% endblock %}
+{% block scripts %}
 <script src="{% static 'register/signs.js' %}"></script>
 {% endblock %}
