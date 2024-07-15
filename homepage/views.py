@@ -11,7 +11,7 @@ from game.views import GamePlay
 def home(request):
     # return GamePlay().get(request)
 # https://www.onthisday.com/date/2010/june/21 -> Scrape to get daily insights!
-    return render(request, "base.html", {"user": request.user})
+    return render(request, "landing.html", {"user": request.user})
 
 def leaders(request):
     return render(request, "leaders.html", {"user": request.user})
