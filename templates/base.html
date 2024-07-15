@@ -1,49 +1,59 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>{% block title %}Wooden{% endblock %}</title>
-        <link rel="stylesheet" href="{% static 'baseStyles.css' %}">
-        <script src="https://danielongithub17.github.io/funcs.js"></script>
-    </head>
-    <body>
-        <nav>
-            <ul>
-                <li><a href="/">Wooden</a></li>
-                <li><a href="/game_help">How to play</a></li>
-                <!-- Game support view will send email of issues to Andrew and I -->
-                <li><a href="/support">Game support</a></li>
-                <!-- Developers view will have portion to contribute ideas (with recognition on the website) -->
-                <li><a href="/dev">Developers</a></li>
-                {% if user.is_authenticated %}
-                <!-- sprite.png will be a view that will return a sprite saved by the user as his/her profile picture -->
-                <!-- <li><img id="profilePic" src="{% static '/game/texture/player.svg' %}"></li> -->
-                <li><a href="/lounge">Lounge</a></li>
-                <li><a href="/signout">Sign out</a></li>
-                {% else %}
-                <li><a href="/signup">Sign up</a></li>
-                <li><a href="/signin">Sign in</a></li>
-                {% endif %}
-            </ul>
-        </nav>
-        {% if messages %}
-        <ul class="messages">
-            {% for message in messages %}
-            <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-            {% endfor %}
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="{% static 'img/favicon.png' %}" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=New+Rocker&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="{% static 'styles.css' %}" />
+    <script src="https://danielongithub17.github.io/funcs.js"></script>
+    <title>Wooden</title>
+  </head>
+  <body>
+    <header class="header">
+      <a href="/">
+        <img src="{% static 'img/logo.png' %}" alt="Wooden Logo" />
+      </a>
+      <nav class="header-nav">
+        <ul class="header-ul">
+          <li class="nav-item">
+            <a href="/game_help/" class="nav-link">How to play</a>
+          </li>
+          <li class="nav-item">
+            <a href="/support/" class="nav-link">Game support</a>
+          </li>
+          <li class="nav-item">
+            <a href="/dev/" class="nav-link">Developers</a>
+          </li>
+          {% if user.is_authenticated %}
+          <li class="nav-item">
+            <a href="/lounge/" class="nav-link">Lounge</a>
+          </li>
+          <li class="nav-item">
+            <a href="/signout/" class="nav-link">Sign Out</a>
+          </li>
+          {% else %}
+          <li class="nav-item">
+            <a href="/signin/" class="nav-link">Sign In</a>
+          </li>
+          <li class="nav-item">
+            <a href="/signup/" class="nav-link">Sign Up</a>
+          </li>
+          {% endif %}
         </ul>
-        {% endif %}
-        <div id="container">
-            {% block content %}
-            This game is awesome
-            {% endblock %}
-        </div>
-        <footer>
-            All rights reserved. This game was made by Daniel Enesi (Backend)
-            and Andrew Emeghebo (Front-end design)
-        </footer>
-        <script src="{% static 'baseScripts.js' %}"></script>
-    </body>
+      </nav>
+    </header>
+    <main>
+        {% block content %}
+        {% endblock %}
+    </main>
+    <div id="app"></div>
+    <script type="module" src="{% static 'scripts.js' %}"></script>
+  </body>
 </html>
