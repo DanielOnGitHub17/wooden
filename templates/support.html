@@ -4,20 +4,122 @@
 Game Support
 {% endblock %}
 {% block content %}
-<ul>
-    <li>How do i create an account?</li>
-    <li>How do i delete my account?</li>
-    <li>Can I have multiple accounts?</li>
-    <li>Will playing alone hinder my progress?</li>
-    <li>Should I play alone or with others?</li>
-</ul>
-<form method="POST" action="">
+<article class="landing-article ul-landing-article">
+    <h2>Game Support</h2>
+    <section>
+        <h3>How do I create an account? </h3>
+        <ul>
+            <li>Click the hamburger icon at the top right of the page and select sign up. <li>You will be taken to the registration page. </li>
+            <li>Enter your first and last name, your user name and password. </li>
+            <li>Click the “Create Account” button to create your account.</li>
+        </ul>
+    </section>
+    
+    <section>
+        <h3>How do I delete my account?</h3>
+        <ul>
+            <li>To delete your account, first sign in. </li>
+            <li>Next, go to the support page.</li>
+            <li>In the issue box, type delete my account. </li>
+            <li>Click submit your issue. </li>
+            <li>You will be logged out and your account disabled. </li>
+        </ul>
+    </section>
+    
+    <section>
+        <h3>Can I have multiple accounts? </h3>
+        <ul>
+            <li>Sure, you can. However you are strongly advised to have just one. </li>
+            <li>You cannot transfer points from one account to the other </li>
+            <li>Also, in case you plan to use other accounts to add dummy players with which you can play with to earn more points by failing them, remember that that is just bad gamesmanship. </li>
+            <li>Future implementations will be made to prevent this. Artificial Intelligence will check if a player is active/not. </li>
+        </ul>
+    </section>
+
+    <section>
+        <h3>Should I play alone or with others?  </h3>
+        <ul>
+            <li>It is up to you.  </li>
+            <li>Playing alone will not increase your stats.  </li>
+            <li>Playing with bots will increase your stats a little.  </li>
+            <li>Playing and winning real people increases your rating.</li>
+        </ul>
+    </section>
+    <section>
+        <h3>Will playing alone hinder my progress?  </h3>
+        <ul>
+            <li>That depends on how you think about it.   </li>
+            <li>If ‘progress’ means how better you get in a game, perhaps playing alone or with bots will make you far behind multi-players.  </li>
+            <li>However, you still get better as you play more games, so playing alone increases your skills, just slowly.  </li>
+            <li>Also, if the bots are better than the online community (fat chance), playing with bots might better your skills!  </li>
+            <li>If ‘progress’ means your stats, please review the above FAQ.  </li>
+        </ul>
+    </section>
+
+    <section>
+        <h3>How do I access the leaderboard?  </h3>
+        <ul>
+            <li>Sign in.   </li>
+            <li>Go to lounge.  </li>
+            <li>At the top left of the chat section, click on the Leaderboard button. </li>
+            <li>A list of players with top stats will pop up, showing their avatar, their game name (or first name), and their points earned.  </li>
+            <li>Keep playing to hopefully enter the leaderboard. How do you think it will feel being number one?  </li>
+        </ul>
+    </section>
+
+    <section>
+        <h3>Can I contribute to the game?</h3>
+        <ul>
+            <li>Yes. You can. </li>
+            <li>Contact any of the developers in the Developers page through his LinkedIn – he will be happy to hear your thoughts or accept your code. </li>
+            <li>Better still, you can always use the support form below to send an idea, suggestion, complaint, or goodwill message. Please be considerate and respectful in your messages. For now, real humans with feelings read them.  
+            </li>
+        </ul>
+    </section>
+</article>
+
+<form method="POST" class="support-form" action="">
     {% csrf_token %}
     <textarea name="issue"
      cols=30 rows=5 minlength=10
       autocapitalize="characters"
-       required placeholder="Enter your issue"></textarea>
-    <input type="submit" value="Submit your issue">
+       required placeholder="Enter your issue" class="support-textarea"></textarea>
+    <button type="submit" class="support-button">Submit your issue</button>
 </form>
 {% endblock %}
 
+ 
+ 
+
+ 
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ -->
