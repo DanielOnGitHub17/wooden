@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/5.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
-
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -25,9 +25,9 @@ SECRET_KEY = 'django-insecure-5skfeha6dpma^x7jra8nmquxy!wj1-gi#n2n+ix_b##e)ci_)$
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["localhost", "127.0.0.1", "danielfirstwebsite.pythonanywhere.com", "fuzzy-zebra-6jj96xvxwww37r9-8000.app.github.dev"]
+ALLOWED_HOSTS = ["localhost", "127.0.0.1", "danielfirstwebsite.pythonanywhere.com", "fuzzy-zebra-6jj96xvxwww37r9-8000.app.github.dev", ".vercel.app", ".now.sh"]
 # For codespaces
-CSRF_TRUSTED_ORIGINS = ["https://fuzzy-zebra-6jj96xvxwww37r9-8000.app.github.dev", "https://localhost:8000"]
+CSRF_TRUSTED_ORIGINS = ["https://fuzzy-zebra-6jj96xvxwww37r9-8000.app.github.dev", "https://localhost:8000", "https://wooden-*.vercel.app"]
 
 
 # Application definition
@@ -83,8 +83,12 @@ WSGI_APPLICATION = 'wooden.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.environ.get('PGDATABASE'),
+        'USER': os.environ.get('PGUSER'),
+        'PASSWORD': os.environ.get('PGPASSWORD'),
+        'HOST': os.environ.get('PGHOST'),
+        'PORT': os.environ.get('PGPORT'),
     }
 }
 
@@ -124,11 +128,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
 STATIC_URL = 'static/'
-# STATIC_ROOT = BASE_DIR / "static"
+STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles_build", "static")
 
-STATICFILES_DIRS = [
-    BASE_DIR / "static",
-]
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
@@ -145,7 +147,7 @@ CHANNEL_LAYERS = {
     "default": {
         "BACKEND": "channels_redis.core.RedisChannelLayer",
         "CONFIG": {
-            "hosts": [("127.0.0.1", 5132)],
+            "hosts": [("127.0.0.1", 6379)],
         },
     },
 }
