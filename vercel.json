@@ -29,7 +29,7 @@
         "dest": "wooden/wsgi.py"
       },
       {
-        "src": "/ws/(.*)",
+        "src": "/(.*)",
         "dest": "wooden/asgi.py"
       }
     ]
