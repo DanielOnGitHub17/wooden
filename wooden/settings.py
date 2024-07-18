@@ -148,7 +148,8 @@ CHANNEL_LAYERS = {
         "BACKEND": "channels_redis.core.RedisChannelLayer",
         "CONFIG": {
             "hosts": [
-                (os.environ.get("REDIS_HOST"), 6379),
+                (os.environ.get("REDIS_HOST"), 6379
+                 , {"password": os.environ.get("KV_REST_API_TOKEN")})
             ],
         },
     },
