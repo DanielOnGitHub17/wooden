@@ -23,7 +23,7 @@ from game.routing import websocket_urlpatterns
 
 app = ProtocolTypeRouter(
     {
-        "https": django_asgi_app,
+        "http": django_asgi_app,
         "websocket": AllowedHostsOriginValidator(
             AuthMiddlewareStack(URLRouter(websocket_urlpatterns))
         ),
