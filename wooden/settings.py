@@ -23,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-5skfeha6dpma^x7jra8nmquxy!wj1-gi#n2n+ix_b##e)ci_)$'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ["localhost", "127.0.0.1", "danielfirstwebsite.pythonanywhere.com", "fuzzy-zebra-6jj96xvxwww37r9-8000.app.github.dev", ".vercel.app", ".now.sh"]
 # For codespaces
