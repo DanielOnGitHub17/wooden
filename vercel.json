@@ -2,11 +2,6 @@
     "version": 2,
     "builds": [
       {
-        "src": "wooden/wsgi.py",
-        "use": "@vercel/python",
-        "config": { "maxLambdaSize": "15mb", "runtime": "python9" }
-      },
-      {
         "src": "wooden/asgi.py",
         "use": "@vercel/python",
         "config": { "maxLambdaSize": "15mb", "runtime": "python9" }
