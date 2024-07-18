@@ -152,6 +152,7 @@ CHANNEL_LAYERS = {
                  , {"password": os.environ.get("KV_REST_API_TOKEN")})
             ],
         },
+        "ROUTING": "wooden.routing.channel_routing",
     },
 }
 """
