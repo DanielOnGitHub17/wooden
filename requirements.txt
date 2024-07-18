@@ -1,5 +1,4 @@
 Django==4.2.11
 psycopg2-binary
-urllib3==1.25.10
-channels[daphne]==1.1.8
+channels[daphne]
 channels_redis
