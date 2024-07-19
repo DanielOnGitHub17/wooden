@@ -20,14 +20,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-5skfeha6dpma^x7jra8nmquxy!wj1-gi#n2n+ix_b##e)ci_)$'
+SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ["localhost", "127.0.0.1", "danielfirstwebsite.pythonanywhere.com", "fuzzy-zebra-6jj96xvxwww37r9-8000.app.github.dev", ".vercel.app", ".now.sh"]
+ALLOWED_HOSTS = ["192.168.75.221", "localhost", "127.0.0.1", "danielfirstwebsite.pythonanywhere.com", "fuzzy-zebra-6jj96xvxwww37r9-8000.app.github.dev", ".vercel.app", ".now.sh"]
 # For codespaces
-CSRF_TRUSTED_ORIGINS = ["https://fuzzy-zebra-6jj96xvxwww37r9-8000.app.github.dev", "https://localhost:8000", "https://wooden-*.vercel.app"]
+CSRF_TRUSTED_ORIGINS = ["http://192.168.75.221/", "https://fuzzy-zebra-6jj96xvxwww37r9-8000.app.github.dev", "https://localhost:8000", "https://wooden-*.vercel.app"]
 
 
 # Application definition
@@ -144,15 +144,15 @@ LOGOUT_REDIRECT_URL = "/"
 # Channels
 ASGI_APPLICATION = 'wooden.asgi.app'
 CHANNEL_LAYERS = {
-    "default": {
-        "BACKEND": "channels_redis.core.RedisChannelLayer",
-        "CONFIG": {
-            "hosts": [
-                (os.environ.get("REDIS_HOST"), 6379
-                 , {"password": os.environ.get("KV_REST_API_TOKEN")})
-            ],
-        },
+  'default': {
+    'BACKEND': 'channels_redis.core.RedisChannelLayer',
+    'CONFIG': {
+      "hosts":[{
+            "address": os.environ.get("REDIS_URL"),
+            "ssl_cert_reqs": None,
+        }]
     },
+  },
 }
 """
 Things to change in production environment:
