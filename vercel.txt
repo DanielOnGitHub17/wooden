@@ -1,4 +1,0 @@
-build_files.sh
-package.json
-requirements.txt
-vercel.json
