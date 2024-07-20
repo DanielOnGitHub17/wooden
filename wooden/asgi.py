@@ -21,7 +21,7 @@ django_asgi_app = get_asgi_application()
 
 from game.routing import websocket_urlpatterns
 
-app = ProtocolTypeRouter(
+application = ProtocolTypeRouter(
     {
         "http": django_asgi_app,
         "websocket": AllowedHostsOriginValidator(

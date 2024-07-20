@@ -75,7 +75,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'wooden.wsgi.app'
+WSGI_APPLICATION = 'wooden.wsgi.application'
 
 
 # Database
@@ -142,7 +142,8 @@ LOGOUT_REDIRECT_URL = "/"
 
 
 # Channels
-ASGI_APPLICATION = 'wooden.asgi.app'
+ASGI_APPLICATION = 'wooden.asgi.application'
+
 CHANNEL_LAYERS = {
   'default': {
     'BACKEND': 'channels_redis.core.RedisChannelLayer',
