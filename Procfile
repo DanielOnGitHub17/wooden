@@ -1,1 +1,1 @@
-web: daphne wooden.asgi:application -v0
+web: gunicorn wooden.asgi:application -k uvicorn.workers.UvicornWorker
