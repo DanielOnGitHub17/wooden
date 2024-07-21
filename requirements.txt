@@ -1,5 +1,4 @@
 whitenoise
-gunicorn
 Django
 psycopg2-binary
 channels[daphne]

@@ -1,1 +1,1 @@
-web: gunicorn 'wooden.wsgi'
+web: daphne wooden.asgi:application --port $PORT --bind 0.0.0.0 -v2
