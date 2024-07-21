@@ -28,4 +28,3 @@ urlpatterns = [
     path("game/", include("game.urls"), name="Game"),
 ]
 
-urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
