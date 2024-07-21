@@ -27,7 +27,7 @@ DEBUG = False
 
 ALLOWED_HOSTS = ["*", ".railway.app"]
 # For codespaces
-CSRF_TRUSTED_ORIGINS = ["http://192.168.75.221/", "https://fuzzy-zebra-6jj96xvxwww37r9-8000.app.github.dev", "https://localhost:8000", "https://wooden*.railway.app"]
+CSRF_TRUSTED_ORIGINS = ["https://fuzzy-zebra-6jj96xvxwww37r9-8000.app.github.dev", "https://localhost:8000", "https://*.railway.app"]
 
 
 # Application definition
