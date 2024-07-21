@@ -8,7 +8,7 @@
       },
       {
         "src": "wooden/asgi.py",
-        "use": "@vercel/daphne",
+        "use": "@vercel/python",
         "config": { "maxLambdaSize": "15mb"}
       },
       {
