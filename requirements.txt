@@ -1,6 +1,6 @@
 
 gunicorn
-uvicorn["standard"]
+uvicorn[standard]
 whitenoise
 Django
 psycopg2-binary
