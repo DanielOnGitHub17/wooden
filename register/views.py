@@ -2,7 +2,7 @@ from django.contrib import messages as msg
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
-from django.contrib.auth.views import LoginView, LogoutView
+from django.contrib.auth.views import LoginView, LogoutView, PasswordResetView, PasswordResetConfirmView, PasswordResetDoneView
 from django.contrib.messages.views import SuccessMessageMixin
 from django.core.mail import EmailMessage
 from django.shortcuts import render, redirect
@@ -22,7 +22,20 @@ class AccountActivationTokenGenerator(PasswordResetTokenGenerator):
 
 account_activation_token = AccountActivationTokenGenerator()
 
-# USE CreateView/ Use Message Mixins instead of request.session/whatever
+class ResetPassword(PasswordResetView):
+    template_name = "password_reset_form.html"
+    html_email_template_name = "password_reset_email.html"
+    subject_template_name = "password_reset_subject.txt"
+
+class DoneResetPassword(PasswordResetDoneView):
+    template_name = "password_reset_done.html"
+
+class ConfirmResetPassword(SuccessMessageMixin, PasswordResetConfirmView):
+    template_name = "password_reset_confirm.html"
+    success_url = "/signin/"
+    success_message = "Your password was changed successfully. Please log in."
+
+
 class SignUp(SuccessMessageMixin, CreateView):
     template_name = "signup.html"
     form_class = SignUpForm
