@@ -4,3 +4,5 @@ wooden.bat
 .vscode
 *.zip
 wooden/settings.py
+**/static/admin
+**/test.py
