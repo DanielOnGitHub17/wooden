@@ -3,3 +3,4 @@ db.sqlite3
 wooden.bat
 .vscode
 *.zip
+*settings.py
