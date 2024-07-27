@@ -4,11 +4,12 @@
 {% block content %}
 <article class="main-sign-up">
     <div class="sign-up-img"></div>
-    <form action="/signup/" class="sign-up-form" method="POST">
+    <form action="" class="sign-up-form" method="POST">
         <h2>Sign Up</h2>
         {% csrf_token %}
         {{ form }}
         <button type="submit">Create Account</button>
+        <p>Already have an account? <a href="/signin/">Login</a>.</p>
     </form>
 </article>
 {% endblock %}
