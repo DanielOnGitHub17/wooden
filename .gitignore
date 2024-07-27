@@ -5,3 +5,4 @@ wooden.bat
 *.zip
 **/static/admin
 **/test.py
+**/wooden/production_settings.py
