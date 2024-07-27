@@ -2,7 +2,7 @@
 {% load static %}
 {% block title %}Log out{% endblock%}
 {% block content %}
-<form action="/signout/" method="POST">
+<form action="" method="POST">
     <legend>Signout of your wooden account</legend>
     {% csrf_token %}
     <input type="submit" value="Log out">

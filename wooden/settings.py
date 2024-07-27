@@ -119,6 +119,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+PASSWORD_RESET_TIMEOUT_DAYS = 1
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
@@ -166,19 +167,3 @@ CHANNEL_LAYERS = {
     },
   },
 }
-"""
-Things to change in production environment:
-
-1. Settings.py STATICFILES_DIRS --> STATIC_ROOT
-2. lounge.views base_path = "/home/DanielFirstWebsite/wooden/static/game/players/
-3. Debug = False
-4. Allowed hosts: mainwebsite"
-"""
-
-# By the way - dependences
-# pip install django
-# pip install -U channels[daphne]
-# pip install channels_redis
-
-# python manage.py runserver 2315
-# docker run --rm -p 5132:6379 redis:7
