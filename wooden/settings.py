@@ -29,6 +29,14 @@ ALLOWED_HOSTS = ["*", ".railway.app"]
 # For codespaces
 CSRF_TRUSTED_ORIGINS = ["https://fuzzy-zebra-6jj96xvxwww37r9-8000.app.github.dev", "https://localhost:8000", "https://*.railway.app"]
 
+# Email backend
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER"),
+EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD")
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_USE_SSL = False
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
 # Application definition
 
