@@ -2,8 +2,13 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    list-style-type: none;
   }
   
+  button{
+    cursor: pointer;
+  }
+
   html {
     font-size: 62.5%;
   }
@@ -44,7 +49,7 @@
     list-style-type: none;
   }
   
-  .nav-sign-up {
+  .nav-sign-up, .body-form button {
     background-color: #60280a;
     text-decoration: none;
     padding: 1rem 4rem;
@@ -231,8 +236,8 @@
     display: flex;
     flex-direction: column;
     gap: 2rem;
-    height: 40rem;
-    overflow: scroll;
+    max-height: 90vh;
+    overflow-y: scroll;
 
 }
 
@@ -275,3 +280,20 @@
 
 }
 
+#MESSAGES{
+  width: 40vw;
+  left: 30vw;
+}
+
+.body-form{
+  width: 50vw;
+  background: white;
+  padding: 10px;
+  font-size: 0.8em;
+  position: relative;
+  left: 25vw;
+  display: flex;
+  gap: 5px;
+  justify-content: space-between;
+  align-items: center;
+}
