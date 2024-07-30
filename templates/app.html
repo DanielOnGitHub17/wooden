@@ -12,23 +12,19 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="{% static 'app.css' %}">
+    <link rel="stylesheet" href="{% static 'both.css' %}">
     <script src="https://danielongithub17.github.io/funcs.js"></script>
     <title>{% block title %}Wooden Game{% endblock %}</title>
   </head>
   <body>
+    {% include "messages.html" %}
     <header class="header">
       <a href="/"><img src="{% static 'img/logo.png' %}" alt="Wooden Logo" /></a>
     </header>
-    {% if messages %}
-    <ul id="MESSAGES">
-        {% for message in messages %}
-        <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-        {% endfor %}
-    </ul>
-    {% endif %}
     <div id="APP">
         {% block content %}
         {% endblock %}
     </div>
+    <script type="module" src="{% static 'scripts.js' %}"></script>
   </body>
 </html>
