@@ -4,6 +4,8 @@ from register import views
 
 urlpatterns = [
     path("signup/", views.SignUp.as_view(), name="Sign up"),
+    path("confirm/", views.Confirm.as_view(), name="confirm_account"),
+    path("profile/", views.Profile.as_view(), name="Profile"),
     path("activate/<str:uidb64>/<str:token>/", views.activate, name="Activate"),
     path("signin/", views.SignIn.as_view(), name="Log in"),
     path("signout/", views.SignOut.as_view(), name="Log out"),
