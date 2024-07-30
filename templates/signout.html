@@ -2,10 +2,10 @@
 {% load static %}
 {% block title %}Log out{% endblock%}
 {% block content %}
-<form action="" method="POST">
+<form action="" method="POST" class="body-form">
     <legend>Signout of your wooden account</legend>
     {% csrf_token %}
-    <input type="submit" value="Log out">
+    <button type="submit">Log out</button>
 </form>
 <script src="{% static 'register/signs.js' %}"></script>
 {% endblock %}

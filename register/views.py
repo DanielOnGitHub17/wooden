@@ -9,12 +9,12 @@ from django.shortcuts import render, redirect
 from django.template.loader import render_to_string
 from django.utils.encoding import force_bytes, force_str, smart_str
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.views import View
 from django.views.generic.edit import CreateView
 
 from game.models import Player
 from helpers import handle_error, WoodenError, new_username
 from register.forms import SignInForm, SignUpForm
-
 
 class AccountActivationTokenGenerator(PasswordResetTokenGenerator):
     def _make_hash_value(self, user, timestamp):
@@ -49,23 +49,8 @@ class SignUp(SuccessMessageMixin, CreateView):
             new_user.is_active = False
             new_user.save()
             Player(user=new_user).save()
-
-            # Generate activation link and send email
-            uidb64 = urlsafe_base64_encode(force_bytes(new_user.pk))
-            token = account_activation_token.make_token(new_user)
-            activate_url = f"{self.request.scheme}://{self.request.get_host()}/activate/{uidb64}/{token}/"
-            context = {
-                "user": new_user,
-                "activate_url": activate_url
-            }
-            email_html_message = render_to_string("account_activation_email.html", context)
-            email = EmailMessage(
-                subject="Wooden: Activate Your Account",
-                body=email_html_message,
-                to=[new_user.email]
-            )
-            email.content_subtype = "html"
-            email.send(fail_silently=False)
+            self.request.session["user_id"] = new_user.pk
+            Confirm.send_confirmation_email(new_user, self.request.scheme, self.request.get_host())
         finally:
             return super().form_valid(form)
 
@@ -76,6 +61,48 @@ class SignUp(SuccessMessageMixin, CreateView):
     
     def get(self, request):
         return redirect("/lounge/") if self.request.user.is_authenticated else super().get(request)
+
+class Profile(View):
+    def post(self, request):
+        pass
+    
+    def get(self, request):
+        pass
+
+class Confirm(View):
+    def post(self, request):
+        # send activation email
+        if "user_id" not in request.session:
+            try:
+                new_user = User.objects.get(pk=request.session["user_id"])
+                if new_user.is_active:
+                    msg.add_message(request, msg.INFO, "Your account is already activated.")
+                else:
+                    Confirm.send_confirmation_email(new_user, request.scheme, request.get_host())
+            except:
+                del request.session["user_id"]
+        else:
+            msg.add_message("That page is inaccessible")
+        
+        return redirect("/signin/")
+    
+    @staticmethod
+    def send_confirmation_email(new_user, scheme, host):
+        uidb64 = urlsafe_base64_encode(force_bytes(new_user.pk))
+        token = account_activation_token.make_token(new_user)
+        activate_url = f"{scheme}://{host}/activate/{uidb64}/{token}/"
+        context = {
+            "user": new_user,
+            "activate_url": activate_url
+        }
+        email_html_message = render_to_string("account_activation_email.html", context)
+        email = EmailMessage(
+            subject="Wooden: Activate Your Account",
+            body=email_html_message,
+            to=[new_user.email]
+        )
+        email.content_subtype = "html"
+        email.send(fail_silently=False)
 
 def activate(request, uidb64, token):
     try:
@@ -88,6 +115,8 @@ def activate(request, uidb64, token):
         user.is_active = True
         user.save()
         msg.add_message(request, msg.SUCCESS, "Your wooden account has been successfuly activated. Please log in")
+        if "user_id" in request.session:
+            del request.session["user_id"]
         return redirect("/signin/")
     
     msg.add_message(request, msg.ERROR, "Sorry, but your wooden account could not be validated. Please retry creating an account")

@@ -11,11 +11,13 @@
       href="https://fonts.googleapis.com/css2?family=New+Rocker&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="{% static 'styles.css' %}" />
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+    <link rel="stylesheet" href="{% static 'both.css' %}">
     <script src="https://danielongithub17.github.io/funcs.js"></script>
     <title>{% block title %}Wooden{% endblock %}</title>
   </head>
   <body>
+    {% include "messages.html" %}
     <header class="header">
       <a href="/">
         <img src="{% static 'img/logo.png' %}" alt="Wooden Logo" />
@@ -50,15 +52,6 @@
       </nav>
     </header>
     <main>
-      <article class="main-messages">
-        {% if messages %}
-        <ul class="messages">
-            {% for message in messages %}
-            <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-            {% endfor %}
-        </ul>
-        {% endif %}
-      </article>
         {% block content %}
         {% endblock %}
     </main>

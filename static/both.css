@@ -1,0 +1,44 @@
+#MESSAGES{
+    position: absolute;
+    max-height: 30vh;
+    overflow-y: scroll;
+    font-size: smaller;
+    top: 5px;
+    padding: 10px;
+    border: 1px solid brown;
+    box-shadow: 0 0 5px 5px #ffcea4;
+    scrollbar-width: thin;
+    background: white;
+    transform: scale(0);
+    transition: 0.4s;
+    text-align: center;
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+}
+
+
+#MESSAGES.empty{
+    display: none;
+}
+#MESSAGES.show{
+  /* opacity: 1; */
+  transform: scale(1);
+}
+#MESSAGES ul{
+  padding: 5px;
+}
+#ERRORS{
+  color: red;
+}
+#CLOSE_MESSAGES{
+  padding: 3px;
+  background-color: red;
+  width: 2em;
+  height: 2em;
+  border-radius: 2em;
+  border: 1px solid brown;
+  cursor: pointer;
+}

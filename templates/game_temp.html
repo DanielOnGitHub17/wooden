@@ -55,7 +55,10 @@
             <button type="submit">CONTINUE TO LOUNGE</button>
         </form>
         {% else %}
-        <button type="button" onclick="load()">Practice Again</button>
+        <div>
+            <button type="button" onclick="load()">Practice Again</button>
+            <button type="button" onclick="window.close()">Close</button>
+        </div>
         {% endif %}
         <!-- List best players with their username -->
         

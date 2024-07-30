@@ -21,7 +21,7 @@ Rules
 
 # Constants
 CHANNEL_LAYER = get_channel_layer()  # or maybe use channels "default" alias
-dev_mails = ("aemeghebo@gsumail.gram.edu", "enesidaniel.120064@gmail.com")
+dev_mails = (os.environ.get("EMAIL_HOST_USER"),)
 MAX_WAIT_TIME = 10
 new_username = lambda name: f"{choice(username_prefixes)}{name.capitalize()}{randint(10, 400)}"
 username_prefixes = ("fighter", "runner", "quick", "super", "victorious",

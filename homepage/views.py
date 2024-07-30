@@ -3,8 +3,10 @@ from django.views import View
 from django.http import HttpResponse
 from datetime import datetime
 from django.contrib import messages as msg
+from django.core.mail import send_mail
 
 from game.views import GamePlay
+from helpers import make_email, dev_mails
 
 # Create your views here.
 
@@ -21,9 +23,8 @@ def game_help(request):
 
 class Support(View):
     def post(self, request):
-        with open("../issues.html", 'a') as file:
-            file.write(f"\n<li>{request.user}: {request.POST['issue']} | {datetime.now()}</li>")
-        # Email devs
+        email = make_email(request, request.POST["issue"])
+        send_mail("Wooden: Support Email", email, "sender@gmail.com", dev_mails)
         msg.add_message(request, msg.INFO, "Thanks for sending a message!")
         return redirect("/support/")
     
