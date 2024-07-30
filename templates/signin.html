@@ -5,6 +5,14 @@
 <div id="helps">
     
 </div>
+{% if "user_id" in request.session %}
+<form action="/confirm/" method="post" class="body-form">
+    {% csrf_token %}
+    <p>A confirmation email has been sent to you; you need to activate your account before signing in.
+        <br>If you did not get the email, you can resend the link.</p>
+    <button type="submit">Resend confirmation link</button> 
+</form>
+{% endif %}
 <article class="main-sign-up">
     <div class="sign-up-img"></div>
     <form action="" class="sign-up-form" method="POST">
