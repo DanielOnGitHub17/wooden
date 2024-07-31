@@ -28,7 +28,9 @@ body {
     justify-content: center;
     align-items: center;
 }
-
+body>div[id] button:hover, body>div[id] a:hover{
+    background-color: brown;
+}
 /* Header image */
 header{
     display: flex;
@@ -41,7 +43,7 @@ header img{
 }
 
 /* APP */
-#APP{
+body>div[id]{
     display: flex;
     flex-flow: column;
     justify-content: center;
@@ -55,10 +57,9 @@ header img{
     scrollbar-width: none;
     gap: 40px;
     box-shadow: 0px 0px 15px 2px inset var(--color);
-    ;
 }
 
-#APP>div{
+body>div[id]>div{
     display: flex;
     flex-flow: column;
     justify-content: center;
@@ -89,8 +90,8 @@ th, td{
 td:first-child{
     font-weight: bold;
 }
-table a, table button, #GAME button{
-    display: flex;
+body>div[id] button, body>div[id] a{
+        display: flex;
     justify-self: stretch;
     background: var(--color);
     color: white;
@@ -101,7 +102,7 @@ table a, table button, #GAME button{
     border-top: 2px solid white;
 }
 
-#APP>div>form{
+body>div[id]>div>form{
     display: flex;
     flex-flow: column;
     justify-content: center;
@@ -109,4 +110,8 @@ table a, table button, #GAME button{
 }
 #GAMES [type="radio"]{
     scale: 2;
+}
+
+#START{
+    display: none;
 }
