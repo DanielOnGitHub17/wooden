@@ -1,0 +1,25 @@
+{% extends "app.html" %}
+{% load static %}
+{% block content %}
+<div id="PEOPLE">
+    <h3>Online Players</h3>
+    <table id="ONLINE_PLAYERS">
+        <tr>
+            <th>Username</th>
+            <th>Rank</th>
+        </tr>
+        {% for player in online_players %}
+        <tr>
+            <td class="username">{{ player.user.username }}</td>
+            <td class="rank">{{ player.rank }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+<div id="CHATS"></div>
+<form id="CHATBOX">
+    <input id="INPUT">
+    <button type="button" id="SENDER">Kick</button>
+</form>
+<script type="module" src="{% static 'chat/events.js' %}"></script>
+{% endblock %}
