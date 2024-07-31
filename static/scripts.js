@@ -14,6 +14,13 @@ function compileMessages(event){
     reclass(MESSAGES, MESSAGES.textContent.trim() == 'X' ? "empty" : "show");
 }
 
+function forceFullScreen(event){
+    switchScreen("START");
+    document.addEventListener("fullscreenchange", (event)=>{
+        switchScreen(document.fullscreenElement == document.firstElementChild ? "APP" : "START")
+    })
+}
+
 for (let handler of [changeNavStyle, compileMessages]){
     window.addEventListener("load", handler);
 }
