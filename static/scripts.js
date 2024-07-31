@@ -1,5 +1,30 @@
 identify();
-// General
+
+function main() {
+    let cheat = [];
+    if (window.CHEATS){
+        CHEATS.style.display = "none";
+        cheat.push(showCheats);
+    }
+    let events = {
+        load: [changeNavStyle, compileMessages]
+        , click: [makeMenu]
+        , keyup: cheat
+    }
+
+    for (let type in events){
+        for (let handler of events[type]){
+            window.addEventListener(type, handler);
+        }
+    }
+}
+
+function makeMenu(event) {
+    if (event.target == SHOW_MENU){
+        [[MENU, "show"], [APP, "blur"]].forEach(each=>{reclass(...each, hasClass(...each))});
+    }
+}
+
 function changeNavStyle(event) {
     const navLink = getS(`nav [href='${location.pathname}']`);
     if (navLink ) navLink.className = 'nav-sign-up';
@@ -21,16 +46,11 @@ function forceFullScreen(event){
     })
 }
 
-for (let handler of [changeNavStyle, compileMessages]){
-    window.addEventListener("load", handler);
+
+function showCheats(event){
+    if (event.ctrlKey && event.shiftKey && event.altKey && event.key == 'C'){
+       CHEATS.style.display = "";
+    }
 }
 
-// For How To Play
-if (window.cheats){
-    cheats.style.display = "none";
-    window.addEventListener("keyup", (event)=>{
-        if (event.ctrlKey && event.shiftKey && event.altKey && event.key == 'C'){
-            cheats.style.display = "";
-        }
-    })
-}
+main()
