@@ -16,25 +16,16 @@ from game.models import Player
 from helpers import handle_error, WoodenError, new_username
 from register.forms import SignInForm, SignUpForm
 
-class AccountActivationTokenGenerator(PasswordResetTokenGenerator):
-    def _make_hash_value(self, user, timestamp):
-        return (str(user.pk) + str(timestamp) + str(user.is_active))
 
-account_activation_token = AccountActivationTokenGenerator()
+class Profile(LoginRequiredMixin, View):
+    def post(self, request):
+        if len(request.POST) > 1:
+            # for
+            return
+        return redirect("/profile/")
 
-class ResetPassword(PasswordResetView):
-    template_name = "password_reset_form.html"
-    html_email_template_name = "password_reset_email.html"
-    subject_template_name = "password_reset_subject.txt"
-
-class DoneResetPassword(PasswordResetDoneView):
-    template_name = "password_reset_done.html"
-
-class ConfirmResetPassword(SuccessMessageMixin, PasswordResetConfirmView):
-    template_name = "password_reset_confirm.html"
-    success_url = "/signin/"
-    success_message = "Your password was changed successfully. Please log in."
-
+    def get(self, request):
+        return render(request, "profile.html", {})
 
 class SignUp(SuccessMessageMixin, CreateView):
     template_name = "signup.html"
@@ -62,12 +53,39 @@ class SignUp(SuccessMessageMixin, CreateView):
     def get(self, request):
         return redirect("/lounge/") if self.request.user.is_authenticated else super().get(request)
 
-class Profile(View):
+class SignIn(SuccessMessageMixin, LoginView):
+    template_name = "signin.html"
+    success_message = "Signin successful!"
+    redirect_authenticated_user = True
+    
+    def dispatch(self, *args, **kwargs):
+        if self.request.user.is_authenticated:
+            player = self.request.user.player
+            player.logged_in = True
+            player.score = 0
+            player.save()
+        return super().dispatch(*args, **kwargs)
+
+
+class SignOut(LoginRequiredMixin, LogoutView):
+    template_name = "signed_out.html"
+    LogoutView.http_method_names.append("get")  # HA!
+
     def post(self, request):
-        pass
+        player = request.user.player
+        if player.game:
+            return self.get(request)
+        player.logged_in = False
+        player.save()
+        return super().post(request)
     
     def get(self, request):
-        pass
+        print(self.request.build_absolute_uri())
+        if request.user.player.game:
+            msg.add_message(request, msg.ERROR, "You cannot sign out now. You are in a game")
+            return redirect("/lounge/")
+        return render(request, "signout.html")
+
 
 class Confirm(View):
     def post(self, request):
@@ -104,6 +122,27 @@ class Confirm(View):
         email.content_subtype = "html"
         email.send(fail_silently=False)
 
+
+class ResetPassword(PasswordResetView):
+    template_name = "password_reset_form.html"
+    html_email_template_name = "password_reset_email.html"
+    subject_template_name = "password_reset_subject.txt"
+
+class DoneResetPassword(PasswordResetDoneView):
+    template_name = "password_reset_done.html"
+
+class ConfirmResetPassword(SuccessMessageMixin, PasswordResetConfirmView):
+    template_name = "password_reset_confirm.html"
+    success_url = "/signin/"
+    success_message = "Your password was changed successfully. Please log in."
+
+
+class AccountActivationTokenGenerator(PasswordResetTokenGenerator):
+    def _make_hash_value(self, user, timestamp):
+        return (str(user.pk) + str(timestamp) + str(user.is_active))
+
+account_activation_token = AccountActivationTokenGenerator()
+
 def activate(request, uidb64, token):
     try:
         uid = smart_str(urlsafe_base64_decode(uidb64).decode('utf-8'))
@@ -121,39 +160,3 @@ def activate(request, uidb64, token):
     
     msg.add_message(request, msg.ERROR, "Sorry, but your wooden account could not be validated. Please retry creating an account")
     return redirect("/signup/")
-
-
-class SignIn(SuccessMessageMixin, LoginView):
-    template_name = "signin.html"
-    success_message = "Signin successful!"
-    redirect_authenticated_user = True
-    
-    def dispatch(self, *args, **kwargs):
-        if self.request.user.is_authenticated:
-            player = self.request.user.player
-            player.logged_in = True
-            player.score = 0
-            player.save()
-        return super().dispatch(*args, **kwargs)
-
-
-class SignOut(LoginRequiredMixin, LogoutView):
-    template_name = "signed_out.html"
-    LogoutView.http_method_names.append("get")  # HA!
-
-    def post(self, request):
-        player = request.user.player
-        if player.game:
-            return self.get(request)
-        player.logged_in = False
-        player.save()
-        return super().post(request)
-    
-    def get(self, request):
-        print(self.request.build_absolute_uri())
-        if request.user.player.game:
-            msg.add_message(request, msg.ERROR, "You cannot sign out now. You are in a game")
-            return redirect("/lounge/")
-        return render(request, "signout.html")
-
-# Maybe define a class that inherits UserPassesTestMixin, and has redirect_url instead of raising 403
