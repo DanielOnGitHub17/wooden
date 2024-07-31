@@ -28,13 +28,15 @@ body {
     justify-content: center;
     align-items: center;
 }
-body>div[id] button:hover, body>div[id] a:hover{
+button:hover, a.button:hover{
     background-color: brown;
+}
+button:active, a.button:active{
+    background-color: #333;
 }
 /* Header image */
 header{
     display: flex;
-    flex-flow: column;
     justify-content: center;
     align-items: center;
 }
@@ -43,7 +45,7 @@ header img{
 }
 
 /* APP */
-body>div[id]{
+#APP{
     display: flex;
     flex-flow: column;
     justify-content: center;
@@ -55,11 +57,11 @@ body>div[id]{
     padding: 25px;
     overflow: scroll;
     scrollbar-width: none;
-    gap: 40px;
+    gap: 20px;
     box-shadow: 0px 0px 15px 2px inset var(--color);
 }
 
-body>div[id]>div{
+#APP>div{
     display: flex;
     flex-flow: column;
     justify-content: center;
@@ -90,8 +92,8 @@ th, td{
 td:first-child{
     font-weight: bold;
 }
-body>div[id] button, body>div[id] a{
-        display: flex;
+button, a.button{
+    display: flex;
     justify-self: stretch;
     background: var(--color);
     color: white;
@@ -102,7 +104,7 @@ body>div[id] button, body>div[id] a{
     border-top: 2px solid white;
 }
 
-body>div[id]>div>form{
+#APP>div>form{
     display: flex;
     flex-flow: column;
     justify-content: center;
@@ -112,6 +114,62 @@ body>div[id]>div>form{
     scale: 2;
 }
 
-#START{
+#START, #APP #PEOPLE{
     display: none;
+}
+/* Chats */
+#PEOPLE.show{
+    display: flex;
+}
+
+#APP>#CHATBOX{
+    flex-flow: row;
+    gap: 1em;
+    padding: 0;
+    height: fit-content;
+    align-items: flex-end;
+    border: none;
+    margin: 0;
+}
+
+#INPUT{
+    width: 20vw;
+    border: 2px solid var(--color);
+    background-color: white;
+    padding: 7px 10px;
+    margin: 0;
+}
+
+#CHATS{
+    min-height: 50vh;
+    border: 2px solid var(--color);
+    padding: 10px;
+}
+
+/* Menu */
+#MENU{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex-flow: column;
+    gap: 5px;
+    position: fixed;
+    background-color: #dcbc93;
+    align-content: center;
+    padding: 20px;
+    z-index: -10;
+    border: 4px solid var(--color);
+    transform: scale(-1);
+    opacity: 0;
+}
+
+#MENU.show{
+    display: flex;
+    z-index: 100;
+    transform: scale(1);
+    opacity: 1;
+}
+
+#APP.blur{
+    filter: blur(8px);
 }
