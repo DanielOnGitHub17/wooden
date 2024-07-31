@@ -25,6 +25,9 @@
         {% block content %}
         {% endblock %}
     </div>
+    <div id="START">
+      <button onclick="document.firstElementChild.requestFullscreen()">Enter Game</button>
+    </div>
     <script type="module" src="{% static 'scripts.js' %}"></script>
   </body>
 </html>
