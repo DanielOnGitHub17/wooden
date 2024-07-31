@@ -57,14 +57,14 @@ class SignIn(SuccessMessageMixin, LoginView):
     template_name = "signin.html"
     success_message = "Signin successful!"
     redirect_authenticated_user = True
-    
-    def dispatch(self, *args, **kwargs):
-        if self.request.user.is_authenticated:
-            player = self.request.user.player
-            player.logged_in = True
-            player.score = 0
-            player.save()
-        return super().dispatch(*args, **kwargs)
+
+
+    def form_valid(self, form):
+        result = super().form_valid(form)
+        player = self.request.user.player
+        player.logged_in = True
+        player.save()
+        return result
 
 
 class SignOut(LoginRequiredMixin, LogoutView):
@@ -80,7 +80,6 @@ class SignOut(LoginRequiredMixin, LogoutView):
         return super().post(request)
     
     def get(self, request):
-        print(self.request.build_absolute_uri())
         if request.user.player.game:
             msg.add_message(request, msg.ERROR, "You cannot sign out now. You are in a game")
             return redirect("/lounge/")
