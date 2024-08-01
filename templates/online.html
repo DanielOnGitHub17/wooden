@@ -1,0 +1,17 @@
+
+<div id="PEOPLE">
+    <h3>Online Players</h3>
+    <table id="ONLINE_PLAYERS">
+        <tr>
+            <th>Username</th>
+            <th>Rank</th>
+        </tr>
+        {% for player in online_players %}
+        <tr>
+            <td class="username">{{ player.user.username }}</td>
+            <td class="rank">{{ player.rank }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    <button id="HIDE_ONLINE">Close</button>
+</div>
