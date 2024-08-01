@@ -1,9 +1,8 @@
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
-from game.models import Player
 
+from helpers import online_players_context
+
+@login_required
 def chat(request):
-    online_players = Player.objects.all().order_by("won")
-    context = {
-        "online_players": online_players,
-    }
-    return render(request, "chat.html", context)
+    return render(request, "chat.html", online_players_context())
