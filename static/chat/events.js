@@ -1,8 +1,7 @@
-function toChats(event) {
-    switchScreen("CHATS");
-}
+import { makeEvents } from "../scripts.js"
+import { Chat } from "./chat.js"
 
-// events onload
-for (let handler of []){
-    addEventListener("load", handler);
-}
+makeEvents({
+    submit: [Chat.send]
+    , load: [Chat.close]
+});
