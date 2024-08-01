@@ -62,6 +62,4 @@ class Chat{
     }
 }
 
-Chat.close();  // Not actually close, open. Ha!
-
 export { Chat }
