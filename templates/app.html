@@ -17,8 +17,9 @@
     <title>{% block title %}Wooden Game{% endblock %}</title>
   </head>
   <body>
-    {% include "messages.html" %}
     {% include "menu.html" %}
+    {% include "messages.html" %}
+    {% include "online.html" %}
     <header class="header">
       <a href="/"><img src="{% static 'img/logo.png' %}" alt="Wooden Logo" /></a>
       <button type="button" id="SHOW_MENU">Menu</button>
@@ -30,6 +31,6 @@
     <div id="START">
       <button onclick="document.firstElementChild.requestFullscreen()">Enter Game</button>
     </div>
-    <script type="module" src="{% static 'scripts.js' %}"></script>
+    <script type="module" id="USERNAME" src="{% static 'scripts.js' %}">{{ user.username }}</script>
   </body>
 </html>
