@@ -5,7 +5,9 @@ function changeBounds(event){
     gameForm.count.max = gameForm.max_hits.max = 7;
 }
 
-for (let handler of [changeBounds]) addEventListener("load", handler);
+for (let handler of [changeBounds]) {
+    addEventListener("load", handler)
+};
 
 // Games are created in the server only when it is multiplayer.
 onblur=onchange=oninput=(event)=>{
@@ -18,4 +20,3 @@ onblur=onchange=oninput=(event)=>{
             break;
     }
 }
-// "99 // 4 -> 99" (WHY??? - (Python programmer switched to JavaScript))

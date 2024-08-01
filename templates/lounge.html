@@ -6,7 +6,7 @@
     <tr><td>Username:</td><td>{{ user.username }}</td></tr>
     <tr><td>Rank:</td><td>{{ user.player.rank }}</td></tr>
     <tr><td>Full Name:</td><td>{{ user.get_full_name }}</td></tr>
-    <tr><td colspan="2"><a href="/game/" target="_blank">Practice</a></td></tr>
+    <tr><td colspan="2"><a class="button" href="/game/" target="_blank">Practice</a></td></tr>
 </table>
 
 {% if user.player.game %}

@@ -1,0 +1,11 @@
+<ul id="MENU">
+    <li><a class="button" href="/profile/">Your profile</a></li>
+    <li><a class="button" href="/lounge/">Lounge</a></li>
+    <li><a class="button" href="/chat/">General chat</a></li>
+    <li><button id="SHOW_ONLINE">Online Players</button></li>
+    {% if user.player.game %}
+    <li><a class="button" href="/lounge/">Your game</a></li>
+    {% endif %}
+    <li><a class="button" href="/game/" target="_blank">Practice</a></li>
+    <li><a class="button" href="/signout/">Exit</a></li>
+</ul>

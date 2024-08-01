@@ -6,7 +6,7 @@ from channels.layers import get_channel_layer
 from datetime import datetime
 from django.contrib.auth.models import User
 from django.shortcuts import redirect
-from importlib import reload
+from importlib import import_module, reload
 from random import choice, randint, sample
 
 """
@@ -27,6 +27,22 @@ new_username = lambda name: f"{choice(username_prefixes)}{name.capitalize()}{ran
 username_prefixes = ("fighter", "runner", "quick", "super", "victorious",
                      "cool", "amazing", "fast", "smart", "kind", "big",
                        "powerful", "brave", "mighty", "potent")
+
+
+# Get online players to be given to app views.
+def online_players_context():
+    from game.models import Player
+    return {
+        "online_players": Player.objects.filter(logged_in=True).order_by("won"),
+    }
+
+# Resolve websocket_urlpatterns to be passed to asgi URLRouter
+def join_wspatterns(paths):
+    patterns = []
+    for path in paths:
+        for pattern in import_module(f"{path}.routing").websocket_urlpatterns:
+            patterns.append(pattern)
+    return patterns
 
 # Send message to a group
 async def group_send(group_name="lounge"

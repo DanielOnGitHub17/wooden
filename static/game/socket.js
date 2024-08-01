@@ -11,7 +11,7 @@ function createGameSocket() {
 
 class GameSocket extends WebSocket{
     constructor(){
-        super(`ws${'s'.repeat(location.protocol=="https:")}://${location.host}/ws/game/${Gamer.gameID}/`);
+        super(`ws${(location.protocol=="https:")?'s':''}://${location.host}/ws/game/${Gamer.gameID}/`);
     }
 
     start(data){

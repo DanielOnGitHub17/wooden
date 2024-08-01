@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     "register",
     "lounge",
     "game",
+    "chat",
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

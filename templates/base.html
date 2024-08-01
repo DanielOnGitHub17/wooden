@@ -55,6 +55,6 @@
         {% block content %}
         {% endblock %}
     </main>
-    <script type="module" src="{% static 'scripts.js' %}"></script>
+    <script type="module" id="USERNAME" src="{% static 'scripts.js' %}">{{ user.username }}</script>
   </body>
 </html>
