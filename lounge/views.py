@@ -11,7 +11,7 @@ from django.views import View
 from django.views.generic.edit import CreateView
 
 from game.models import Game, Player
-from helpers import make_game
+from helpers import make_game, online_players_context
 from random import randint, sample, choice
 
 base_path = "static/game/players/"
@@ -32,6 +32,7 @@ class Lounge(LoginRequiredMixin, SuccessMessageMixin, CreateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        context.update(online_players_context())
         if not self.request.user.player.game:
             context.update({
                 "games": [game for game in Game.objects.all() if game.available]
