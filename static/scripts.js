@@ -1,27 +1,34 @@
 identify();
+const username = USERNAME.textContent;
 
-function main() {
+function main(event) {
     let cheat = [];
     if (window.CHEATS){
         CHEATS.style.display = "none";
         cheat.push(showCheats);
     }
-    let events = {
+    makeEvents({
         load: [changeNavStyle, compileMessages]
-        , click: [makeMenu]
+        , click: [makeMenu, showOnline, hideOnline]
         , keyup: cheat
-    }
-
-    for (let type in events){
-        for (let handler of events[type]){
-            window.addEventListener(type, handler);
-        }
-    }
+    });
 }
 
 function makeMenu(event) {
     if (event.target == SHOW_MENU){
         [[MENU, "show"], [APP, "blur"]].forEach(each=>{reclass(...each, hasClass(...each))});
+    }
+}
+
+function showOnline(event){
+    if (event.target == SHOW_ONLINE){
+        reclass(PEOPLE, "show");
+    }
+}
+
+function hideOnline(event){
+    if (event.target == HIDE_ONLINE){
+        reclass(PEOPLE, "show", true);
     }
 }
 
@@ -53,4 +60,14 @@ function showCheats(event){
     }
 }
 
-main()
+function makeEvents(events){
+    for (let type in events){
+        for (let handler of events[type]){
+            window.addEventListener(type, handler);
+        }
+    }
+}
+
+onload = main;
+
+export { makeEvents, username }
