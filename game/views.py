@@ -14,6 +14,9 @@ from game.models import Game, Player
 from helpers import group_send_sync, make_game, WoodenError
 from lounge.views import base_path
 
+class LeaveGame(LoginRequiredMixin, View):
+    pass
+
 class EndGame(LoginRequiredMixin, View):
     def post(self, request):
         request.user.player.reset("won" in request.POST)
