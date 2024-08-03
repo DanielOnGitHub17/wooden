@@ -5,14 +5,12 @@ from datetime import datetime
 from django.contrib import messages as msg
 from django.core.mail import send_mail
 
-from game.views import GamePlay
 from helpers import make_email, dev_mails
 
 # Create your views here.
 
 def home(request):
-    # return GamePlay().get(request)
-# https://www.onthisday.com/date/2010/june/21 -> Scrape to get daily insights!
+    # https://www.onthisday.com/date/2010/june/21 -> Scrape to get daily insights!
     return render(request, "homepage/landing.html", {"user": request.user})
 
 def game_help(request):
