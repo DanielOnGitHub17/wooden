@@ -79,11 +79,14 @@ class JoinGame(LoginRequiredMixin, View):
                 group_send_sync(group_name=game_id, data={"handler": "createGamer", "data": request.user.username})
         except:
             msg.add_message(request, msg.ERROR, "An error occured so you could not join the game")
-        return redirect("/lounge/")
+        return redirect("/play/")
 
 class EndGame(LoginRequiredMixin, View):
     def post(self, request):
-        request.user.player.reset("won" in request.POST)
+        won = "won" in request.POST
+        request.user.player.reset(won)
+        if won:
+            msg.add_message(request, msg.SUCCESS, "Congrats on winning that game! You've ranked up.")
         return redirect("/lounge/")
 
 @login_required

@@ -83,7 +83,7 @@ class Game(models.Model):
         return f"Game {self.pk}"
     
     def get_absolute_url(self):
-        return f"/lounge/"
+        return f"/play/"
     
     @property
     def can_start(self):
