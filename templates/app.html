@@ -17,9 +17,9 @@
     <title>{% block title %}Wooden Game{% endblock %}</title>
   </head>
   <body>
-    {% include "menu.html" %}
+    {% include "app/menu.html" %}
     {% include "messages.html" %}
-    {% include "online.html" %}
+    {% include "app/online.html" %}
     <header class="header">
       <a href="/"><img src="{% static 'img/logo.png' %}" alt="Wooden Logo" /></a>
       <button type="button" id="SHOW_MENU">Menu</button>

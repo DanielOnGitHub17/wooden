@@ -13,13 +13,10 @@ from helpers import make_email, dev_mails
 def home(request):
     # return GamePlay().get(request)
 # https://www.onthisday.com/date/2010/june/21 -> Scrape to get daily insights!
-    return render(request, "landing.html", {"user": request.user})
-
-def leaders(request):
-    return render(request, "leaders.html", {"user": request.user})
+    return render(request, "homepage/landing.html", {"user": request.user})
 
 def game_help(request):
-    return render(request, "game_help.html", {"user": request.user})
+    return render(request, "homepage/game_help.html", {"user": request.user})
 
 class Support(View):
     def post(self, request):
@@ -29,7 +26,7 @@ class Support(View):
         return redirect("/support/")
     
     def get(self, request):
-        return render(request, "support.html")
+        return render(request, "homepage/support.html")
 
 def dev(request):
-    return render(request, "dev.html", {"user": request.user})
+    return render(request, "homepage/dev.html", {"user": request.user})
