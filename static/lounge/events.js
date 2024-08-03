@@ -1,13 +1,22 @@
+import { makeEvents } from "../scripts.js";
+
+function main() {
+    makeEvents({
+        load: [changeBounds, changeCountLabel]
+    })
+}
 // Changing min and max
 function changeBounds(event){
-    gameForm = CREATEGAME.elements;
+    window.gameForm = CREATEGAME.elements;
     gameForm.count.min = gameForm.max_hits.min = 2;
     gameForm.count.max = gameForm.max_hits.max = 7;
 }
 
-for (let handler of [changeBounds]) {
-    addEventListener("load", handler)
-};
+// Changing "Count" label
+function changeCountLabel(event){
+    getS(`[for="id_count"]`).textContent = "Number of Players: ";
+}
+
 
 // Games are created in the server only when it is multiplayer.
 onblur=onchange=oninput=(event)=>{
@@ -20,3 +29,5 @@ onblur=onchange=oninput=(event)=>{
             break;
     }
 }
+
+main();
