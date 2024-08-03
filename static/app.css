@@ -64,8 +64,7 @@ header img{
 #APP>div{
     display: flex;
     flex-flow: column;
-    justify-content: flex-start;
-    align-items: flex-start;
+    align-items: center;
     border-bottom: 3px solid var(--color);
     padding-bottom: 10px;
     width: -webkit-fill-available;
