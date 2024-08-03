@@ -79,14 +79,9 @@ class Player{
         // send this.data() to server
     }
 
-    set pos(value){
-        let [r, c] = value;
-        fetch(`/game/pos?r=${r}&c=${c}`).catch(error=>{});
-    }
+    set pos(value){}
 
-    set score(value){
-        fetch(`/game/score?score=${value}`).catch(error=>{});
-    }
+    set score(value){}
 
     remove(){}
 

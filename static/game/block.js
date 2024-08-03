@@ -16,7 +16,6 @@ class Block{
         if (this.kind != 1) return;
         // remove from initial kind, then add to space
         let [r, c] = this.position;
-        // fetch(`/game/crack?r=${r}&c=${c}`)
         transfer(this, Block.blocks[1], Block.blocks[0]);
         game.grid[r][c] = 0;
         this.kind = 0;

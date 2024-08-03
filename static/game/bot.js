@@ -22,39 +22,12 @@ class Bot extends Player{
             }, 200);
             return;
         }
-        // else...
     }
     moveSpiral(){
         // turning algorithm
     }
     moveLinear(){
         // up to down algorithm
-    }
-    moveByServer(){
-        // Will be called for all... in socket manager
-        fetch(`/game/position?player=${this.name}`).then(resp=>{
-            resp.json().then(pos=>{
-                let [r, c] = pos
-                , [R, C] = this.ground.position
-                , dir = NaN;
-                // logic to get dir for pointing
-                if (R > r){
-                    dir = 0
-                } else if (r > R){
-                    dir = 2
-                } else if (C > c){
-                    dir = 3
-                } else if (c > C){
-                    dir = 1
-                }
-                // place without checking block
-                if (!isNaN(dir)){
-                    this.body.style.rotate = `${dir*90}deg`
-                    this.ground = game.blocks.get(r, c);
-                    this.ground.block.append(this.body);
-                }
-            })
-        }).catch(error=>{})
     }
     event(){}
     moveRandom(){
