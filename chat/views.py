@@ -5,4 +5,4 @@ from helpers import online_players_context
 
 @login_required
 def chat(request):
-    return render(request, "chat.html", online_players_context())
+    return render(request, "app/chat.html", online_players_context())

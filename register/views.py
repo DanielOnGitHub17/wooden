@@ -7,7 +7,7 @@ from django.contrib.messages.views import SuccessMessageMixin
 from django.core.mail import EmailMessage
 from django.shortcuts import render, redirect
 from django.template.loader import render_to_string
-from django.utils.encoding import force_bytes, force_str, smart_str
+from django.utils.encoding import force_bytes, smart_str
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.views import View
 from django.views.generic.edit import CreateView
@@ -25,10 +25,10 @@ class Profile(LoginRequiredMixin, View):
         return redirect("/profile/")
 
     def get(self, request):
-        return render(request, "profile.html", {})
+        return render(request, "registration/profile.html")
 
 class SignUp(SuccessMessageMixin, CreateView):
-    template_name = "signup.html"
+    template_name = "registration/signup.html"
     form_class = SignUpForm
     success_url = "/signin/"
     success_message = "Hello, %(first_name)s. Your account was created successfully. Please click the link in your email to verify your account."
@@ -54,10 +54,8 @@ class SignUp(SuccessMessageMixin, CreateView):
         return redirect("/lounge/") if self.request.user.is_authenticated else super().get(request)
 
 class SignIn(SuccessMessageMixin, LoginView):
-    template_name = "signin.html"
     success_message = "Signin successful!"
     redirect_authenticated_user = True
-
 
     def form_valid(self, form):
         result = super().form_valid(form)
@@ -67,8 +65,8 @@ class SignIn(SuccessMessageMixin, LoginView):
         return result
 
 
-class SignOut(LoginRequiredMixin, LogoutView):
-    template_name = "signed_out.html"
+class SignOut(LoginRequiredMixin, SuccessMessageMixin, LogoutView):
+    success_message = "Logged out successfully"
     LogoutView.http_method_names.append("get")  # HA!
 
     def post(self, request):
@@ -83,7 +81,7 @@ class SignOut(LoginRequiredMixin, LogoutView):
         if request.user.player.game:
             msg.add_message(request, msg.ERROR, "You cannot sign out now. You are in a game")
             return redirect("/lounge/")
-        return render(request, "signout.html")
+        return render(request, "registration/signout.html")
 
 
 class Confirm(View):
@@ -112,7 +110,7 @@ class Confirm(View):
             "user": new_user,
             "activate_url": activate_url
         }
-        email_html_message = render_to_string("account_activation_email.html", context)
+        email_html_message = render_to_string("registration/account_activation_email.html", context)
         email = EmailMessage(
             subject="Wooden: Activate Your Account",
             body=email_html_message,
@@ -123,18 +121,13 @@ class Confirm(View):
 
 
 class ResetPassword(PasswordResetView):
-    template_name = "password_reset_form.html"
-    html_email_template_name = "password_reset_email.html"
-    subject_template_name = "password_reset_subject.txt"
+    html_email_template_name = PasswordResetView.email_template_name
 
-class DoneResetPassword(PasswordResetDoneView):
-    template_name = "password_reset_done.html"
+class DoneResetPassword(PasswordResetDoneView): pass
 
 class ConfirmResetPassword(SuccessMessageMixin, PasswordResetConfirmView):
-    template_name = "password_reset_confirm.html"
     success_url = "/signin/"
     success_message = "Your password was changed successfully. Please log in."
-
 
 class AccountActivationTokenGenerator(PasswordResetTokenGenerator):
     def _make_hash_value(self, user, timestamp):
