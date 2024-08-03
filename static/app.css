@@ -220,3 +220,16 @@ button, a.button{
 #HIDE_ONLINE{
     align-self: flex-end;
 }
+
+#CREATE{
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+}
+#CREATE tr{
+    justify-content: space-between;
+}
+
+#CREATE tr:last-child{
+    justify-content: center;
+}
