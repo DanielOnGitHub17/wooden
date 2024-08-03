@@ -2,7 +2,9 @@ from django.urls import path
 from game import views
 
 urlpatterns = [
-    path("", views.GamePlay.as_view(), name="Game Play"),
-    path("join/", views.JoinGame.as_view(), name="Join Game"),
-    path("end/", views.EndGame.as_view(), name="End Game")
+    path("play/", views.play, name="play"),
+    path("practice/", views.practice, name="practice"),
+    path("join/", views.JoinGame.as_view(), name="join"),
+    path("end/", views.EndGame.as_view(), name="end"),
+    path("leave/", views.LeaveGame.as_view(), name="leave"),
 ]
