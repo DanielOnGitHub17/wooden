@@ -17,6 +17,7 @@ function main(event) {
 function makeMenu(event) {
     if (event.target == window.SHOW_MENU){
         [[MENU, "show"], [APP, "blur"]].forEach(each=>{reclass(...each, hasClass(...each))});
+        SHOW_MENU.textContent = hasClass(MENU, "show") ? "Close" : "Menu";
     }
 }
 
