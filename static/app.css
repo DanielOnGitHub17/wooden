@@ -166,7 +166,6 @@ button, a.button{
 }
 
 #APP #CHATS{
-    min-height: 50vh;
     height: 50vh;
     border: 2px solid rgb(172 66 0 / 20%);
     padding: 10px;
