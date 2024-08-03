@@ -33,7 +33,7 @@ username_prefixes = ("fighter", "runner", "quick", "super", "victorious",
 def online_players_context():
     from game.models import Player
     return {
-        "online_players": Player.objects.filter(logged_in=True).order_by("won"),
+        "online_players": Player.objects.filter(logged_in=True).order_by("-won"),
     }
 
 # Resolve websocket_urlpatterns to be passed to asgi URLRouter
