@@ -15,19 +15,19 @@ function main(event) {
 }
 
 function makeMenu(event) {
-    if (event.target == SHOW_MENU){
+    if (event.target == window.SHOW_MENU){
         [[MENU, "show"], [APP, "blur"]].forEach(each=>{reclass(...each, hasClass(...each))});
     }
 }
 
 function showOnline(event){
-    if (event.target == SHOW_ONLINE){
+    if (event.target == window.SHOW_ONLINE){
         reclass(PEOPLE, "show");
     }
 }
 
 function hideOnline(event){
-    if (event.target == HIDE_ONLINE){
+    if (event.target == window.HIDE_ONLINE){
         reclass(PEOPLE, "show", true);
     }
 }
@@ -39,7 +39,6 @@ function changeNavStyle(event) {
 
 function compileMessages(event){
     getAll(".errorlist").forEach(list=>{
-        console.log(list)
         list.remove();
         ERRORS.append(list);
     });
@@ -50,7 +49,7 @@ function forceFullScreen(event){
     switchScreen("START");
     document.addEventListener("fullscreenchange", (event)=>{
         switchScreen(document.fullscreenElement == document.firstElementChild ? "APP" : "START")
-    })
+    });
 }
 
 
@@ -68,6 +67,6 @@ function makeEvents(events){
     }
 }
 
-onload = main;
+main();
 
-export { makeEvents, username }
+export { makeEvents, username };
