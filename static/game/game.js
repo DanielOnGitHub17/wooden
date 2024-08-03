@@ -58,12 +58,14 @@ class Game{
     }
     end(){
         // with button to 'save game' -> Maybe get the path you took... (for multiplayer only)
-        // location = `/game/end?GAME=${get("site").textContent}`
         switchScreen("GAME_OVER");
-        this.listWinners();
+        // setTimeout to fix bug. Bug: When players' scores are too close, lower might appear upper than higher.
+        setTimeout(()=>this.listWinners(), 1000);
+        WINNERS_LIST.textContent = "Compiling winners...";
     }
     listWinners(){
-        // sort winners (maybe by brute force)
+        WINNERS_LIST.textContent = "";
+        // Sort winners by descending order of blocksBroken
         let winners = Bot.bots.concat(Player.players).sort((a, b)=>b.blocksBroken - a.blocksBroken)
         , winScore = winners[0].blocksBroken
         , winnersPush = setInterval(() => {
