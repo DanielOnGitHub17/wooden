@@ -12,54 +12,61 @@ from django.views.generic.edit import UpdateView
 
 from game.models import Game, Player
 from helpers import group_send_sync, make_game, WoodenError
-from lounge.views import base_path
+
 
 class LeaveGame(LoginRequiredMixin, View):
-    pass
-
-class EndGame(LoginRequiredMixin, View):
-    def post(self, request):
-        request.user.player.reset("won" in request.POST)
-        return redirect("/lounge/")
-        
-
-class GamePlay(LoginRequiredMixin, View):
+    """
+    Others can.
+    """
     def post(self, request):
         player = request.user.player
-        game = player.game
-        error_msg = (not game) * "You are not in a game.\n"
-        error_msg = error_msg or (game.ended) * "You can no longer join that game."
-        if error_msg:  # Can't join
-            player.game = None
+        message = "You left the game successfully"
+        if not player.game:
+            message = "Error occured (nig)"
+        elif player.game.started:
+            message = "You need to stay in the game till it ends."
+        elif player.creator and player.game.count == 1:
+            message = "You can only leave if no one else has joined, start early instead."
+        else:
+            player.r = player.c = player.score = 0
+            player.joined = player.present = False
             player.save()
-            msg.add_message(request, msg.ERROR, error_msg)
-            return redirect("/lounge/")
-        # Render game, socket and Consumers will create game and 
-        # send data to all users so that JS can build it
-        # It will send their positions to them too.
-        # But first, let me do the waiting for them that will first trigger
-        # Game.start()
-        if not (player.joined and player.present):
-            player.joined = player.present = True
-            player.save()
-        context = {
-            "multiplayer": True,
-            "players": {player.user.username: [player.joined, player.present] for player in game.players},
-            "game": game,
-            "game_data": game.try_start()
-        }
-        return render(request, "game_temp.html", context)        
+        msg.add_message(request, msg.ERROR, message)    
+        return redirect("/lounge/")
 
-    def get(self, request):
-        return render(request, "game_temp.html", {"game_data": make_game(10)})
-    
+@login_required
+def play(request):
+    player = request.user.player
+    game = player.game
+    error_msg = (not game) * "You are not in a game.\n"
+    error_msg = error_msg or (game.ended) * "You can no longer join that game."
+    if error_msg:  # Can't join
+        player.game = None
+        player.save()
+        msg.add_message(request, msg.ERROR, error_msg)
+        return redirect("/lounge/")
+    # Render game, socket and Consumers will create game and 
+    # send data to all users so that JS can build it
+    # It will send their positions to them too.
+    # But first, let me do the waiting for them that will first trigger
+    # Game.start()
+    if not (player.joined and player.present):
+        player.joined = player.present = True
+        player.save()
+    context = {
+        "multiplayer": True,
+        "players": {player.user.username: [player.joined, player.present] for player in game.players},
+        "game": game,
+        "game_data": game.try_start()
+    }
+    return render(request, "app/game.html", context)
     
 class JoinGame(LoginRequiredMixin, View):
     def post(self, request):
         player = request.user.player
         if player.game:
             msg.add_message(request, msg.WARNING, "You are already in a game")
-            return redirect("/lounge/")
+            return redirect("/play/")
         try:
             game_id = int(request.POST["game_id"])
             game = Game.objects.get(id=game_id)
@@ -73,3 +80,12 @@ class JoinGame(LoginRequiredMixin, View):
         except:
             msg.add_message(request, msg.ERROR, "An error occured so you could not join the game")
         return redirect("/lounge/")
+
+class EndGame(LoginRequiredMixin, View):
+    def post(self, request):
+        request.user.player.reset("won" in request.POST)
+        return redirect("/lounge/")
+
+@login_required
+def practice(request):
+    return render(request, "app/game.html", {"game_data": make_game(10)})
