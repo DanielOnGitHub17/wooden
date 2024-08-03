@@ -4,5 +4,5 @@ from lounge import views
 
 
 urlpatterns = [
-    path("", views.Lounge.as_view(), name="Lounge"),
+    path("lounge/", views.Lounge.as_view(), name="Lounge"),
 ]
