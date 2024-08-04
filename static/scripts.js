@@ -1,5 +1,5 @@
 identify();
-const username = USERNAME.textContent;
+const username = window.USERNAME ? USERNAME.textContent : "player";
 
 function main(event) {
     let cheat = [];
@@ -70,4 +70,4 @@ function makeEvents(events){
 
 main();
 
-export { makeEvents, username };
+export { makeEvents, username, compileMessages };
