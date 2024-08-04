@@ -15,7 +15,7 @@ class GameSocket extends WebSocket{
     }
 
     start(data){
-        Game.player = Gamer.username
+        Game.player = Gamer.username;
         for (let prop in data){
             Game.rawMaterial[prop] = data[prop];
         };
@@ -26,7 +26,7 @@ class GameSocket extends WebSocket{
     move(dir){
         this.send(jsonStr({
             handler: "playerMove", data: {username: Gamer.username, dir: dir}
-        }))
+        }));
     }
 
     playerMove(data){
@@ -39,16 +39,31 @@ class GameSocket extends WebSocket{
     }
 
     playerUpdate(data){
-        let player = Gamer.gamers[data.username];
-        for (let prop in data) player[prop] = data[prop];
+        let gamer = Gamer.gamers[data.username];
+        for (let prop in data) gamer[prop] = data[prop];
         if (data["joined"]){
-            COUNT.textContent = getAll("#PLAYERS_LIST td:nth-child(2)>input").filter(i=>i.checked).length
+            COUNT.textContent = getAll("#PLAYERS_LIST td:nth-child(2)>input").filter(i=>i.checked).length;
         }
+        // Disable leave button/start button.
+        this.disenableForms(+COUNT.textContent);
+    }
+
+    playerLeave(username){
+        this.disenableForms(COUNT.textContent = +COUNT.textContent-1);
+        let gamer = Gamer.gamers[username];
+        gamer && gamer.leave();
     }
 
     sendGamer(props=["joined", "present"]){
-        let player = Gamer.gamers[Gamer.username], obj = {};
-        ["username"].concat(props).forEach(prop => obj[prop] = player[prop]);
+        let gamer = Gamer.gamers[Gamer.username], obj = {};
+        ["username"].concat(props).forEach(prop => obj[prop] = gamer[prop]);
         this.send(jsonStr({handler: "playerUpdate", data: obj}));
+    }
+
+    disenableForms(count){
+        GAME_STARTER.disabled = count < 2;
+        if (Gamer.creator){
+            GAME_LEAVER.disabled = count > 1;
+        }
     }
 }
