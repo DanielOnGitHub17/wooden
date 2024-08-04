@@ -40,7 +40,7 @@ class GameConsumer(AsyncWebsocketConsumer):
         # PS: PLEASE Remember to await your coroutines when necessary - 'bug' took my time.
 
     async def start(self, event):
-        await asyncio.sleep(3)  # Waiting for the last player's page to load...
+        await asyncio.sleep(1)  # Waiting for the last player's page to load...
         await self.default(event)
 
     async def default(self, event):
