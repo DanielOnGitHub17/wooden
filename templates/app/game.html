@@ -6,15 +6,24 @@
         <meta http-equiv="expires" content="0">
         <meta http-equiv="pragma" content="no-cache">
         <link rel="stylesheet" href="{% static 'game/game.css' %}">
+        <link rel="stylesheet" href="{% static 'both.css' %}">
         <link rel="stylesheet" href="https://danielongithub17.github.io/loading.css">
         <script src="https://danielongithub17.github.io/funcs.js"></script>
         <title>WOODEN</title>
     </head>
+    {% include "messages.html" %}
     <div id="SETTINGS">
         {% if multiplayer %}
         <div id="WAIT_ROOM">
             <h2>Hello, <span id="USERNAME">{{ user.username }}</span>.</h2>
-            <h3>Players for game #<span id="ID">{{ game.id }}</span><br>
+            {% if user.player.creator %}
+            <form action="/start/" method="post" id="CREATOR">
+                <p>You can start the game early when more players join.</p>
+                {% csrf_token %}
+                <button type="submit" disabled id="GAME_STARTER">Start early</button>
+            </form>
+            {% endif %}
+            <h3>Players for game #<span id="ID">{{ game.id }}</span>:
                 <span id="COUNT">{{ game.joined }}</span>/<span id="N">{{ game.count }}</span> joined.
             </h3>
             <!-- You could overide Players_list.remove/removeChild/append/appendChild 
@@ -29,33 +38,44 @@
                 - Gamers will be connected to the players/bots from Game.start()
                  -->
             </table>
+            <form action="/leave/" method="post">
+                {% csrf_token %}
+                <p>Can't wait for this game to start?</p>
+                <button type="submit" id="GAME_LEAVER">Leave game</button>
+            </form>
         </div>
         {% else %}
         <form id="PRACTICE">
-            <h3>Practice Playing with bots</h3>
-            <label>Number of bots: <input type="number" name="botCount" min="0", max="9" value=3 required></label>
-            <label>Maximum Hits: <input type="number" name="maxHits" min="2", max="7" value=4 required></label>
-            <button id="START" type="submit">Start Practice</button>
+            <h3>Practice playing with bots</h3>
+            <table>
+                <tr>
+                    <td><label>Number of bots: <input type="number" name="botCount" min="0", max="9" value=3 required></label></td>
+                    <td rowspan="2"><button id="START" type="submit">Start Practice</button></td>
+                </tr>
+                <tr>
+                    <td><label>Maximum hits: <input type="number" name="maxHits" min="2", max="7" value=4 required></label></td>
+                </tr>
+            </table>
         </form>
         {% endif %}
     </div>
     <div id="WORLD"></div>
     <div id="GAME_OVER">
-        <h2>GAME OVER</h2>
-        <h3>Top Players for game</h3>
+        <h1>GAME OVER</h1>
+        <h2>Top players for game</h2>
         <ul id="WINNERS_LIST">
             <!-- players will be added here -->
         </ul>
         {% if multiplayer %}
         <p id="STATUS"></p>
-        <form action="/game/end/" method="post" id="SEND_STATUS">
+        <form action="/end/" method="post" id="SEND_STATUS">
             {% csrf_token %}
             <input type="checkbox" name="won" hidden>
             <button type="submit">CONTINUE TO LOUNGE</button>
         </form>
         {% else %}
         <div>
-            <button type="button" onclick="load()">Practice Again</button>
+            <button type="button" onclick="load()">Practice again</button>
             <button type="button" onclick="window.close()">Close</button>
         </div>
         {% endif %}
@@ -71,5 +91,5 @@
     <script src="{% static 'game/gamer.js' %}"></script>
     <script src="{% static 'game/socket.js' %}"></script>
     {% endif %}
-    <script src="{% static 'game/events.js' %}"></script>
+    <script type="module" src="{% static 'game/events.js' %}"></script>
 </html>

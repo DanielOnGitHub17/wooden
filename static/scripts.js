@@ -1,5 +1,5 @@
 identify();
-const username = USERNAME.textContent;
+const username = window.USERNAME ? USERNAME.textContent : "player";
 
 function main(event) {
     let cheat = [];
@@ -17,6 +17,7 @@ function main(event) {
 function makeMenu(event) {
     if (event.target == window.SHOW_MENU){
         [[MENU, "show"], [APP, "blur"]].forEach(each=>{reclass(...each, hasClass(...each))});
+        SHOW_MENU.textContent = hasClass(MENU, "show") ? "Close" : "Menu";
     }
 }
 
@@ -69,4 +70,4 @@ function makeEvents(events){
 
 main();
 
-export { makeEvents, username };
+export { makeEvents, username, compileMessages };

@@ -1,14 +1,27 @@
-addEventListener("submit", (event)=>{
+import { makeEvents, compileMessages } from "../scripts.js";
+
+function main(event) {
+    makeEvents({
+        load: [start, compileMessages],
+        submit: [submitStartForm],
+        unload: [leftPage],
+        beforeunload: [reloadingPage]
+    });
+    ["open", "close", "message", "error"].forEach(event=>window[event+"Socket"] = eval(event+"Socket"));
+}
+
+
+function submitStartForm(event) {
     if (Game.isMultiplayer) return;
     event.preventDefault();
     if(event.target == PRACTICE) {
         let prac = PRACTICE.elements;
-        game = new Game(+prac[0].value+1, +prac[1].value);
+        window.game = new Game(+prac[0].value+1, +prac[1].value);
         game.start();
     }
-});
+}
 
-events = ()=>{
+function events(){
     ["blur", "focus"].forEach((type, i)=>{
         window.addEventListener(type, ()=>{
             Gamer.user.present = i;
@@ -17,18 +30,21 @@ events = ()=>{
     });
 }
 
-window.addEventListener("unload", (event)=>{
+function leftPage(event) {
     // Delete Gamer - no more in the game.
     `
     or maybe not. The user might have made a mistake -
     `
-})
-window.addEventListener("beforeunload", (event)=>{
-    return false;
-});
+}
 
-onload = ()=>{
+function reloadingPage(event) {
+    return false;
+}
+
+
+function start(event){
     switchScreen("SETTINGS");
+    MESSAGES.style.display = "";
     loader();
     if (Game.isMultiplayer) {
         Gamer.load();
@@ -65,6 +81,8 @@ function errorSocket(event) {
     // event.target.close();
 }
 
-oncontextmenu=(event)=>{
+function preventRightClick(event){
     event.preventDefault();
 }
+
+main();

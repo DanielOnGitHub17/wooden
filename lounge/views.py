@@ -14,7 +14,6 @@ from game.models import Game, Player
 from helpers import make_game, online_players_context
 from random import randint, sample, choice
 
-base_path = "static/game/players/"
 
 class Lounge(LoginRequiredMixin, SuccessMessageMixin, CreateView):
     template_name = "app/lounge.html"

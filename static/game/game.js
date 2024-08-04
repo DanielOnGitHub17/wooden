@@ -22,9 +22,9 @@ class Game{
         switchScreen("WORLD");
         if (Game.isMultiplayer){
             // Associate Gamers with Players
-            Bot.bots.concat(Player.players).forEach(obj=>Gamer.gamers[obj.name].player = obj)
+            Bot.bots.concat(Player.players).forEach(obj=>Gamer.gamers[obj.name].player = obj);
             // Get time for timeout
-            let startIn = 1000*Game.rawMaterial.time - Date.parse((new Date).toUTCString());
+            let startIn = 1000*Game.rawMaterial.time - Date.parse(new Date());
             showLoading(`Starting in ${parseInt(startIn/1000)} seconds`);
             console.log(startIn);
             setTimeout(() => {
@@ -58,12 +58,14 @@ class Game{
     }
     end(){
         // with button to 'save game' -> Maybe get the path you took... (for multiplayer only)
-        // location = `/game/end?GAME=${get("site").textContent}`
         switchScreen("GAME_OVER");
-        this.listWinners();
+        // setTimeout to fix bug. Bug: When players' scores are too close, lower might appear upper than higher.
+        setTimeout(()=>this.listWinners(), 1000);
+        WINNERS_LIST.textContent = "Compiling winners...";
     }
     listWinners(){
-        // sort winners (maybe by brute force)
+        WINNERS_LIST.textContent = "";
+        // Sort winners by descending order of blocksBroken
         let winners = Bot.bots.concat(Player.players).sort((a, b)=>b.blocksBroken - a.blocksBroken)
         , winScore = winners[0].blocksBroken
         , winnersPush = setInterval(() => {
@@ -79,11 +81,11 @@ class Game{
     sendStatus(won){
         SEND_STATUS.elements.won.checked = won;
         STATUS.textContent = won ? "CONGRATULATIONS!!! You won the game!" 
-        : "Sorry, you did not win. Break more wood next time."
+        : "Sorry, you did not win. Break more wood next time.";
     }
 
     static world = WORLD;
-    static player = 0
-    static isMultiplayer = Boolean(get("WAIT_ROOM"))
+    static player = 0;
+    static isMultiplayer = Boolean(get("WAIT_ROOM"));
     static rawMaterial = jsonObj(GAME_DATA.textContent);
 }
