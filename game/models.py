@@ -83,7 +83,7 @@ class Game(models.Model):
         return f"Game {self.pk}"
     
     def get_absolute_url(self):
-        return f"/play/"
+        return "/play/"
     
     @property
     def can_start(self):
@@ -124,8 +124,8 @@ class Player(models.Model):
     def get_absolute_url(self):
         return f"/player/{self.id}/"
     
-    def reset(self, won=0):
-        if self.game:
+    def reset(self, won=0, end=True):
+        if self.game and end:
             self.game.end()
         self.won += won
         self.game = None
