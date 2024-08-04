@@ -29,6 +29,7 @@
 </div>
 <div id="GAMES">
     <h3>Games to join</h3>
+    <p>Please refresh this page to view recent content</p>
     {% if games %}
     <form action="/join/" id="CREATEGAME" method="post">
         {% csrf_token %}
@@ -41,7 +42,7 @@
             {% for game in games %}
             <tr>
                 <td><input type="radio" name="game_id" value="{{ game.id }}" required></td>
-                <td>{{ game.count }}</td>
+                <td>{{ game.joined }} of {{ game.count }}</td>
                 <td>{{ game.max_hits }}</td>
             </tr>
             {% endfor %}
