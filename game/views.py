@@ -15,24 +15,37 @@ from helpers import group_send_sync, make_game, WoodenError
 
 
 class LeaveGame(LoginRequiredMixin, View):
-    """
-    Others can.
-    """
     def post(self, request):
         player = request.user.player
-        message = "You left the game successfully"
-        if not player.game:
-            message = "Error occured (nig)"
-        elif player.game.started:
+        game = player.game
+        message, next = "You left the game successfully", "/play/"
+        if not game:
+            message = "Error occured (NIG)"
+        elif game.ongoing:
             message = "You need to stay in the game till it ends."
-        elif player.creator and player.game.count == 1:
+        elif player.creator and game.joined > 1:
             message = "You can only leave if no one else has joined, start early instead."
         else:
-            player.r = player.c = player.score = 0
-            player.joined = player.present = False
-            player.save()
-        msg.add_message(request, msg.ERROR, message)    
-        return redirect("/lounge/")
+            message = "Sorry you could not wait! Make a game/join one below."
+            player.reset(end=player.creator)
+            next = "/lounge/"
+            # Tell other players.
+            group_send_sync(group_name=game.id, data={"handler": "playerLeave", "data": request.user.username})
+
+        msg.add_message(request, msg.ERROR, message)
+        return redirect(next)
+
+class StartEarly(LoginRequiredMixin, View):
+    def post(self, request):
+        player = request.user.player
+        game = player.game
+        if not game or game.ongoing or game.count < 2:
+            msg.add_message(request, msg.ERROR, "Cannot perform that action.")
+            return redirect("/lounge/")
+        game.count = game.joined
+        game.save()
+        msg.add_message(request, msg.SUCCESS, "Game will start soon.")
+        return redirect("/play/")
 
 @login_required
 def play(request):
@@ -83,10 +96,11 @@ class JoinGame(LoginRequiredMixin, View):
 
 class EndGame(LoginRequiredMixin, View):
     def post(self, request):
-        won = "won" in request.POST
+        won = +("won" in request.POST)
         request.user.player.reset(won)
-        if won:
-            msg.add_message(request, msg.SUCCESS, "Congrats on winning that game! You've ranked up.")
+        msg.add_message(request, msg.SUCCESS
+            , ["Sorry about losing that game. Do better next time."
+            , "Congrats on winning that game! You've ranked up."][won])
         return redirect("/lounge/")
 
 @login_required
