@@ -7,6 +7,7 @@ body{
     justify-content: center;
     align-items: center;
     overflow: hidden;
+    font-size: 1.1em;
 }
 
 *{
@@ -123,5 +124,13 @@ h2{
     font-size: 1.4em;
     font-weight: bold;
     color: #CD7F32;
+}
+[method="post"]{
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+[disabled]{
+    filter: grayscale(0.5) blur(1px);
 }
 /* End Gameover */
