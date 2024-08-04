@@ -22,9 +22,9 @@ class Game{
         switchScreen("WORLD");
         if (Game.isMultiplayer){
             // Associate Gamers with Players
-            Bot.bots.concat(Player.players).forEach(obj=>Gamer.gamers[obj.name].player = obj)
+            Bot.bots.concat(Player.players).forEach(obj=>Gamer.gamers[obj.name].player = obj);
             // Get time for timeout
-            let startIn = 1000*Game.rawMaterial.time - Date.parse((new Date).toUTCString());
+            let startIn = 1000*Game.rawMaterial.time - Date.parse(new Date());
             showLoading(`Starting in ${parseInt(startIn/1000)} seconds`);
             console.log(startIn);
             setTimeout(() => {
@@ -81,11 +81,11 @@ class Game{
     sendStatus(won){
         SEND_STATUS.elements.won.checked = won;
         STATUS.textContent = won ? "CONGRATULATIONS!!! You won the game!" 
-        : "Sorry, you did not win. Break more wood next time."
+        : "Sorry, you did not win. Break more wood next time.";
     }
 
     static world = WORLD;
-    static player = 0
-    static isMultiplayer = Boolean(get("WAIT_ROOM"))
+    static player = 0;
+    static isMultiplayer = Boolean(get("WAIT_ROOM"));
     static rawMaterial = jsonObj(GAME_DATA.textContent);
 }
