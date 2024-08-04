@@ -24,6 +24,12 @@ class Gamer{
             this[prop+"Check"].disabled = true;
         });
     }
+
+    leave(){
+        this.row.remove();
+        delete Gamer[this.username];
+        this.player && this.player.remove();
+    }
     
     static load(){
         for (let username in Gamer.gamersData){
@@ -33,9 +39,11 @@ class Gamer{
     static get user(){
         return Gamer.gamers[Gamer.username];
     }
+
     static gamers = {};
     static gamersData = jsonObj(GAMERS.textContent);
     static gameID = +ID.textContent;
     static username = USERNAME.textContent;
     static N = +N.textContent;
+    static creator = Boolean(get("CREATOR"));
 }
