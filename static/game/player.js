@@ -36,9 +36,6 @@ class Player{
             if (!potentialGround.kind){ // sand (change position)
                 this.ground = potentialGround;
                 add(this.body, this.ground.block);
-                // if (this.name == Game.player) this.pos = this.ground.position;
-                // time to learn about websockets in JS
-                // and, apparently, Django channels
             }
         } else {// wood
             // if it hits the block game.hitsToBreak times, the block breaks
@@ -83,7 +80,10 @@ class Player{
 
     set score(value){}
 
-    remove(){}
+    remove(){
+        this.body.remove();
+        delete Player.players.pop(Player.players.indexOf(this));
+    }
 
     static moves = [[-1, 0], [0, 1], [1, 0], [0, -1]];
     static controls = ["ArrowUp", "ArrowRight", "ArrowDown", "ArrowLeft"];
