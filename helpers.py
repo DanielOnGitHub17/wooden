@@ -1,13 +1,15 @@
 import os
 import sys
 
-from asgiref.sync import async_to_sync
-from channels.layers import get_channel_layer
 from datetime import datetime
-from django.contrib.auth.models import User
-from django.shortcuts import redirect
 from importlib import import_module, reload
 from random import choice, randint, sample
+
+from asgiref.sync import async_to_sync
+from channels.layers import get_channel_layer
+from django.contrib.auth.mixins import AccessMixin
+from django.contrib.auth.models import User
+from django.shortcuts import redirect
 
 """
 These functions (and class) will help other portions of the code.
@@ -21,13 +23,14 @@ Rules
 
 # Constants
 CHANNEL_LAYER = get_channel_layer()  # or maybe use channels "default" alias
-dev_mails = (os.environ.get("EMAIL_HOST_USER"),)
+DEV_MAILS = (os.environ.get("EMAIL_HOST_USER"),)
 MAX_WAIT_TIME = 10
-new_username = lambda name: f"{choice(username_prefixes)}{name.capitalize()}{randint(10, 400)}"
 username_prefixes = ("fighter", "runner", "quick", "super", "victorious",
                      "cool", "amazing", "fast", "smart", "kind", "big",
                        "powerful", "brave", "mighty", "potent")
 
+# Function to generate suggested username to user.
+def new_username(name): f"{choice(username_prefixes)}{name.capitalize()}{randint(10, 400)}"
 
 # Get online players to be given to app views.
 def online_players_context():
@@ -137,6 +140,16 @@ def cls():
 # Generic Exception class for the app
 class WoodenError(Exception): pass
 
+# Mixin for Not login required
+class NotLoginRequiredMixin(AccessMixin):
+    """Redirect user if user is authenticated."""
+
+    redirect_where = "/lounge/"
+
+    def dispatch(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            return redirect(self.redirect_where)
+        return super().dispatch(request, *args, **kwargs)
 # docker run --rm -p 5132:5132 redis:7: for running redis container.
 
 if __name__ == "__main__":
