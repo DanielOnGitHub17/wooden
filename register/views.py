@@ -13,7 +13,7 @@ from django.views import View
 from django.views.generic.edit import CreateView
 
 from game.models import Player
-from helpers import handle_error, WoodenError, new_username
+from helpers import handle_error, new_username, NotLoginRequiredMixin, WoodenError
 from register.forms import SignInForm, SignUpForm
 
 
@@ -27,7 +27,7 @@ class Profile(LoginRequiredMixin, View):
     def get(self, request):
         return render(request, "registration/profile.html")
 
-class SignUp(SuccessMessageMixin, CreateView):
+class SignUp(NotLoginRequiredMixin, SuccessMessageMixin, CreateView):
     template_name = "registration/signup.html"
     form_class = SignUpForm
     success_url = "/signin/"
@@ -49,9 +49,7 @@ class SignUp(SuccessMessageMixin, CreateView):
         if "username" in form.errors and form.errors["username"][0].endswith("username already exists."):  # Ha!
             msg.add_message(self.request, msg.ERROR, f"Username {form.data['username']} is taken. How about {new_username(form.data['first_name'])}?")
         return super().form_invalid(form)
-    
-    def get(self, request):
-        return redirect("/lounge/") if self.request.user.is_authenticated else super().get(request)
+
 
 class SignIn(SuccessMessageMixin, LoginView):
     success_message = "Signin successful!"
