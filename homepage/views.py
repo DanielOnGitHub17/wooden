@@ -5,7 +5,7 @@ from datetime import datetime
 from django.contrib import messages as msg
 from django.core.mail import send_mail
 
-from helpers import make_email, dev_mails
+from helpers import make_email, DEV_MAILS
 
 # Create your views here.
 
@@ -19,7 +19,7 @@ def game_help(request):
 class Support(View):
     def post(self, request):
         email = make_email(request, request.POST["issue"])
-        send_mail("Wooden: Support Email", email, "sender@gmail.com", dev_mails)
+        send_mail("Wooden: Support Email", email, "sender@gmail.com", DEV_MAILS)
         msg.add_message(request, msg.INFO, "Thanks for sending a message!")
         return redirect("/support/")
     
