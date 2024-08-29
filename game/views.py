@@ -103,6 +103,6 @@ class EndGame(LoginRequiredMixin, View):
             , "Congrats on winning that game! You've ranked up."][won])
         return redirect("/lounge/")
 
-@login_required
+# @login_required
 def practice(request):
     return render(request, "app/game.html", {"game_data": make_game(10)})

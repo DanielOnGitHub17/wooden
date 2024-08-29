@@ -1,0 +1,11 @@
+Remember to add that your block breaker jumping text - make it that anything you give that class will behave like that.
+
+{
+    move: "",
+    hit_block: "",
+    block_break: "",
+    turn_from_hitting_block: "",
+    win: "",
+    top_three if players more than 3: "",
+    lose: "",
+}

@@ -32,12 +32,15 @@ class Player{
         // given the direction. it adds
         let [potentialGround, next] = this.nextGround(dir);
         if (potentialGround.kind != 1){
-            this.hits = 0; // it turned away from a wood block.
-            if (!potentialGround.kind){ // sand (change position)
+            if (this.hits) Sound.play("stopped_hitting");
+            this.hits = 0;  // it turned away from a wood block.
+            if (!potentialGround.kind){  // sand (change position)
+                Sound.play("player_move");
                 this.ground = potentialGround;
                 add(this.body, this.ground.block);
             }
         } else {// wood
+            Sound.play("wood_hit");
             // if it hits the block game.hitsToBreak times, the block breaks
             if (JSON.stringify(this.next) == JSON.stringify(next)){ // checks if it's still hitting the same wooden block
                 this.hits += 1;
@@ -46,6 +49,8 @@ class Player{
                     potentialGround.crack();
                     this.blocksBroken += 1;
                     // if (this.name == Game.player) this.score = this.blocksBroken;
+                } else{
+                    // Sound.play("wood_hit");
                 }
             } else{
                 // set the hits to one because it just started hitting this one
