@@ -2,7 +2,7 @@ import { makeEvents, compileMessages } from "../scripts.js";
 
 function main(event) {
     makeEvents({
-        load: [start, compileMessages],
+        load: [start, compileMessages, Sound.load],
         submit: [submitStartForm],
         unload: [leftPage],
         beforeunload: [reloadingPage]
