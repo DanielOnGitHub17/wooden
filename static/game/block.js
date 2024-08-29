@@ -14,6 +14,7 @@ class Block{
 
     crack(){
         if (this.kind != 1) return;
+        Sound.play("wood_break");
         // remove from initial kind, then add to space
         let [r, c] = this.position;
         transfer(this, Block.blocks[1], Block.blocks[0]);
