@@ -34,6 +34,8 @@ class Game{
             return;
         }
         showLoading("Starting soon...");
+        Sound.stopAll();
+        Sound.loop("game_music");
         setTimeout(()=>{
             this.setPositions();  // could be animated...
             hideLoading();
@@ -57,10 +59,11 @@ class Game{
         }
     }
     end(){
+        Sound.stopAll();
         // with button to 'save game' -> Maybe get the path you took... (for multiplayer only)
         switchScreen("GAME_OVER");
         // setTimeout to fix bug. Bug: When players' scores are too close, lower might appear upper than higher.
-        setTimeout(()=>this.listWinners(), 1000);
+        setTimeout(()=>this.listWinners(), 500);
         WINNERS_LIST.textContent = "Compiling winners...";
     }
     listWinners(){
@@ -69,9 +72,11 @@ class Game{
         let winners = Bot.bots.concat(Player.players).sort((a, b)=>b.blocksBroken - a.blocksBroken)
         , winScore = winners[0].blocksBroken
         , winnersPush = setInterval(() => {
+            Sound.play("pile_player");
             let winner = winners.pop();
             WINNERS_LIST.insertBefore(make("li"), WINNERS_LIST.firstElementChild).textContent = `${winner.name}. Score: ${winner.blocksBroken}`;
             if (!winners.length) {
+                setTimeout(()=>Sound.loop("waiting_music"), 200);
                 clearInterval(winnersPush);
                 Game.isMultiplayer && this.sendStatus(Gamer.user.player.blocksBroken >= winScore);
             };
