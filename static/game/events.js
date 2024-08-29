@@ -16,7 +16,7 @@ function submitStartForm(event) {
     event.preventDefault();
     if(event.target == PRACTICE) {
         let prac = PRACTICE.elements;
-        window.game = new Game(+prac[0].value+1, +prac[1].value);
+        window.game = new Game(+prac.botCount.value+1, +prac.maxHits.value);
         game.start();
     }
 }
