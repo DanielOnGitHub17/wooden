@@ -33,6 +33,17 @@ button:hover{
     background-color: black;
 }
 
+#INITIALIZER{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+#INITIALIZE{
+    width: 400px;
+    height: 200px;
+    font-size: xx-large;
+}
+
 /* Style settings */
 #SETTINGS, #GAME_OVER{
     display: flex;
