@@ -1,3 +1,10 @@
+import { gameMode } from "./events.js";
+import { Player } from "./player.js";
+import { Bot } from "./bot.js";
+import { Block } from "./block.js";
+import { Gamer } from "./gamer.js";
+import { Sound } from "./sound.js";
+
 identify()
 class Game{
     constructor(count, hits){
@@ -27,6 +34,10 @@ class Game{
             let startIn = 1000*Game.rawMaterial.time - Date.parse(new Date());
             showLoading(`Starting in ${parseInt(startIn/1000)} seconds`);
             console.log(startIn);
+            // approximate - for when user refreshes and game has started.
+            if (startIn < -1000){
+                gameMode();
+            }
             setTimeout(() => {
                 Gamer.user.player.event();  // Start accepting input.
                 hideLoading();
@@ -94,3 +105,5 @@ class Game{
     static isMultiplayer = Boolean(get("WAIT_ROOM"));
     static rawMaterial = jsonObj(GAME_DATA.textContent);
 }
+
+export { Game }
