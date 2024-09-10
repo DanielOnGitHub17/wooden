@@ -1,3 +1,6 @@
+import { Game } from "./game.js";
+import { Sound } from "./sound.js";
+
 class Player{
     constructor(ground, name){
         Player.players.push(this);
@@ -21,7 +24,7 @@ class Player{
         for (let i=0; i<2; i++){
             next[i] = this.ground.position[i] + Player.moves[dir][i];
         }
-        return [game.blocks.get(...next), next];
+        return [Game.game.blocks.get(...next), next];
     }
 
     move(dir){
@@ -44,7 +47,7 @@ class Player{
             // if it hits the block game.hitsToBreak times, the block breaks
             if (JSON.stringify(this.next) == JSON.stringify(next)){ // checks if it's still hitting the same wooden block
                 this.hits += 1;
-                if (this.hits >= game.hits){ // the > is unneccesary
+                if (this.hits >= Game.game.hits){ // the > is unneccesary
                     this.hits = 0;
                     potentialGround.crack();
                     this.blocksBroken += 1;
@@ -67,7 +70,7 @@ class Player{
         window.addEventListener("keyup", (event)=>{
             if (Player.controls.includes(event.key)){
                 event.preventDefault();
-                (Game.isMultiplayer ? gameSocket : this).move(Player.controls.indexOf(event.key));
+                (Game.isMultiplayer ? Game.socket : this).move(Player.controls.indexOf(event.key));
                 // this.body.scrollIntoView();
             }
         })
@@ -94,3 +97,5 @@ class Player{
     static controls = ["ArrowUp", "ArrowRight", "ArrowDown", "ArrowLeft"];
     static players = [];
 }
+
+export { Player }
