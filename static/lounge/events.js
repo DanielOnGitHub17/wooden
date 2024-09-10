@@ -1,6 +1,7 @@
 import { makeEvents } from "../scripts.js";
 
 function main() {
+    if (!get("CREATEGAME ")) return;
     makeEvents({
         load: [changeBounds, changeCountLabel]
     })
