@@ -1,3 +1,6 @@
+import { Player } from "./player.js";
+import { Game } from "./game.js";
+
 class Bot extends Player{
     constructor(ground, name){
         super(ground, name);
@@ -15,9 +18,10 @@ class Bot extends Player{
     }
     moveMethod(){
         if (!Game.isMultiplayer){
-            moveBy = `move${choice(Bot.moveBy)}`;
+            let moveBy = `move${choice(Bot.moveBy)}`;
             console.log(moveBy)
             this.movInterval = setInterval(()=>{
+                console.log(9);
                 this[moveBy]();
             }, 200);
             return;
@@ -59,3 +63,5 @@ class Bot extends Player{
     static bots = [];
     static moveBy = ["Random"]; // "Spiral", "Linear", "BFS", "DFS", ...
 }
+
+export { Bot }
