@@ -26,15 +26,13 @@ class Sound {
         return sounds;
     }
 
-    static load(event) {
+    static load() {
         Sound.sounds = Sound.loadSounds();
-        // Start and remove when user interacts with page.
-        window.onmousedown = () => {
-            Sound.loop("waiting_music");
-            window.onmousedown = null;
-        }
-
+        Sound.loaded = true;
     }
 
     static sources = ["game_music.wav", "lounge_music.mp3", "pile_player.mp3", "player_move.wav", "stopped_hitting.mp3", "waiting_music.wav", "wood_break.wav", "wood_hit.wav"];
+    static sounds = {};
 }
+
+export { Sound }

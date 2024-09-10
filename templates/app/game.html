@@ -80,17 +80,19 @@
         </div>
         {% endif %}
         <!-- List best players with their username -->
-        
+    </div>
+    <div id="INITIALIZER">
+        <button type="button" id="INITIALIZE">ENTER GAME MODE</button>
     </div>
     {{ game_data|json_script:"GAME_DATA" }}
-    <script src="{% static 'game/block.js' %}"></script>
-    <script src="{% static 'game/player.js' %}"></script>
-    <script src="{% static 'game/bot.js' %}"></script>
-    <script src="{% static 'game/game.js' %}"></script>
-    <script src="{% static 'game/sound.js' %}"></script>
+    <script type="module" src="{% static 'game/block.js' %}"></script>
+    <script type="module" src="{% static 'game/player.js' %}"></script>
+    <script type="module" src="{% static 'game/bot.js' %}"></script>
+    <script type="module" src="{% static 'game/game.js' %}"></script>
+    <script type="module" src="{% static 'game/sound.js' %}"></script>
     {% if multiplayer %}
-    <script src="{% static 'game/gamer.js' %}"></script>
-    <script src="{% static 'game/socket.js' %}"></script>
+    <script type="module" src="{% static 'game/gamer.js' %}"></script>
+    <script type="module" src="{% static 'game/socket.js' %}"></script>
     {% endif %}
     <script type="module" src="{% static 'game/events.js' %}"></script>
 </html>

@@ -40,10 +40,16 @@ class Gamer{
         return Gamer.gamers[Gamer.username];
     }
 
-    static gamers = {};
-    static gamersData = jsonObj(GAMERS.textContent);
-    static gameID = +ID.textContent;
-    static username = USERNAME.textContent;
-    static N = +N.textContent;
-    static creator = Boolean(get("CREATOR"));
+    static initialize(){
+        if (!window.GAMERS) return;
+        Gamer.gamers = {};
+        Gamer.gamersData = jsonObj(GAMERS.textContent);
+        Gamer.gameID = +ID.textContent;
+        Gamer.username = USERNAME.textContent;
+        Gamer.N = +N.textContent;
+        Gamer.creator = Boolean(get("CREATOR"));
+    }
 }
+
+Gamer.initialize();
+export { Gamer };

@@ -9,3 +9,5 @@ Remember to add that your block breaker jumping text - make it that anything you
     top_three if players more than 3: "",
     lose: "",
 }
+
+If user did not click the window until game starts, the user will trigger waiting_music.

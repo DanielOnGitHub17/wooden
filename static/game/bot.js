@@ -1,3 +1,7 @@
+import { Player } from "./player.js";
+import { Game } from "./game.js";
+import { Block } from "./block.js";
+
 class Bot extends Player{
     constructor(ground, name){
         super(ground, name);
@@ -15,7 +19,7 @@ class Bot extends Player{
     }
     moveMethod(){
         if (!Game.isMultiplayer){
-            moveBy = `move${choice(Bot.moveBy)}`;
+            let moveBy = `move${choice(Bot.moveBy)}`;
             console.log(moveBy)
             this.movInterval = setInterval(()=>{
                 this[moveBy]();
@@ -43,13 +47,13 @@ class Bot extends Player{
             }
         } else{
             this.moving = true;
-            try{
-                this.randomWood = choice(Block.blocks[1]).position;
-            } catch (error){
+            let next_block = choice(Block.blocks[1])
+            if (!next_block){
                 clearInterval(this.movInterval);
                 this.moving = false;
                 return;
             }
+            this.randomWood = choice(Block.blocks[1]).position;
             // 0,2 for up/down.
             this.dirs[0] = 2*(this.randomWood[0] >= this.ground.position[0])
             // 1/3 for right/left
@@ -59,3 +63,5 @@ class Bot extends Player{
     static bots = [];
     static moveBy = ["Random"]; // "Spiral", "Linear", "BFS", "DFS", ...
 }
+
+export { Bot }
