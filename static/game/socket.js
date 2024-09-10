@@ -1,11 +1,14 @@
+import { Game } from "./game.js";
+import { Gamer } from "./gamer.js";
+
 function createGameSocket() {
-    delete gameSocket;  // Hopefully I won't be deleting the real gameSocket often
-    if (window.gameSocket) {
-        while (gameSocket.CONNECTING) {}
+    delete Game.socket;  // Hopefully I won't be deleting the real Game.socket often
+    if (Game.socket) {
+        while (Game.socket.CONNECTING) {}
     }
-    gameSocket = new GameSocket();
+    Game.socket = new GameSocket();
     ["open", "close", "message", "error"].forEach(
-        event=>gameSocket.addEventListener(event, window[event+"Socket"])
+        event=>Game.socket.addEventListener(event, window[event+"Socket"])
     );
 }
 
@@ -19,8 +22,8 @@ class GameSocket extends WebSocket{
         for (let prop in data){
             Game.rawMaterial[prop] = data[prop];
         };
-        window.game = new Game(Object.values(data.positions).length, data.hits);
-        game.start();
+        Game.game = new Game(Object.values(data.positions).length, data.hits);
+        Game.game.start();
     }
 
     move(dir){
@@ -61,9 +64,11 @@ class GameSocket extends WebSocket{
     }
 
     disenableForms(count){
-        GAME_STARTER.disabled = count < 2;
         if (Gamer.creator){
+            GAME_STARTER.disabled = count < 2;
             GAME_LEAVER.disabled = count > 1;
         }
     }
 }
+
+export { createGameSocket };
