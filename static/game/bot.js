@@ -1,5 +1,6 @@
 import { Player } from "./player.js";
 import { Game } from "./game.js";
+import { Block } from "./block.js";
 
 class Bot extends Player{
     constructor(ground, name){
@@ -21,7 +22,6 @@ class Bot extends Player{
             let moveBy = `move${choice(Bot.moveBy)}`;
             console.log(moveBy)
             this.movInterval = setInterval(()=>{
-                console.log(9);
                 this[moveBy]();
             }, 200);
             return;
