@@ -47,13 +47,13 @@ class Bot extends Player{
             }
         } else{
             this.moving = true;
-            try{
-                this.randomWood = choice(Block.blocks[1]).position;
-            } catch (error){
+            let next_block = choice(Block.blocks[1])
+            if (!next_block){
                 clearInterval(this.movInterval);
                 this.moving = false;
                 return;
             }
+            this.randomWood = choice(Block.blocks[1]).position;
             // 0,2 for up/down.
             this.dirs[0] = 2*(this.randomWood[0] >= this.ground.position[0])
             // 1/3 for right/left
