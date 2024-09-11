@@ -20,10 +20,10 @@ class Bot extends Player{
     moveMethod(){
         if (!Game.isMultiplayer){
             let moveBy = `move${choice(Bot.moveBy)}`;
-            console.log(moveBy)
+            this.speed = randBtw(Game.game.speed-20, Game.game.speed+20);
             this.movInterval = setInterval(()=>{
                 this[moveBy]();
-            }, 200);
+            }, this.speed);
             return;
         }
     }
