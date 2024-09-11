@@ -11,11 +11,16 @@ function main(event) {
         submit: [submitStartForm],
         unload: [leftPage],
         beforeunload: [reloadingPage],
+        change: [writeSpeed],
         // fullscreenchange: [gameMode]
     });
     ["open", "close", "message", "error"].forEach(event=>window[event+"Socket"] = eval(event+"Socket"));
 }
 
+function writeSpeed(event) {
+    if (Game.isMultiplayer || event.target != SETSPEED) return;
+    SPEED.textContent = SETSPEED.value;
+}
 function gameMode(event, next="WORLD", changeScreen=true) {
     Sound.stopAll();
     INITIALIZER.next = next;
@@ -37,6 +42,7 @@ function submitStartForm(event) {
     if(event.target == PRACTICE) {
         let prac = PRACTICE.elements;
         Game.game = new Game(+prac.botCount.value+1, +prac.maxHits.value);
+        Game.game.speed = 480-parseInt(prac.speed.value);
         Game.game.start();
     }
 }
