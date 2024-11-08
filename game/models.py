@@ -1,4 +1,5 @@
-import json
+"""The models of the game app - and logic that works on the database."""
+import json 
 
 # from asgiref.sync import ync_to_async
 # from channels.db import database_sync_to_async
@@ -20,6 +21,7 @@ def validate_passcode_length(value):
 
 # Create your models here.
 class Game(models.Model):
+    """The Game model."""
     size = models.IntegerField(default=15)
     initial_grid = models.TextField(default="")
     grid = models.TextField(default="")
@@ -34,6 +36,7 @@ class Game(models.Model):
     # It will be so cool, the passcode becomes invalid when game starts
 
     def try_start(self, force=False):
+        """Tries to start the game. If the game is not started and can be started, it starts the game."""
         game_data = {"hits": self.max_hits}
         if not self.started and (self.can_start or force):
             self.started = True
@@ -57,6 +60,7 @@ class Game(models.Model):
         return game_data
 
     def get_data(self):
+        """Returns the data of the game."""
         return {
             "grid": json.loads(self.grid),
             "positions": {player.user.username: (player.r, player.c) for player in self.players},
@@ -64,44 +68,53 @@ class Game(models.Model):
         }
     
     def end(self):
+        """Ends the game."""
         if not self.ended:
             self.ended = True
             self.save()
 
     @property
     def available(self):
+        """Returns True if the game is available for joining."""
         return not (self.started or self.ended or self.n == self.no_of_players)
 
     @property
     def ongoing(self):
+        """Returns True if the game is ongoing."""
         return self.started and not self.ended
 
     @property
     def joined(self):
+        """Returns the number of players who have joined the game."""
         return sum(player.joined for player in self.players)
 
     @property
     def players(self):
+        """Returns the players of the game."""
         return Player.objects.filter(game=self)
     
     @property
     def n(self):
+        """Returns the number of players in the game."""
         return len(self.players)
 
     def __str__(self):
         return f"Game {self.pk}"
     
     def get_absolute_url(self):
+        """Returns the absolute url of the game."""
         return "/play/"
     
     @property
     def can_start(self):
+        """Returns True if the game can be started."""
         return self.no_of_players == self.joined
 
     # The Game class will be frequently accessed by users, changed till there are no
     # '1s' in it's data.
 
 class Player(models.Model):
+    """The Player model."""
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
     game = models.ForeignKey(Game, on_delete=models.PROTECT, null=True, blank=True)
     logged_in = models.BooleanField(default=False)
@@ -117,23 +130,29 @@ class Player(models.Model):
 
     @staticmethod
     def from_username(username):
+        """Returns the player from the username."""
         return User.objects.get(username=username).player
 
     @property
     def rank(self):
+        """Returns the rank of the player."""
         return 2*self.won
     
     @property
     def full_name(self):
+        """Returns the full name of the player."""
         return self.user.get_full_name()
 
     def __str__(self):
+        """Returns the string representation of the player."""
         return self.full_name
     
     def get_absolute_url(self):
+        """Returns the absolute url of the player."""
         return f"/player/{self.id}/"
     
     def reset(self, won=0, end=True):
+        """Resets the player after the game ends."""
         if self.game and end:
             self.game.end()
         self.won += won
