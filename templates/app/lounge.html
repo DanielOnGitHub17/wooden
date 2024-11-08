@@ -31,7 +31,7 @@
     <h3>Games to join</h3>
     <p>Please refresh this page to view recent content</p>
     {% if games %}
-    <form action="/join/" id="CREATEGAME" method="post">
+    <form action="/join/" id="JOINGAME" method="post">
         {% csrf_token %}
         <table id="GAMES_TO_JOIN">
             <tr>
