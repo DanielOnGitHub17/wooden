@@ -39,10 +39,10 @@ class StartEarly(LoginRequiredMixin, View):
     def post(self, request):
         player = request.user.player
         game = player.game
-        if not game or game.ongoing or game.count < 2:
+        if not game or game.ongoing or game.no_of_players < 2:
             msg.add_message(request, msg.ERROR, "Cannot perform that action.")
             return redirect("/lounge/")
-        game.count = game.joined
+        game.no_of_players = game.joined
         game.save()
         msg.add_message(request, msg.SUCCESS, "Game will start soon.")
         return redirect("/play/")

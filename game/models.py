@@ -1,26 +1,35 @@
 import json
 
 # from asgiref.sync import ync_to_async
-from channels.db import database_sync_to_async
+# from channels.db import database_sync_to_async
 from django.contrib.auth.models import User
+from django.core.exceptions import ValidationError
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
 from django.utils import timezone as tz
-from helpers import group_send, group_send_sync, make_game, MAX_WAIT_TIME
+from helpers import group_send_sync, make_game, MAX_WAIT_TIME
 
-num_valid = lambda x, y: [MinValueValidator(x), MaxValueValidator(y)]
+def num_valid(x, y):
+    """Validates the number of players and max hits."""
+    return [MinValueValidator(x), MaxValueValidator(y)]
+
+def validate_passcode_length(value):
+    """Validates the length of the passcode."""
+    if len(value) != 5:
+        raise ValidationError('Passcode must be exactly 5 characters long.')
 
 # Create your models here.
 class Game(models.Model):
     size = models.IntegerField(default=15)
     initial_grid = models.TextField(default="")
     grid = models.TextField(default="")
-    count = models.IntegerField(default=2, validators=num_valid(2, 7))
+    no_of_players = models.IntegerField(default=2, validators=num_valid(2, 7))
     max_hits = models.IntegerField(default=3, validators=num_valid(2, 7))
     started_time = models.DateTimeField(null=True)
     ended_time = models.DateTimeField(null=True)
     started = models.BooleanField(default=False)
     ended = models.BooleanField(default=False)
+    passcode = models.CharField(max_length=5, null=True, blank=True, validators=[validate_passcode_length])
     # do passcode later for private games - join with passcode...
     # It will be so cool, the passcode becomes invalid when game starts
 
@@ -40,7 +49,7 @@ class Game(models.Model):
                 player.score = 0
                 player.save()
             self.save()
-            group_send_sync(group_name=self.id, handler="start", data={
+            group_send_sync(group_name=self.pk, handler="start", data={
                 "handler": "start", "data": game_data
             })
         elif self.ongoing:
@@ -61,7 +70,7 @@ class Game(models.Model):
 
     @property
     def available(self):
-        return not (self.started or self.ended or self.n == self.count)
+        return not (self.started or self.ended or self.n == self.no_of_players)
 
     @property
     def ongoing(self):
@@ -87,7 +96,7 @@ class Game(models.Model):
     
     @property
     def can_start(self):
-        return self.count == self.joined
+        return self.no_of_players == self.joined
 
     # The Game class will be frequently accessed by users, changed till there are no
     # '1s' in it's data.

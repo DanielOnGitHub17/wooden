@@ -42,7 +42,7 @@
             {% for game in games %}
             <tr>
                 <td><input type="radio" name="game_id" value="{{ game.id }}" required></td>
-                <td>{{ game.joined }} of {{ game.count }}</td>
+                <td>{{ game.joined }} of {{ game.no_of_players }}</td>
                 <td>{{ game.max_hits }}</td>
             </tr>
             {% endfor %}

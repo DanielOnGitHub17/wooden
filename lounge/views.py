@@ -18,7 +18,7 @@ from random import randint, sample, choice
 class Lounge(LoginRequiredMixin, SuccessMessageMixin, CreateView):
     template_name = "app/lounge.html"
     model = Game
-    fields = ["count", "max_hits"]
+    fields = ["no_of_players", "max_hits"]
 
     def form_valid(self, form):
         player = self.request.user.player 
