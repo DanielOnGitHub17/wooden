@@ -1,3 +1,4 @@
+"""URLs for the lounge app."""
 from django.urls import path
 
 from lounge import views

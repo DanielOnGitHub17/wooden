@@ -8,4 +8,4 @@
 #### Wooden is built on a Django backend, leveraging channels and redis for real time functionality. The frontend was made using the Django's, jinja2-like, Template Language, Vanila CSS, and native JavaScript.
 
 ## Developers
-#### Andrew Emeghebo and Daniel Enesi are computer science majors at Grambling State University. Currently in their sophomore year, both ardent web developers are actively seeking internship opportunities for summer 2025 and 2026. While Daniel enjoyes fabricating backend logic, Andrew finds joy in creating responsive user interfaces and experiences.
+#### Andrew Emeghebo and Daniel Enesi are computer science majors at Grambling State University. Currently in their sophomore year, both ardent web developers are actively seeking internship opportunities for summer 2025 and 2026. While Daniel enjoys fabricating backend logic, Andrew finds joy in creating responsive user interfaces and experiences.

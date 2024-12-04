@@ -10,7 +10,7 @@
         <link rel="stylesheet" href="{% static 'both.css' %}">
         <link rel="stylesheet" href="https://danielongithub17.github.io/loading.css">
         <script src="https://danielongithub17.github.io/funcs.js"></script>
-        <title>WOODEN</title>
+        <title>WOODEN {{ game.passcode }}</title>
     </head>
     {% include "messages.html" %}
     <div id="SETTINGS">
@@ -25,10 +25,10 @@
             </form>
             {% endif %}
             <h3>Players for game #<span id="ID">{{ game.id }}</span>:
-                <span id="COUNT">{{ game.joined }}</span>/<span id="N">{{ game.count }}</span> joined.
+                <span id="NO_OF_PLAYERS">{{ game.joined }}</span>/<span id="N">{{ game.no_of_players }}</span> joined.
             </h3>
             <!-- You could overide Players_list.remove/removeChild/append/appendChild 
-             to change COUNT. Or use MutationObserver-->
+             to change NO_OF_PLAYERS. Or use MutationObserver-->
             <table id="PLAYERS_LIST">
                 {{ players|json_script:"GAMERS" }}
                 <tr>

@@ -45,14 +45,14 @@ class GameSocket extends WebSocket{
         let gamer = Gamer.gamers[data.username];
         for (let prop in data) gamer[prop] = data[prop];
         if (data["joined"]){
-            COUNT.textContent = getAll("#PLAYERS_LIST td:nth-child(2)>input").filter(i=>i.checked).length;
+            NO_OF_PLAYERS.textContent = getAll("#PLAYERS_LIST td:nth-child(2)>input").filter(i=>i.checked).length;
         }
         // Disable leave button/start button.
-        this.disenableForms(+COUNT.textContent);
+        this.disenableForms(+NO_OF_PLAYERS.textContent);
     }
 
     playerLeave(username){
-        this.disenableForms(COUNT.textContent = +COUNT.textContent-1);
+        this.disenableForms(NO_OF_PLAYERS.textContent = +NO_OF_PLAYERS.textContent-1);
         let gamer = Gamer.gamers[username];
         gamer && gamer.leave();
     }
@@ -63,10 +63,10 @@ class GameSocket extends WebSocket{
         this.send(jsonStr({handler: "playerUpdate", data: obj}));
     }
 
-    disenableForms(count){
+    disenableForms(no_of_players){
         if (Gamer.creator){
-            GAME_STARTER.disabled = count < 2;
-            GAME_LEAVER.disabled = count > 1;
+            GAME_STARTER.disabled = no_of_players < 2;
+            GAME_LEAVER.disabled = no_of_players > 1;
         }
     }
 }
