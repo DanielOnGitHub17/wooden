@@ -1,13 +1,12 @@
 """The models of the game app - and logic that works on the database."""
-import json 
+import json
 
-# from asgiref.sync import ync_to_async
-# from channels.db import database_sync_to_async
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
 from django.utils import timezone as tz
+
 from helpers import group_send_sync, make_game, MAX_WAIT_TIME
 
 def num_valid(x, y):
@@ -31,12 +30,14 @@ class Game(models.Model):
     ended_time = models.DateTimeField(null=True)
     started = models.BooleanField(default=False)
     ended = models.BooleanField(default=False)
-    passcode = models.CharField(max_length=5, null=True, blank=True, validators=[validate_passcode_length])
+    passcode = models.CharField(max_length=5, null=True
+                                , blank=True, validators=[validate_passcode_length])
     # do passcode later for private games - join with passcode...
     # It will be so cool, the passcode becomes invalid when game starts
 
     def try_start(self, force=False):
-        """Tries to start the game. If the game is not started and can be started, it starts the game."""
+        """Tries to start the game.
+        If the game is not started and can be started, it starts the game."""
         game_data = {"hits": self.max_hits}
         if not self.started and (self.can_start or force):
             self.started = True
@@ -66,7 +67,7 @@ class Game(models.Model):
             "positions": {player.user.username: (player.r, player.c) for player in self.players},
             "time": self.started_time.timestamp(),
         }
-    
+
     def end(self):
         """Ends the game."""
         if not self.ended:
@@ -92,7 +93,7 @@ class Game(models.Model):
     def players(self):
         """Returns the players of the game."""
         return Player.objects.filter(game=self)
-    
+
     @property
     def n(self):
         """Returns the number of players in the game."""
@@ -100,11 +101,11 @@ class Game(models.Model):
 
     def __str__(self):
         return f"Game {self.pk}"
-    
+
     def get_absolute_url(self):
         """Returns the absolute url of the game."""
         return "/play/"
-    
+
     @property
     def can_start(self):
         """Returns True if the game can be started."""
@@ -137,7 +138,7 @@ class Player(models.Model):
     def rank(self):
         """Returns the rank of the player."""
         return 2*self.won
-    
+
     @property
     def full_name(self):
         """Returns the full name of the player."""
@@ -146,11 +147,11 @@ class Player(models.Model):
     def __str__(self):
         """Returns the string representation of the player."""
         return self.full_name
-    
+
     def get_absolute_url(self):
         """Returns the absolute url of the player."""
         return f"/player/{self.id}/"
-    
+
     def reset(self, won=0, end=True):
         """Resets the player after the game ends."""
         if self.game and end:
