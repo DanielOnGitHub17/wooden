@@ -92,6 +92,7 @@ class JoinGame(LoginRequiredMixin, View):
             if passcode:
                 game = [game_obj for game_obj in Game.objects.filter(passcode=passcode)\
                          if game_obj.available][0]  # pylint: disable=no-member
+                game_id = game.id
             else:
                 game_id = int(request.POST["game_id"])
                 game = Game.objects.get(id=game_id)  # pylint: disable=no-member
