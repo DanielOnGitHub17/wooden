@@ -18,7 +18,7 @@ class Lounge(LoginRequiredMixin, SuccessMessageMixin, CreateView):
 
     def form_valid(self, form):
         player = self.request.user.player
-        if player.game:
+        if player.game is not None:
             return None
         player.game = form.save()
         player.creator = True
