@@ -28,7 +28,21 @@
     </form>
 </div>
 <div id="GAMES">
-    <h3>Games to join</h3>
+    <!-- Create a form for private games that will collect only the passcode and map to join -->
+    <h3>Have a code? Join private game</h3>
+    <form id="JOINGAME_PRIVATE" method="post" action="/join/">
+        {% csrf_token %}
+        <table id="PRIVATE_GAME">
+            <tr>
+                <td>Passcode:</td>
+                <td><input type="text" name="passcode" required></td>
+            </tr>
+            <tr>
+                <td colspan="2"><button type="submit">Join Private Game</button></td>
+            </tr>
+        </table>
+    </form>
+    <h3>Public games</h3>
     <p>Please refresh this page to view recent content</p>
     {% if games %}
     <form action="/join/" id="JOINGAME" method="post">
