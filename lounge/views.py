@@ -36,7 +36,7 @@ class Lounge(LoginRequiredMixin, SuccessMessageMixin, CreateView):
         if not self.request.user.player.game:
             context.update({
                 "games": [game for game in Game.objects.all()\
-                           if game.available and game.passcode == ""]
+                           if game.available and game.passcode == ""]  # pylint: disable=no-member
             })
         return context
 
