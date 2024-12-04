@@ -10,6 +10,7 @@ Rules
 
 import os
 import sys
+import traceback
 
 from datetime import datetime
 from importlib import import_module  # type: ignore
@@ -36,9 +37,10 @@ def new_username(name):
 
 def online_players_context():
     """Get online players to be given to app views."""
-    from game.models import Player  # to avoid circular import
+     # To avoid circular import
+    from game.models import Player  #  pylint: disable=import-outside-toplevel
     return {
-        "online_players": Player.objects.filter(logged_in=True).order_by("-won"),
+        "online_players": Player.objects.filter(logged_in=True).order_by("-won"),  # pylint: disable=no-member
     }
 
 def join_wspatterns(paths):
@@ -123,9 +125,16 @@ def printurn(obj):
     return obj
 
 def handle_error(error, redirect_to=None):
-    """Handle error by writing it into a file, printing it to the console, and redirecting if specified."""
-    with open("../errors.log", 'a', encoding="uf") as error_file:
-        error_file.write(f"{error} | {datetime.now()}\n")
+    """Handle error by writing it into a file
+    , printing it to the console, and redirecting if specified.
+    Format for ease of parsing. .split("ERROR>>>").split('|').stripforeach...
+    """
+    error_details = traceback.format_exc()
+    error_message = f"ERROR>>> {datetime.now()} | {error} |\n{error_details}\n"
+
+    with open("../errors.log", 'a', encoding="utf-8") as error_file:
+        error_file.write(error_message)
+
     print(error)
     # raise error
     if redirect_to:
@@ -141,8 +150,8 @@ def as_frontend(event_type):
     return parts[0].lower()+parts[1].capitalize()
 
 def cls():
-    """Clear the screen."""
-    os.system("cls") and os.system("clear")
+    """Clear the screen for windows and linux."""
+    os.system("cls") and os.system("clear")  # pylint: disable=expression-not-assigned
 
 class WoodenError(Exception):
     """Generic exception class for the app."""
@@ -159,7 +168,6 @@ class NotLoginRequiredMixin(AccessMixin):
         if request.user.is_authenticated:
             return redirect(self.redirect_where)
         return super().dispatch(request, *args, **kwargs)
-# docker run --rm -p 5132:5132 redis:7: for running redis container.
 
 if __name__ == "__main__":
     if len(sys.argv) == 2:
