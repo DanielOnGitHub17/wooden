@@ -1,3 +1,3 @@
-python manage.py collectstatic --no-input
+@REM python manage.py collectstatic --no-input
 python manage.py makemigrations
 python manage.py migrate
