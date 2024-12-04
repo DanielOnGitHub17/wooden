@@ -7,7 +7,7 @@ from django.shortcuts import redirect, render
 from django.views import View
 
 from game.models import Game
-from helpers import group_send_sync, make_game, WoodenError
+from helpers import group_send_sync, make_game, WoodenError, handle_error
 
 
 class LeaveGame(LoginRequiredMixin, View):
@@ -90,7 +90,8 @@ class JoinGame(LoginRequiredMixin, View):
             # This could trigger the DoesNotExist exception
             passcode = request.POST.get("passcode", "")
             if passcode:
-                game = Game.objects.get(passcode=passcode)  # pylint: disable=no-member
+                game = [game_obj for game_obj in Game.objects.filter(passcode=passcode)\
+                         if game_obj.available][0]  # pylint: disable=no-member
             else:
                 game_id = int(request.POST["game_id"])
                 game = Game.objects.get(id=game_id)  # pylint: disable=no-member
@@ -105,11 +106,14 @@ class JoinGame(LoginRequiredMixin, View):
             group_send_sync(group_name=game_id, data={
                 "handler": "createGamer", "data": request.user.username})
             redirect_to = "/play/"
+        except IndexError:
+            msg.add_message(request, msg.ERROR, "Oops! That passcode is incorrect.")
         except Game.DoesNotExist:  # pylint: disable=no-member
-            msg.add_message(request, msg.ERROR, "Game does not exist")
+            msg.add_message(request, msg.ERROR, "Oops! That game does not exist. (NiceTryHacker)")
         except WoodenError as e:
             msg.add_message(request, msg.ERROR, str(e))
-        except Exception:  # pylint: disable=broad-except
+        except Exception as e:  # pylint: disable=broad-except
+            handle_error(e)
             msg.add_message(request, msg.ERROR
                             , "An error occured so you could not join the game")
         return redirect(redirect_to)
