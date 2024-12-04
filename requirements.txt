@@ -35,4 +35,4 @@ typing_extensions==4.12.1
 tzdata==2024.1
 uvicorn[standard]
 whitenoise==6.7.0
-zope.interface==6.4.post2
+zope.interface==7.2
