@@ -33,6 +33,6 @@ Twisted==24.3.0
 txaio==23.1.1
 typing_extensions==4.12.1
 tzdata==2024.1
-uvicorn==0.32.1
+uvicorn[standard]
 whitenoise==6.7.0
 zope.interface==6.4.post2
