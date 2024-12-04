@@ -18,6 +18,11 @@ def validate_passcode_length(value):
     if len(value) != 5:
         raise ValidationError('Passcode must be exactly 5 characters long.')
 
+def validate_passcode_availability(value):
+    """Validates the availability of the passcode."""
+    if Game.objects.filter(passcode=value, ended=False).exists():  # pylint: disable=no-member
+        raise ValidationError('Passcode already in use.')
+
 # Create your models here.
 class Game(models.Model):
     """The Game model."""
@@ -31,7 +36,9 @@ class Game(models.Model):
     started = models.BooleanField(default=False)
     ended = models.BooleanField(default=False)
     passcode = models.CharField(max_length=5, null=True
-                                , blank=True, validators=[validate_passcode_length])
+                                , blank=True, validators=[
+                                    validate_passcode_length
+                                    ,validate_passcode_availability])
     # do passcode later for private games - join with passcode...
     # It will be so cool, the passcode becomes invalid when game starts
 
@@ -92,7 +99,7 @@ class Game(models.Model):
     @property
     def players(self):
         """Returns the players of the game."""
-        return Player.objects.filter(game=self)
+        return Player.objects.filter(game=self)  # pylint: disable=no-member
 
     @property
     def n(self):
@@ -142,7 +149,7 @@ class Player(models.Model):
     @property
     def full_name(self):
         """Returns the full name of the player."""
-        return self.user.get_full_name()
+        return self.user.get_full_name()  # pylint: disable=no-member
 
     def __str__(self):
         """Returns the string representation of the player."""
@@ -150,7 +157,7 @@ class Player(models.Model):
 
     def get_absolute_url(self):
         """Returns the absolute url of the player."""
-        return f"/player/{self.id}/"
+        return f"/player/{self.pk}/"
 
     def reset(self, won=0, end=True):
         """Resets the player after the game ends."""
