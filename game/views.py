@@ -7,7 +7,7 @@ from django.shortcuts import redirect, render
 from django.views import View
 
 from game.models import Game
-from helpers import group_send_sync, make_game
+from helpers import group_send_sync, make_game, WoodenError
 
 
 class LeaveGame(LoginRequiredMixin, View):
@@ -60,7 +60,7 @@ def play(request):
         player.save()
         msg.add_message(request, msg.ERROR, error_msg)
         return redirect("/lounge/")
-    # Render game, socket and Consumers will create game and 
+    # Render game, socket and Consumers will create game and
     # send data to all users so that JS can build it
     # It will send their positions to them too.
     # But first, let me do the waiting for them that will first trigger
@@ -82,24 +82,37 @@ class JoinGame(LoginRequiredMixin, View):
     def post(self, request):
         """Join a game."""
         player = request.user.player
+        redirect_to = "/lounge/"
         if player.game:
             msg.add_message(request, msg.WARNING, "You are already in a game")
             return redirect("/play/")
         try:
-            game_id = int(request.POST["game_id"])
-            game = Game.objects.get(id=game_id)
-            if game.available:
-                player.game = game
-                player.save()
-                msg.add_message(request, msg.SUCCESS, "You joined the game successfully")
-                # Send the "Gamer's" username, with event "createGamer"
-                # Channel to all (Message will create an object on all player's platforms with joined=false, present=false)
-                group_send_sync(group_name=game_id, data={
-                    "handler": "createGamer", "data": request.user.username})
-        except:
+            # This could trigger the DoesNotExist exception
+            passcode = request.POST.get("passcode", "")
+            if passcode:
+                game = Game.objects.get(passcode=passcode)  # pylint: disable=no-member
+            else:
+                game_id = int(request.POST["game_id"])
+                game = Game.objects.get(id=game_id)  # pylint: disable=no-member
+            if not game.available:
+                raise WoodenError("Game is not available to join")
+            player.game = game
+            player.save()
+            msg.add_message(request, msg.SUCCESS, "You joined the game successfully")
+            # Send the "Gamer's" username, with event "createGamer"
+            # Channel to all (Message will create an object on
+            #    all players' platforms with joined=false, present=false)
+            group_send_sync(group_name=game_id, data={
+                "handler": "createGamer", "data": request.user.username})
+            redirect_to = "/play/"
+        except Game.DoesNotExist:  # pylint: disable=no-member
+            msg.add_message(request, msg.ERROR, "Game does not exist")
+        except WoodenError as e:
+            msg.add_message(request, msg.ERROR, str(e))
+        except Exception:  # pylint: disable=broad-except
             msg.add_message(request, msg.ERROR
                             , "An error occured so you could not join the game")
-        return redirect("/play/")
+        return redirect(redirect_to)
 
 class EndGame(LoginRequiredMixin, View):
     """View for ending a game."""
