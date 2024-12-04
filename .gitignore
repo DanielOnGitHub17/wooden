@@ -7,3 +7,4 @@ wooden.bat
 **/test.py
 **/wooden/production_settings.py
 ideas_stuff
+*.env
