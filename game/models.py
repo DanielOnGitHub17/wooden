@@ -82,6 +82,11 @@ class Game(models.Model):
             self.save()
 
     @property
+    def public(self):
+        """Returns True if the game is public."""
+        return self.passcode is None
+
+    @property
     def available(self):
         """Returns True if the game is available for joining."""
         return not (self.started or self.ended or self.n == self.no_of_players)
