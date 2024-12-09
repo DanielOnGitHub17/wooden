@@ -29,7 +29,7 @@ service-identity==24.1.0
 setuptools==70.0.0
 six==1.16.0
 sqlparse==0.5.0
-Twisted==24.3.0
+Twisted==24.11.0
 txaio==23.1.1
 typing_extensions==4.12.1
 tzdata==2024.1
