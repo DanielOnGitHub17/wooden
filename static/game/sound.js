@@ -21,7 +21,7 @@ class Sound {
     static loadSounds(sources = Sound.sources) {
         let sounds = {};
         for (let name of sources) {
-            sounds[name.split('.')[0]] = new Audio(`/static/game/sound/${name}`);
+            sounds[name.split('.')[0]] = new Audio(`../static/game/sound/${name}`);
         };
         return sounds;
     }
