@@ -21,7 +21,7 @@
         rgba(255, 235, 205, 0.9),
         rgba(255, 235, 205, 0.9)
       ),
-      url("static/img/bg2.jpeg");
+      url("img/bg2.jpeg");
   }
   
   .header {
@@ -126,7 +126,7 @@
   }
   
   .sign-up-img {
-    background-image: url("static/img/sign-up.jpg");
+    background-image: url("img/sign-up.jpg");
   }
 
   .sign-up-form input {
