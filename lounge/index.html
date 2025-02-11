@@ -3,7 +3,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/static/img/favicon.png" />
+    <link rel="icon" type="image/svg+xml" href="static/img/favicon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -11,20 +11,20 @@
       href="https://fonts.googleapis.com/css2?family=New+Rocker&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="/static/app.css">
-    <link rel="stylesheet" href="/static/both.css">
+    <link rel="stylesheet" href="static/app.css">
+    <link rel="stylesheet" href="static/both.css">
     <script src="https://danielongithub17.github.io/funcs.js"></script>
     <title>Daniel's Lounge</title>
   </head>
   <body>
     <ul id="MENU">
-    <li><a class="button" href="/profile/">Your profile</a></li>
-    <li><a class="button" href="/lounge/">Lounge</a></li>
-    <li><a class="button" href="/chat/">General chat</a></li>
+    <li><a class="button" href="profile/">Your profile</a></li>
+    <li><a class="button" href="lounge/">Lounge</a></li>
+    <li><a class="button" href="chat/">General chat</a></li>
     <li><button id="SHOW_ONLINE">Online Players</button></li>
     
-    <li><a class="button" href="/practice/" target="_blank">Practice</a></li>
-    <li><a class="button" href="/signout/">Exit</a></li>
+    <li><a class="button" href="practice/" target="_blank">Practice</a></li>
+    <li><a class="button" href="signout/">Exit</a></li>
 </ul>
     <div id="MESSAGES">
     
@@ -79,7 +79,7 @@
     <button id="HIDE_ONLINE">Close</button>
 </div>
     <header class="header">
-      <a href="/"><img src="/static/img/logo.png" alt="Wooden Logo" /></a>
+      <a href="/wooden"><img src="static/img/logo.png" alt="Wooden Logo" /></a>
       <button type="button" id="SHOW_MENU">Menu</button>
     </header>
     <div id="APP">
@@ -88,7 +88,7 @@
     <tr><td>Username:</td><td>eodX17</td></tr>
     <tr><td>Rank:</td><td>6</td></tr>
     <tr><td>Full Name:</td><td>Daniel Enesi</td></tr>
-    <tr><td colspan="2"><a class="button" href="/practice/" target="_blank">Practice</a></td></tr>
+    <tr><td colspan="2"><a class="button" href="practice/" target="_blank">Practice</a></td></tr>
 </table>
 
 
@@ -135,7 +135,7 @@
 <div id="GAMES">
     <!-- Create a form for private games that will collect only the passcode and map to join -->
     <h3>Have a code? Join private game</h3>
-    <form id="JOINGAME_PRIVATE" method="post" action="/join/">
+    <form id="JOINGAME_PRIVATE" method="post" action="join/">
         <input type="hidden" name="csrfmiddlewaretoken" value="phgR5fTBglznvTC8cnrjIJ2NtTpsZmWWznZqbRKgA2WMG0X09lA2Jg3KLFhmLioa">
         <table id="PRIVATE_GAME">
             <tr>
@@ -154,13 +154,13 @@
     
 </div>
 
-<script type="module" src="/static/lounge/events.js"></script>
-<!-- <script src="/static/funcs.js"></script> -->
+<script type="module" src="static/lounge/events.js"></script>
+<!-- <script src="static/funcs.js"></script> -->
 
     </div>
     <div id="START">
       <button onclick="document.firstElementChild.requestFullscreen()">Enter Game</button>
     </div>
-    <script type="module" id="USERNAME" src="/static/scripts.js">eodX17</script>
+    <script type="module" id="USERNAME" src="static/scripts.js">eodX17</script>
   </body>
 </html>

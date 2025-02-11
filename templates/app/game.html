@@ -18,7 +18,7 @@
         <div id="WAIT_ROOM">
             <h2>Hello, <span id="USERNAME">{{ user.username }}</span>.</h2>
             {% if user.player.creator %}
-            <form action="/start/" method="post" id="CREATOR">
+            <form action="start/" method="post" id="CREATOR">
                 <p>You can start the game early when more players join.</p>
                 {% csrf_token %}
                 <button type="submit" disabled id="GAME_STARTER">Start early</button>
@@ -39,7 +39,7 @@
                 - Gamers will be connected to the players/bots from Game.start()
                  -->
             </table>
-            <form action="/leave/" method="post">
+            <form action="leave/" method="post">
                 {% csrf_token %}
                 <p>Can't wait for this game to start?</p>
                 <button type="submit" id="GAME_LEAVER">Leave game</button>
@@ -72,7 +72,7 @@
         </ul>
         {% if multiplayer %}
         <p id="STATUS"></p>
-        <form action="/end/" method="post" id="SEND_STATUS">
+        <form action="end/" method="post" id="SEND_STATUS">
             {% csrf_token %}
             <input type="checkbox" name="won" hidden>
             <button type="submit">CONTINUE TO LOUNGE</button>

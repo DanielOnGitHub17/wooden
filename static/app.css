@@ -22,7 +22,7 @@ body {
         rgba(255, 235, 205, 0.8),
         rgba(255, 235, 205, 0.8)
       ),
-      url("/static/img/bg2.jpeg");
+      url("img/bg2.jpeg");
     display: flex;
     flex-flow: column;
     justify-content: center;
