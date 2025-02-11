@@ -1,0 +1,65 @@
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="cache-control" content="no-cache">
+        <meta http-equiv="expires" content="0">
+        <meta http-equiv="pragma" content="no-cache">
+        <link rel="icon" type="image/svg+xml" href="/static/game/texture/comrade.svg" />
+        <link rel="stylesheet" href="/static/game/game.css">
+        <link rel="stylesheet" href="/static/both.css">
+        <link rel="stylesheet" href="https://danielongithub17.github.io/loading.css">
+        <script src="https://danielongithub17.github.io/funcs.js"></script>
+        <title>WOODEN </title>
+    </head>
+    <div id="MESSAGES">
+    
+    <div id="ERRORS"></div>
+    <button id="CLOSE_MESSAGES" onclick="reclass(MESSAGES, 'empty')">X</button>
+</div>
+    <div id="SETTINGS">
+        
+        <form id="PRACTICE">
+            <h3>Practice playing with bots</h3>
+            <table>
+                <tr>
+                    <td><label>Number of bots: <input type="number" name="botCount" min="0", max="9" value=3 required></label></td>
+                    <td rowspan="2"><button id="START" type="submit">Start Practice</button></td>
+                </tr>
+                <tr>
+                    <td><label>Maximum hits: <input type="number" name="maxHits" min="2", max="7" value=4 required></label></td>
+                </tr>
+                <tr>
+                    <td><label>Bot speed (<span id="SPEED">230</span>): <input id="SETSPEED" type="range" name="speed" step="20" min="80", max="400" value=230 required></label></td>
+                </tr>
+            </table>
+        </form>
+        
+    </div>
+    <div id="WORLD"></div>
+    <div id="GAME_OVER">
+        <h1>GAME OVER</h1>
+        <h2>Top players for game</h2>
+        <ul id="WINNERS_LIST">
+            <!-- players will be added here -->
+        </ul>
+        
+        <div>
+            <button type="button" onclick="load()">Practice again</button>
+            <button type="button" onclick="window.close()">Close</button>
+        </div>
+        
+        <!-- List best players with their username -->
+    </div>
+    <div id="INITIALIZER">
+        <button type="button" id="INITIALIZE">ENTER GAME MODE</button>
+    </div>
+    <script id="GAME_DATA" type="application/json">{"grid": [[2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2], [2, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 1, 1, 2], [2, 0, 0, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 0, 2], [2, 0, 1, 1, 0, 1, 0, 1, 1, 0, 0, 1, 0, 0, 0, 0, 2], [2, 1, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 1, 2], [2, 0, 0, 1, 1, 0, 1, 0, 0, 0, 0, 1, 0, 0, 1, 0, 2], [2, 0, 0, 0, 0, 1, 1, 0, 1, 0, 0, 0, 0, 1, 1, 1, 2], [2, 0, 0, 1, 0, 1, 0, 0, 1, 1, 0, 0, 0, 1, 1, 0, 2], [2, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 2], [2, 0, 0, 1, 1, 0, 1, 1, 1, 0, 0, 1, 1, 1, 0, 1, 2], [2, 1, 1, 1, 0, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 1, 2], [2, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 2], [2, 0, 0, 1, 1, 0, 1, 0, 1, 1, 0, 0, 1, 0, 0, 0, 2], [2, 0, 0, 1, 0, 1, 0, 0, 1, 1, 1, 1, 0, 0, 1, 1, 2], [2, 1, 0, 0, 1, 0, 1, 0, 0, 1, 1, 1, 0, 0, 0, 0, 2], [2, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 0, 0, 1, 1, 2], [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2]], "positions": [[12, 11], [10, 8], [4, 3], [12, 2], [5, 2], [14, 12], [12, 7], [15, 12], [1, 6], [6, 7]]}</script>
+    <script type="module" src="/static/game/block.js"></script>
+    <script type="module" src="/static/game/player.js"></script>
+    <script type="module" src="/static/game/bot.js"></script>
+    <script type="module" src="/static/game/game.js"></script>
+    <script type="module" src="/static/game/sound.js"></script>
+    
+    <script type="module" src="/static/game/events.js"></script>
+</html>

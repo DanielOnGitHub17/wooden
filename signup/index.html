@@ -1,0 +1,121 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/static/img/favicon.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=New+Rocker&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/static/styles.css">
+    <link rel="stylesheet" href="/static/both.css">
+    <script src="https://danielongithub17.github.io/funcs.js"></script>
+    <title>Create a wooden account</title>
+  </head>
+  <body>
+    <div id="MESSAGES">
+    
+    <div id="ERRORS"></div>
+    <button id="CLOSE_MESSAGES" onclick="reclass(MESSAGES, 'empty')">X</button>
+</div>
+    <header class="header">
+      <a href="/">
+        <img src="/static/img/logo.png" alt="Wooden Logo" />
+      </a>
+      <nav class="header-nav">
+        <ul class="header-ul">
+          <li class="nav-item">
+            <a href="/game_help/" class="nav-link">How to play</a>
+          </li>
+          <li class="nav-item">
+            <a href="/support/" class="nav-link">Game support</a>
+          </li>
+          <li class="nav-item">
+            <a href="/dev/" class="nav-link">Developers</a>
+          </li>
+          
+          <li class="nav-item">
+            <a href="/signin/" class="nav-link">Sign In</a>
+          </li>
+          <li class="nav-item">
+            <a href="/signup/" class="nav-link">Sign Up</a>
+          </li>
+          
+        </ul>
+      </nav>
+    </header>
+    <main>
+        
+<article class="main-sign-up">
+    <div class="sign-up-img"></div>
+    <form action="" class="sign-up-form" method="POST">
+        <h2>Sign Up</h2>
+        <input type="hidden" name="csrfmiddlewaretoken" value="oYnh0j5ipW36rgkTlxtNJDO4F4mAPLGbu51GWVCUOZhq0K95oJACbKPXyOal2fyC">
+        <div>
+    <label for="id_email">Email Address:</label>
+
+
+
+<input type="email" name="email" maxlength="320" required id="id_email">
+    
+</div>
+
+  <div>
+    <label for="id_first_name">First name:</label>
+
+
+
+<input type="text" name="first_name" maxlength="30" required id="id_first_name">
+    
+</div>
+
+  <div>
+    <label for="id_last_name">Last name:</label>
+
+
+
+<input type="text" name="last_name" maxlength="30" required id="id_last_name">
+    
+</div>
+
+  <div>
+    <label for="id_username">Username:</label>
+
+
+
+<input type="text" name="username" autofocus required id="id_username">
+    
+</div>
+
+  <div>
+    <label for="id_password1">Password:</label>
+
+<div class="helptext" id="id_password1_helptext"><ul><li>Your password can’t be too similar to your other personal information.</li><li>Your password must contain at least 8 characters.</li><li>Your password can’t be a commonly used password.</li><li>Your password can’t be entirely numeric.</li></ul></div>
+
+<input type="password" name="password1" autocomplete="new-password" aria-describedby="id_password1_helptext" id="id_password1">
+    
+</div>
+
+  <div>
+    <label for="id_password2">Password confirmation:</label>
+
+<div class="helptext" id="id_password2_helptext">Enter the same password as before, for verification.</div>
+
+<input type="password" name="password2" autocomplete="new-password" aria-describedby="id_password2_helptext" id="id_password2">
+    
+      
+    
+</div>
+        <button type="submit">Create Account</button>
+        <p>Already have an account? <a href="/signin/">Login</a>.</p>
+    </form>
+</article>
+
+    </main>
+    <script type="module" id="USERNAME" src="/static/scripts.js"></script>
+  </body>
+</html>

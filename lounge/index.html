@@ -1,0 +1,166 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/static/img/favicon.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=New+Rocker&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/static/app.css">
+    <link rel="stylesheet" href="/static/both.css">
+    <script src="https://danielongithub17.github.io/funcs.js"></script>
+    <title>Daniel's Lounge</title>
+  </head>
+  <body>
+    <ul id="MENU">
+    <li><a class="button" href="/profile/">Your profile</a></li>
+    <li><a class="button" href="/lounge/">Lounge</a></li>
+    <li><a class="button" href="/chat/">General chat</a></li>
+    <li><button id="SHOW_ONLINE">Online Players</button></li>
+    
+    <li><a class="button" href="/practice/" target="_blank">Practice</a></li>
+    <li><a class="button" href="/signout/">Exit</a></li>
+</ul>
+    <div id="MESSAGES">
+    
+    <div id="ERRORS"></div>
+    <button id="CLOSE_MESSAGES" onclick="reclass(MESSAGES, 'empty')">X</button>
+</div>
+    
+<div id="PEOPLE">
+    <h3>Online Players</h3>
+    <table id="ONLINE_PLAYERS">
+        <tr>
+            <th>Username</th>
+            <th>Rank</th>
+        </tr>
+        
+        <tr>
+            <td class="username">eodX17</td>
+            <td class="rank">6</td>
+        </tr>
+        
+        <tr>
+            <td class="username">TyKale2007</td>
+            <td class="rank">2</td>
+        </tr>
+        
+        <tr>
+            <td class="username">atleast3characters</td>
+            <td class="rank">0</td>
+        </tr>
+        
+        <tr>
+            <td class="username">so428</td>
+            <td class="rank">0</td>
+        </tr>
+        
+        <tr>
+            <td class="username">KingOz</td>
+            <td class="rank">0</td>
+        </tr>
+        
+        <tr>
+            <td class="username">Munashe</td>
+            <td class="rank">0</td>
+        </tr>
+        
+        <tr>
+            <td class="username">tereik_</td>
+            <td class="rank">0</td>
+        </tr>
+        
+    </table>
+    <button id="HIDE_ONLINE">Close</button>
+</div>
+    <header class="header">
+      <a href="/"><img src="/static/img/logo.png" alt="Wooden Logo" /></a>
+      <button type="button" id="SHOW_MENU">Menu</button>
+    </header>
+    <div id="APP">
+        
+<table id="BIO">
+    <tr><td>Username:</td><td>eodX17</td></tr>
+    <tr><td>Rank:</td><td>6</td></tr>
+    <tr><td>Full Name:</td><td>Daniel Enesi</td></tr>
+    <tr><td colspan="2"><a class="button" href="/practice/" target="_blank">Practice</a></td></tr>
+</table>
+
+
+<div id="CREATE">
+    <h3>Game creation</h3>
+    <form id="CREATEGAME" method="POST" action="">
+        <input type="hidden" name="csrfmiddlewaretoken" value="phgR5fTBglznvTC8cnrjIJ2NtTpsZmWWznZqbRKgA2WMG0X09lA2Jg3KLFhmLioa">
+        <table id="CREATE">
+            <tr>
+    <th><label for="id_no_of_players">No of players:</label></th>
+    <td>
+      
+      <input type="number" name="no_of_players" value="2" min="2" max="7" required id="id_no_of_players">
+      
+      
+    </td>
+  </tr>
+
+  <tr>
+    <th><label for="id_max_hits">Max hits:</label></th>
+    <td>
+      
+      <input type="number" name="max_hits" value="3" min="2" max="7" required id="id_max_hits">
+      
+      
+    </td>
+  </tr>
+
+  <tr>
+    <th><label for="id_passcode">Passcode:</label></th>
+    <td>
+      
+      <input type="text" name="passcode" placeholder="Passcode (optional)" title="Leave blank to create a public game" maxlength="5" id="id_passcode">
+      
+      
+        
+      
+    </td>
+  </tr>
+            <tr><td colspan="2"><button type="submit">Create</button></td></tr>
+        </table>
+    </form>
+</div>
+<div id="GAMES">
+    <!-- Create a form for private games that will collect only the passcode and map to join -->
+    <h3>Have a code? Join private game</h3>
+    <form id="JOINGAME_PRIVATE" method="post" action="/join/">
+        <input type="hidden" name="csrfmiddlewaretoken" value="phgR5fTBglznvTC8cnrjIJ2NtTpsZmWWznZqbRKgA2WMG0X09lA2Jg3KLFhmLioa">
+        <table id="PRIVATE_GAME">
+            <tr>
+                <td>Passcode:</td>
+                <td><input type="text" name="passcode" required></td>
+            </tr>
+            <tr>
+                <td colspan="2"><button type="submit">Join Private Game</button></td>
+            </tr>
+        </table>
+    </form>
+    <h3>Public games</h3>
+    <p>Please refresh this page to view recent content</p>
+    
+    No public games available. Try creating one above.
+    
+</div>
+
+<script type="module" src="/static/lounge/events.js"></script>
+<!-- <script src="/static/funcs.js"></script> -->
+
+    </div>
+    <div id="START">
+      <button onclick="document.firstElementChild.requestFullscreen()">Enter Game</button>
+    </div>
+    <script type="module" id="USERNAME" src="/static/scripts.js">eodX17</script>
+  </body>
+</html>

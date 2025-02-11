@@ -1,0 +1,104 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/static/img/favicon.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=New+Rocker&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/static/app.css">
+    <link rel="stylesheet" href="/static/both.css">
+    <script src="https://danielongithub17.github.io/funcs.js"></script>
+    <title>Wooden Game</title>
+  </head>
+  <body>
+    <ul id="MENU">
+    <li><a class="button" href="/profile/">Your profile</a></li>
+    <li><a class="button" href="/lounge/">Lounge</a></li>
+    <li><a class="button" href="/chat/">General chat</a></li>
+    <li><button id="SHOW_ONLINE">Online Players</button></li>
+    
+    <li><a class="button" href="/practice/" target="_blank">Practice</a></li>
+    <li><a class="button" href="/signout/">Exit</a></li>
+</ul>
+    <div id="MESSAGES">
+    
+    <div id="ERRORS"></div>
+    <button id="CLOSE_MESSAGES" onclick="reclass(MESSAGES, 'empty')">X</button>
+</div>
+    
+<div id="PEOPLE">
+    <h3>Online Players</h3>
+    <table id="ONLINE_PLAYERS">
+        <tr>
+            <th>Username</th>
+            <th>Rank</th>
+        </tr>
+        
+        <tr>
+            <td class="username">eodX17</td>
+            <td class="rank">6</td>
+        </tr>
+        
+        <tr>
+            <td class="username">TyKale2007</td>
+            <td class="rank">2</td>
+        </tr>
+        
+        <tr>
+            <td class="username">atleast3characters</td>
+            <td class="rank">0</td>
+        </tr>
+        
+        <tr>
+            <td class="username">so428</td>
+            <td class="rank">0</td>
+        </tr>
+        
+        <tr>
+            <td class="username">KingOz</td>
+            <td class="rank">0</td>
+        </tr>
+        
+        <tr>
+            <td class="username">Munashe</td>
+            <td class="rank">0</td>
+        </tr>
+        
+        <tr>
+            <td class="username">tereik_</td>
+            <td class="rank">0</td>
+        </tr>
+        
+    </table>
+    <button id="HIDE_ONLINE">Close</button>
+</div>
+    <header class="header">
+      <a href="/"><img src="/static/img/logo.png" alt="Wooden Logo" /></a>
+      <button type="button" id="SHOW_MENU">Menu</button>
+    </header>
+    <div id="APP">
+        
+<div id="CHATS">
+    <!-- No chats for now.<br>
+    How about you kick a message? -->
+</div>
+<form id="CHATBOX">
+    <input id="INPUT" required maxlength="100">
+    <button type="submit" id="SENDER">Kick</button>
+</form>
+<script type="module" src="/static/chat/events.js"></script>
+<script type="module" src="/static/chat/chat.js"></script>
+
+    </div>
+    <div id="START">
+      <button onclick="document.firstElementChild.requestFullscreen()">Enter Game</button>
+    </div>
+    <script type="module" id="USERNAME" src="/static/scripts.js">eodX17</script>
+  </body>
+</html>
