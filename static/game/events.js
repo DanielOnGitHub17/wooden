@@ -18,9 +18,11 @@ function main(event) {
 }
 
 function changeToPublic(event) {
+    if (event.target != PASSCODE_AREA) return;
+    event.preventDefault();
     MAKE_PUBLIC.disabled = true;
     MAKE_PUBLIC.textContent = "Changing to public...";
-    fetch("/game/change/", {
+    fetch("/change/", {
         method: "POST",
         headers: {
             "X-CSRFToken": getS("[name=csrfmiddlewaretoken]").value,
@@ -28,7 +30,7 @@ function changeToPublic(event) {
     }).then(response => {
         if (response.ok) {
             PASSCODE_AREA.innerHTML = "Changed to public";
-            setTimeout(() => PASSCODE_AREA.remove(), 1000);
+            setTimeout(() => PASSCODE_AREA.remove(), 2000);
         } else {
             throw Error("Failed to change to public");
         }
