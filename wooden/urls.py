@@ -28,4 +28,3 @@ urlpatterns = [
     path("", include("lounge.urls"), name="Lounge"),
     path("", include("game.urls"), name="Game"),
 ]
-
