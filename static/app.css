@@ -15,7 +15,7 @@ h3{
 }
 
 body {
-    height: 90vh;
+    min-height: 90vh;
     width: 99.2vw;
     background-color: blanchedalmond;
     background-image: linear-gradient(
