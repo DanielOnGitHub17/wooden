@@ -24,10 +24,11 @@
                 <button type="submit" disabled id="GAME_STARTER">Start early</button>
             </form>
                 {% if game.passcode %}
-                <div id="PASSCODE_AREA">
+                <form id="PASSCODE_AREA">
                     <p>Share this passcode to invite others: <span id="PASSCODE">{{ game.passcode }}</span></p>
-                    <p>Want to make the game public? <button id="MAKE_PUBLIC" type="button">Make public</button></p>
-                </div>
+                    <p>Want to make the game public? You can't change it back to private.</p>
+                    <p>Click button: <button id="MAKE_PUBLIC" type="submit">Make public</button></p>
+                </form>
                 {% endif %}
             {% endif %}
             <h3>Players for game #<span id="ID">{{ game.id }}</span>:
