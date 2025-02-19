@@ -3,12 +3,25 @@
 from django.contrib import messages as msg
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.http import HttpResponse
 from django.shortcuts import redirect, render
 from django.views import View
 
 from game.models import Game
 from helpers import group_send_sync, make_game, WoodenError, handle_error
 
+
+class ChangeToPublic(LoginRequiredMixin, View):
+    """View for changing a game to public."""
+    def post(self, request):
+        """Change a game to public."""
+        player = request.user.player
+        game = player.game
+        if game and game.available and not game.public:
+            game.passcode = None
+            game.save()
+            return HttpResponse(status=200)
+        return HttpResponse(status=400)
 
 class LeaveGame(LoginRequiredMixin, View):
     """View for leaving a game."""

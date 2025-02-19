@@ -10,7 +10,7 @@
         <link rel="stylesheet" href="{% static 'both.css' %}">
         <link rel="stylesheet" href="https://danielongithub17.github.io/loading.css">
         <script src="https://danielongithub17.github.io/funcs.js"></script>
-        <title>WOODEN {{ game.passcode|default_if_none:"" }}</title>
+        <title>WOODEN</title>
     </head>
     {% include "messages.html" %}
     <div id="SETTINGS">
@@ -23,6 +23,13 @@
                 {% csrf_token %}
                 <button type="submit" disabled id="GAME_STARTER">Start early</button>
             </form>
+                {% if game.passcode %}
+                <form id="PASSCODE_AREA">
+                    <p>Share this passcode to invite others: <span id="PASSCODE">{{ game.passcode }}</span></p>
+                    <p>Want to make the game public? You can't change it back to private.</p>
+                    <p>Click button: <button id="MAKE_PUBLIC" type="submit">Make public</button></p>
+                </form>
+                {% endif %}
             {% endif %}
             <h3>Players for game #<span id="ID">{{ game.id }}</span>:
                 <span id="NO_OF_PLAYERS">{{ game.joined }}</span>/<span id="N">{{ game.no_of_players }}</span> joined.

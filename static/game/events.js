@@ -8,7 +8,7 @@ function main(event) {
     makeEvents({
         load: [start, compileMessages, Sound.load],
         click: [initialize],
-        submit: [submitStartForm],
+        submit: [submitStartForm, changeToPublic],
         unload: [leftPage],
         beforeunload: [reloadingPage],
         change: [writeSpeed],
@@ -17,10 +17,35 @@ function main(event) {
     ["open", "close", "message", "error"].forEach(event=>window[event+"Socket"] = eval(event+"Socket"));
 }
 
+function changeToPublic(event) {
+    if (event.target != PASSCODE_AREA) return;
+    event.preventDefault();
+    MAKE_PUBLIC.disabled = true;
+    MAKE_PUBLIC.textContent = "Changing to public...";
+    fetch("/change/", {
+        method: "POST",
+        headers: {
+            "X-CSRFToken": getS("[name=csrfmiddlewaretoken]").value,
+        },
+    }).then(response => {
+        if (response.ok) {
+            PASSCODE_AREA.innerHTML = "Changed to public";
+            setTimeout(() => PASSCODE_AREA.remove(), 2000);
+        } else {
+            throw Error("Failed to change to public");
+        }
+    }).catch(error => {
+        console.error("Error:", error);
+        MAKE_PUBLIC.disabled = false;
+        MAKE_PUBLIC.textContent = "Make public";
+    });
+}
+
 function writeSpeed(event) {
     if (Game.isMultiplayer || event.target != SETSPEED) return;
     SPEED.textContent = SETSPEED.value;
 }
+
 function gameMode(event, next="WORLD", changeScreen=true) {
     Sound.stopAll();
     INITIALIZER.next = next;
@@ -66,7 +91,6 @@ function leftPage(event) {
 function reloadingPage(event) {
     return false;
 }
-
 
 function start(event){
     switchScreen("INITIALIZER");

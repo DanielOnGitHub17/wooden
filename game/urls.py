@@ -8,4 +8,5 @@ urlpatterns = [
     path("end/", views.EndGame.as_view(), name="end"),
     path("leave/", views.LeaveGame.as_view(), name="leave"),
     path("start/", views.StartEarly.as_view(), name="start"),
+    path("change/", views.ChangeToPublic.as_view(), name="change"),
 ]
