@@ -1,11 +1,11 @@
-anyio==4.4.0
+anyio==4.9.0
 asgiref==3.8.1
 async-timeout==4.0.3
 attrs==23.2.0
 autobahn==23.6.2
 Automat==24.8.1
 cffi==1.16.0
-channels==4.1.0
+channels==4.2.0
 channels_redis==4.2.1
 click==8.1.7
 colorama==0.4.6
@@ -17,7 +17,7 @@ Django==5.1.7
 exceptiongroup==1.2.2
 gunicorn==23.0.0
 h11==0.14.0
-httptools==0.6.1
+httptools==0.6.4
 hyperlink==21.0.0
 idna==3.7
 incremental==24.7.2
@@ -39,9 +39,9 @@ tomli==2.2.1
 Twisted==24.11.0
 txaio==23.1.1
 typing_extensions==4.12.2
-tzdata==2024.1
+tzdata==2025.1
 uvicorn==0.34.0
-uvloop==0.19.0
+uvloop==0.20.0
 watchfiles==1.0.4
 websockets==12.0
 whitenoise==6.7.0

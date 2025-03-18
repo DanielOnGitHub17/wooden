@@ -8,5 +8,5 @@ updates:
   - package-ecosystem: "pip" # See documentation for possible values
     directory: "/" # Location of package manifests
     schedule:
-      interval: "weekly"
+      interval: "monthly" # Check for updates every month
     target-branch: "updates" # Specify the branch for pull requests
