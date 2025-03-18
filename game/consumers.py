@@ -14,7 +14,6 @@ class GameConsumer(AsyncWebsocketConsumer):
     async def connect(self):
         # Specific to a particular walk
         self.group_name = self.scope["url_route"]["kwargs"]["game_id"]
-        print(f"Group Name: {self.group_name}; Channel Name: {self.channel_name}")
         await self.channel_layer.group_add(self.group_name, self.channel_name)
         await self.accept()
 
