@@ -146,7 +146,6 @@ class ResetPassword(PasswordResetView):
 
 class DoneResetPassword(PasswordResetDoneView):
     """View for password reset done."""
-    pass
 
 class ConfirmResetPassword(SuccessMessageMixin, PasswordResetConfirmView):
     """View for confirming password reset."""
