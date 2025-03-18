@@ -45,12 +45,6 @@ if IS_HEROKU_APP:
 else:
     ALLOWED_HOSTS = [".localhost", "127.0.0.1", "[::1]", "0.0.0.0", "[::]"]
 
-# For codespaces
-# CSRF_TRUSTED_ORIGINS = [
-#     "https://fuzzy-zebra-6jj96xvxwww37r9-8000.app.github.dev"
-#     , "https://localhost:8000", "https://*.railway.app"]
-
-
 # Email backend
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER")

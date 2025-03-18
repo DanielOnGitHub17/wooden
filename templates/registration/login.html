@@ -15,13 +15,17 @@
 {% endif %}
 <article class="main-sign-up">
     <div class="sign-up-img"></div>
-    <form action="" class="sign-up-form" method="POST">
+    <form action="" class="register-form" method="POST">
         <h2>Sign In</h2>
         {% csrf_token %}
         {{ form }}
+        <div class="g-recaptcha" data-sitekey="6LefxfcqAAAAAD_VXTiUUCOTSoAXwlLwtqAiFUaI"></div>
         <button type="submit">Sign in</button>
         <p>Don't have a Wooden account? <a href="/signup/">Register</a>.</p>
         <p>Forgot your password? <a href="/password_reset/">Reset password</a>.</p>
     </form>
+    <p id="recaptcha-errors"></p>
 </article>
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+<script src="{% static 'register/captcha.js' %}"></script>
 {% endblock %}

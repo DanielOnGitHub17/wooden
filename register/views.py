@@ -15,7 +15,7 @@ from django.views import View
 from django.views.generic.edit import CreateView
 
 from game.models import Player
-from helpers import handle_error, new_username, NotLoginRequiredMixin, WoodenError
+from helpers import NotLoginRequiredMixin, WoodenError, handle_error, new_username, verify_recaptcha
 from register.forms import SignUpForm  #, SignInForm
 
 class Profile(LoginRequiredMixin, View):
@@ -40,6 +40,11 @@ class SignUp(NotLoginRequiredMixin, SuccessMessageMixin, CreateView):
 
     def form_valid(self, form):
         """Handle valid form submission."""
+        recaptcha_token = self.request.POST.get("g-recaptcha-response")
+        if not (recaptcha_token and verify_recaptcha(recaptcha_token)):
+            msg.add_message(self.request, msg.ERROR, "Complete the reCAPTCHA to create account.")
+            return self.form_invalid(form)
+
         try:
             # Create User and assign to new Player
             new_user = form.save(commit=False)
@@ -70,6 +75,12 @@ class SignIn(SuccessMessageMixin, LoginView):
 
     def form_valid(self, form):
         """Handle valid form submission."""
+        # DRY: Recaptcha verification
+        recaptcha_token = self.request.POST.get("g-recaptcha-response")
+        if not (recaptcha_token and verify_recaptcha(recaptcha_token)):
+            msg.add_message(self.request, msg.ERROR, "Complete the reCAPTCHA to sign in.")
+            return self.form_invalid(form)
+
         result = super().form_valid(form)
         player = self.request.user.player
         player.logged_in = True
