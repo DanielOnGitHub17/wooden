@@ -23,6 +23,12 @@ from django.contrib.auth.models import User
 from django.shortcuts import redirect
 
 
+import requests as req
+
+# Load environment variables from .env during development
+# from dotenv import load_dotenv
+# load_dotenv()
+
 # Constants
 CHANNEL_LAYER = get_channel_layer()  # or maybe use channels "default" alias
 DEV_MAILS = (os.environ.get("EMAIL_HOST_USER"),)
@@ -168,6 +174,18 @@ class NotLoginRequiredMixin(AccessMixin):
         if request.user.is_authenticated:
             return redirect(self.redirect_where)
         return super().dispatch(request, *args, **kwargs)
+
+def verify_recaptcha(token):
+    """Verify recaptcha token."""
+    response = req.post(
+        "https://www.google.com/recaptcha/api/siteverify",
+        data={
+            "secret": os.getenv("RECAPTCHA_SECRET_KEY"),
+            "response": token,
+        },
+    )
+    return response.json().get("success", False)
+
 
 if __name__ == "__main__":
     if len(sys.argv) == 2:
