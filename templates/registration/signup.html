@@ -4,12 +4,16 @@
 {% block content %}
 <article class="main-sign-up">
     <div class="sign-up-img"></div>
-    <form action="" class="sign-up-form" method="POST">
+    <form action="" class="register-form" method="POST">
         <h2>Sign Up</h2>
         {% csrf_token %}
         {{ form }}
+        <div class="g-recaptcha" data-sitekey="6LefxfcqAAAAAD_VXTiUUCOTSoAXwlLwtqAiFUaI"></div>
         <button type="submit">Create Account</button>
         <p>Already have an account? <a href="/signin/">Login</a>.</p>
     </form>
+    <p id="recaptcha-errors"></p>
 </article>
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+<script src="{% static 'register/captcha.js' %}"></script>
 {% endblock %}
