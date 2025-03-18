@@ -5,7 +5,7 @@ attrs==23.2.0
 autobahn==23.6.2
 Automat==24.8.1
 cffi==1.16.0
-channels==4.1.0
+channels==4.2.0
 channels_redis==4.2.1
 click==8.1.7
 colorama==0.4.6
