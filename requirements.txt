@@ -21,7 +21,7 @@ gunicorn==23.0.0
 h11==0.14.0
 httptools==0.6.4
 hyperlink==21.0.0
-idna==3.7
+idna==3.10
 incremental==24.7.2
 msgpack==1.0.8
 packaging==24.2
