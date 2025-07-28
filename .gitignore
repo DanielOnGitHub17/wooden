@@ -8,3 +8,6 @@ wooden.bat
 **/wooden/production_settings.py
 ideas_stuff
 *.env
+merge_dependabot_prs
+**/staticfiles
+static/staticfiles.json

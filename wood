@@ -1,0 +1,20 @@
+#!/bin/bash
+chmod +x ./wood
+
+run="$1"
+
+declare -A commands
+commands["-r"]="python manage.py runserver"
+commands["-R"]="python -m gunicorn --reload wooden.asgi:application -k uvicorn.workers.UvicornWorker"
+commands["-s"]="python manage.py shell"
+commands["-d"]="docker run --rm -p 6379:6379 redis:latest"
+commands["-mm"]="python manage.py makemigrations"
+commands["-m"]="python manage.py migrate"
+commands["-a"]="source ../woodenv/bin/activate"
+commands["-c"]="python manage.py check"
+commands["-cd"]="python manage.py check --deploy"
+commands["-st"]="python manage.py collectstatic --noinput"
+
+if [ "$run" ]; then
+    eval "${commands[$run]}"
+fi

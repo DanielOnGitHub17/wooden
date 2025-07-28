@@ -175,7 +175,7 @@ account_activation_token = AccountActivationTokenGenerator()
 def activate(request, uidb64, token):
     """Activate user account."""
     try:
-        uid = smart_str(urlsafe_base64_decode(uidb64).decode('utf-8'))
+        uid = smart_str(urlsafe_base64_decode(uidb64).decode("utf-8"))
         user = User.objects.get(pk=uid)
     except (TypeError, ValueError, OverflowError, User.DoesNotExist):  # pylint: disable=E1101
         user = None
@@ -190,5 +190,5 @@ def activate(request, uidb64, token):
         return redirect("/signin/")
 
     msg.add_message(request, msg.ERROR,
-                     "Sorry, your wooden account could not be validated. Retry creating  account")
+                     "Sorry, your wooden account could not be validated. Retry creating account")
     return redirect("/signup/")
