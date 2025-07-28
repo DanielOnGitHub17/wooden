@@ -11,6 +11,7 @@ commands["-d"]="docker run --rm -p 6379:6379 redis:latest"
 commands["-mm"]="python manage.py makemigrations"
 commands["-m"]="python manage.py migrate"
 commands["-a"]="source ../woodenv/bin/activate"
+commands["-c"]="python manage.py check"
 
 if [ "$run" ]; then
     eval "${commands[$run]}"
