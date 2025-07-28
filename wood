@@ -12,6 +12,8 @@ commands["-mm"]="python manage.py makemigrations"
 commands["-m"]="python manage.py migrate"
 commands["-a"]="source ../woodenv/bin/activate"
 commands["-c"]="python manage.py check"
+commands["-cd"]="python manage.py check --deploy"
+commands["-st"]="python manage.py collectstatic --noinput"
 
 if [ "$run" ]; then
     eval "${commands[$run]}"

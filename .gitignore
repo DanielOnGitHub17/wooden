@@ -9,3 +9,5 @@ wooden.bat
 ideas_stuff
 *.env
 merge_dependabot_prs
+**/staticfiles
+static/staticfiles.json

@@ -31,7 +31,7 @@ import requests as req
 
 # Constants
 CHANNEL_LAYER = get_channel_layer()  # or maybe use channels "default" alias
-DEV_MAILS = (os.environ.get("EMAIL_HOST_USER"),)
+DEV_MAILS = (os.getenv("EMAIL_HOST_USER"),)
 MAX_WAIT_TIME = 10
 username_prefixes = ("fighter", "runner", "quick", "super", "victorious",
                      "cool", "amazing", "fast", "smart", "kind", "big",
