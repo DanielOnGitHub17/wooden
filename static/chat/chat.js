@@ -27,7 +27,20 @@ class Chat{
         // event from chatbox form
         if (event.target != CHATBOX) return;
         event.preventDefault();
-        if (!INPUT.value.trim()) return alert("Can't send an empty message");
+        if (!INPUT.value.trim()) 
+        {
+            let formerError = ERRORS.textContent;
+            ERRORS.textContent = "Can't send an empty message";
+            MESSAGES.className = "show";
+            setTimeout(()=>{
+                // Attempt to restore former error message, multiple !INPUT.value.trim() will set formerError to 
+                // "Can't send an empty message" again, so this might not work as expected.
+                ERRORS.textContent = formerError;
+                MESSAGES.className = "empty";
+            }, 1000);
+            return
+        }
+
         // Put date in UTC. Clients can convert as needed. Clients won't know timezone of others.
         Chat.socket.send(jsonStr([username, INPUT.value, (new Date()).toISOString()]));
         INPUT.saved = INPUT.value  // do an undo feature,
