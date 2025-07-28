@@ -19,7 +19,7 @@ class Chat{
         time.setSeconds(0);
         this.TIME.textContent = time.toLocaleTimeString().split(":00").join("");
 
-        // Scroll
+    // Scroll
         this.BOX.scrollIntoViewIfNeeded();
     }
 
@@ -27,10 +27,18 @@ class Chat{
         // event from chatbox form
         if (event.target != CHATBOX) return;
         event.preventDefault();
+        if (!INPUT.value.trim()) return alert("Can't send an empty message");
         // Put date in UTC. Clients can convert as needed. Clients won't know timezone of others.
         Chat.socket.send(jsonStr([username, INPUT.value, (new Date()).toISOString()]));
         INPUT.saved = INPUT.value  // do an undo feature,
         INPUT.value = "";
+    }
+
+    static undo(event){
+        // Undo feature - does undo only one step back
+        if (!(event.target == INPUT && event.ctrlKey && event.key == "z")) return;
+        event.preventDefault();
+        INPUT.value = INPUT.saved;
     }
 
     static message(event){
@@ -58,7 +66,6 @@ class Chat{
         ["open", "close", "message", "error"].forEach(
             type=>Chat.socket.addEventListener(type, Chat[type])
         );
-        //
     }
 }
 
