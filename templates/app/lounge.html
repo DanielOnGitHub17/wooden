@@ -50,14 +50,14 @@
         <table id="GAMES_TO_JOIN">
             <tr>
                 <th>Select</th>
-                <th>Players</th>
-                <th>Max Hits</th>
+                <th># Players</th>
+                <th>Wood Strength</th>
             </tr>
             {% for game in games %}
             <tr>
                 <td><input type="radio" name="game_id" value="{{ game.id }}" required></td>
                 <td>{{ game.joined }} of {{ game.no_of_players }}</td>
-                <td>{{ game.max_hits }}</td>
+                <td>{{ game.wood_strength }}</td>
             </tr>
             {% endfor %}
             <tr>

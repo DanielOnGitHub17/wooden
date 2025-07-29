@@ -14,7 +14,7 @@ Wooden is a simple yet competitive two-dimensional multiplayer game where player
 - Break as many blocks as possible to win.
 - You can customize:
     - The **number of players**.
-    - The **maximum block hits** for each round.
+    - The **strength of wood** for each round.
 
 **Best played on a laptop for optimal experience!**
 

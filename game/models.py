@@ -9,13 +9,16 @@ from django.utils import timezone as tz
 
 from helpers import group_send_sync, make_game, MAX_WAIT_TIME
 
+
+PASSCODE_LENGTH = 5  # Length of the passcode for private games
+
 def num_valid(x, y):
-    """Validates the number of players and max hits."""
+    """Validates the number of players and wood strength."""
     return [MinValueValidator(x), MaxValueValidator(y)]
 
 def validate_passcode_length(value):
     """Validates the length of the passcode."""
-    if len(value) != 5:
+    if len(value) != PASSCODE_LENGTH:
         raise ValidationError('Passcode must be exactly 5 characters long.')
 
 def validate_passcode_availability(value):
@@ -30,12 +33,12 @@ class Game(models.Model):
     initial_grid = models.TextField(default="")
     grid = models.TextField(default="")
     no_of_players = models.IntegerField(default=2, validators=num_valid(2, 7))
-    max_hits = models.IntegerField(default=3, validators=num_valid(2, 7))
+    wood_strength = models.IntegerField(default=3, validators=num_valid(2, 7))
     started_time = models.DateTimeField(null=True)
     ended_time = models.DateTimeField(null=True)
     started = models.BooleanField(default=False)
     ended = models.BooleanField(default=False)
-    passcode = models.CharField(max_length=5, null=True
+    passcode = models.CharField(max_length=PASSCODE_LENGTH, null=True
                                 , blank=True, validators=[
                                     validate_passcode_length
                                     ,validate_passcode_availability])
@@ -45,7 +48,7 @@ class Game(models.Model):
     def try_start(self, force=False):
         """Tries to start the game.
         If the game is not started and can be started, it starts the game."""
-        game_data = {"hits": self.max_hits}
+        game_data = {"hits": self.wood_strength}
         if not self.started and (self.can_start or force):
             self.started = True
             game_data.update(
