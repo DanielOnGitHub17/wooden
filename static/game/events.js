@@ -18,7 +18,7 @@ function main(event) {
 }
 
 function changeToPublic(event) {
-    if (event.target != PASSCODE_AREA) return;
+    if (!Game.isMultiplayer || event.target != PASSCODE_AREA) return;
     event.preventDefault();
     MAKE_PUBLIC.disabled = true;
     MAKE_PUBLIC.textContent = "Changing to public...";
@@ -62,14 +62,12 @@ function initialize(event) {
 }
 
 function submitStartForm(event) {
-    if (Game.isMultiplayer) return;
+    if (Game.isMultiplayer || event.target != PRACTICE) return;
     event.preventDefault();
-    if(event.target == PRACTICE) {
-        let prac = PRACTICE.elements;
-        Game.game = new Game(+prac.botCount.value+1, +prac.maxHits.value);
-        Game.game.speed = 480-parseInt(prac.speed.value);
-        Game.game.start();
-    }
+    let prac = PRACTICE.elements;
+    Game.game = new Game(+prac.botCount.value+1, +prac.woodStrength.value);
+    Game.game.speed = 480-parseInt(prac.speed.value);
+    Game.game.start();
 }
 
 function events(){

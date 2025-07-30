@@ -9,8 +9,8 @@ function main() {
 // Changing min and max
 function changeBounds(event){
     window.gameForm = CREATEGAME.elements;
-    gameForm.no_of_players.min = gameForm.max_hits.min = 2;
-    gameForm.no_of_players.max = gameForm.max_hits.max = 7;
+    gameForm.no_of_players.min = gameForm.wood_strength.min = 2;
+    gameForm.no_of_players.max = gameForm.wood_strength.max = 7;
 }
 
 // Changing "No_of_players" label
@@ -26,7 +26,7 @@ onblur=onchange=oninput=(event)=>{
     // For the game creation form - to prevent unbearable changes. Will be repeated in the backend soon.
     switch (event.target.name){
         case "no_of_players":
-            gameForm.max_hits.min = n;
+            gameForm.wood_strength.min = n;
             break;
     }
 }
