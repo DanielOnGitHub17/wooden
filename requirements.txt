@@ -3,7 +3,7 @@ asgiref==3.8.1
 async-timeout==5.0.1
 attrs==23.2.0
 autobahn==24.4.2
-Automat==24.8.1
+Automat==25.4.16
 certifi==2025.7.14
 cffi==1.17.1
 channels==4.2.0
