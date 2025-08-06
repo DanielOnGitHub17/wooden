@@ -63,10 +63,10 @@ class GameSocket extends WebSocket{
         this.send(jsonStr({handler: "playerUpdate", data: obj}));
     }
 
-    disenableForms(no_of_players){
+    disenableForms(numberOfPlayers){
         if (Gamer.creator){
-            GAME_STARTER.disabled = no_of_players < 2;
-            GAME_LEAVER.disabled = no_of_players > 1;
+            GAME_STARTER.disabled = numberOfPlayers < 2;
+            GAME_LEAVER.disabled = numberOfPlayers > 1;
         }
     }
 }
