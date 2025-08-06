@@ -44,7 +44,7 @@ def new_username(name):
 def online_players_context():
     """Get online players to be given to app views."""
      # To avoid circular import
-    from game.models import Player  #  pylint: disable=import-outside-toplevel
+    from game.models import Player  # pylint: disable=import-outside-toplevel
     return {
         "online_players": Player.objects.filter(logged_in=True).order_by("-won"),  # pylint: disable=no-member
     }
@@ -157,7 +157,7 @@ def as_frontend(event_type):
 
 def cls():
     """Clear the screen for windows and linux."""
-    os.system("cls") and os.system("clear")  # pylint: disable=expression-not-assigned
+    _ = os.system("cls") and os.system("clear")
 
 class WoodenError(Exception):
     """Generic exception class for the app."""
