@@ -11,19 +11,19 @@ Rules
 import os
 import sys
 import traceback
-
 from datetime import datetime
-from importlib import import_module  # type: ignore
-from random import choice, randint, sample
+from importlib import import_module
+from abc import ABC, abstractmethod
+
+import requests as req
 
 from asgiref.sync import async_to_sync
+from channels.exceptions import DenyConnection
+from channels.generic.websocket import AsyncWebsocketConsumer
 from channels.layers import get_channel_layer
 from django.contrib.auth.mixins import AccessMixin
 from django.contrib.auth.models import User
 from django.shortcuts import redirect
-
-
-import requests as req
 
 # Load environment variables from .env during development
 # from dotenv import load_dotenv
@@ -32,6 +32,30 @@ import requests as req
 # Constants
 CHANNEL_LAYER = get_channel_layer()  # or maybe use channels "default" alias
 DEV_MAILS = (os.getenv("EMAIL_HOST_USER"),)
+
+
+class AuthenticateAsyncWebSocketConsumer(ABC, AsyncWebsocketConsumer):
+    """Websocket consumer with authentication check."""
+    @abstractmethod
+    async def authenticate(self):
+        if not self.scope["user"].is_authenticated:
+            raise DenyConnection("User not authenticated")
+
+class WoodenError(Exception):
+    """Generic exception class for the app."""
+
+class NotLoginRequiredMixin(AccessMixin):
+    """Redirect user if user is authenticated.
+    Mixin for Not login required
+    """
+
+    redirect_where = "/lounge/"
+
+    def dispatch(self, request, *args, **kwargs):
+        """Dispatch method for the class."""
+        if request.user.is_authenticated:
+            return redirect(self.redirect_where)
+        return super().dispatch(request, *args, **kwargs)
 
 def join_wspatterns(paths):
     """Resolve websocket_urlpatterns to be passed to asgi URLRouter."""
@@ -110,22 +134,6 @@ def as_frontend(event_type):
 def cls():
     """Clear the screen for windows and linux."""
     _ = os.system("cls") and os.system("clear")
-
-class WoodenError(Exception):
-    """Generic exception class for the app."""
-
-class NotLoginRequiredMixin(AccessMixin):
-    """Redirect user if user is authenticated.
-    Mixin for Not login required
-    """
-
-    redirect_where = "/lounge/"
-
-    def dispatch(self, request, *args, **kwargs):
-        """Dispatch method for the class."""
-        if request.user.is_authenticated:
-            return redirect(self.redirect_where)
-        return super().dispatch(request, *args, **kwargs)
 
 def verify_recaptcha(token):
     """Verify recaptcha token."""
