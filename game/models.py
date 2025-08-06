@@ -102,12 +102,12 @@ class Game(models.Model):
     @property
     def joined(self):
         """Returns the number of players who have joined the game."""
-        return sum(player.joined for player in self.players)
+        return Player.objects.filter(game=self, joined=True).count()
 
     @property
     def players(self):
         """Returns the players of the game."""
-        return Player.objects.filter(game=self)  # pylint: disable=no-member
+        return Player.objects.filter(game=self)
 
     @property
     def n(self):
