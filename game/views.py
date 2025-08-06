@@ -17,7 +17,7 @@ class ChangeToPublic(LoginRequiredMixin, View):
         """Change a game to public."""
         player = request.user.player
         game = player.game
-        if game and game.available and not game.public:
+        if game and game.available and not game.public and player.creator:
             game.passcode = None
             game.save()
             return HttpResponse(status=200)
@@ -53,9 +53,17 @@ class StartEarly(LoginRequiredMixin, View):
         """Start a game early."""
         player = request.user.player
         game = player.game
-        if not game or game.ongoing or game.no_of_players < 2:
-            msg.add_message(request, msg.ERROR, "Cannot perform that action.")
+        if not game:
+            msg.add_message(request, msg.ERROR, "SERVER ERROR (NIG).")
             return redirect("/lounge/")
+        elif not player.creator:
+            msg.add_message(request, msg.ERROR, "You are not the creator of this game.")
+            return redirect("/play/")
+        elif game.joined < 2:
+            msg.add_message(request, msg.ERROR, "You need at least 2 players to start the game.")
+            return redirect("/play/")
+
+        # Change the number of players required to start the game
         game.no_of_players = game.joined
         game.save()
         msg.add_message(request, msg.SUCCESS, "Game will start soon.")
@@ -81,6 +89,7 @@ def play(request):
     if not (player.joined and player.present):
         player.joined = player.present = True
         player.save()
+
     context = {
         "multiplayer": True,
         "players": {player.user.username: [
@@ -88,6 +97,7 @@ def play(request):
         "game": game,
         "game_data": game.try_start()
     }
+
     return render(request, "app/game.html", context)
 
 class JoinGame(LoginRequiredMixin, View):
