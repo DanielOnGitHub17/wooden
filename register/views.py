@@ -14,8 +14,9 @@ from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.views import View
 from django.views.generic.edit import CreateView
 
+from game.helpers import new_username
 from game.models import Player
-from helpers import NotLoginRequiredMixin, WoodenError, handle_error, new_username, verify_recaptcha
+from helpers import NotLoginRequiredMixin, WoodenError, handle_error, verify_recaptcha
 from register.forms import SignUpForm  #, SignInForm
 
 class Profile(LoginRequiredMixin, View):

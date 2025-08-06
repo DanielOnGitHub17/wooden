@@ -7,8 +7,8 @@ import { Sound } from "./sound.js";
 
 identify()
 class Game{
-    constructor(no_of_players, hits){
-        [this.no_of_players, this.hits] = [no_of_players, hits];
+    constructor(numberOfPlayers, hits){
+        [this.numberOfPlayers, this.hits] = [numberOfPlayers, hits];
         this.grid = copyObj(Game.rawMaterial.grid);
         this.build_grid();
         Game.isMultiplayer && this.setPositions();
@@ -58,7 +58,7 @@ class Game{
         let forPlayer = Game.player;
         this.positions = copyObj(Game.rawMaterial.positions);
         if (!Game.isMultiplayer){
-            this.positions = this.positions.slice(0, this.no_of_players);
+            this.positions = this.positions.slice(0, this.numberOfPlayers);
         }
         let playerPos = this.positions[forPlayer];
         new Player(this.blocks[playerPos[0]][playerPos[1]], forPlayer);

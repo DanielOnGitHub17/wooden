@@ -7,7 +7,8 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
 from django.utils import timezone as tz
 
-from helpers import group_send_sync, make_game, MAX_WAIT_TIME
+from helpers import group_send_sync
+from game.helpers import make_game, MAX_WAIT_TIME
 
 
 PASSCODE_LENGTH = 5  # Length of the passcode for private games
@@ -102,12 +103,12 @@ class Game(models.Model):
     @property
     def joined(self):
         """Returns the number of players who have joined the game."""
-        return sum(player.joined for player in self.players)
+        return Player.objects.filter(game=self, joined=True).count()
 
     @property
     def players(self):
         """Returns the players of the game."""
-        return Player.objects.filter(game=self)  # pylint: disable=no-member
+        return Player.objects.filter(game=self)
 
     @property
     def n(self):

@@ -5,8 +5,9 @@ from asgiref.sync import async_to_sync, sync_to_async
 from channels.db import database_sync_to_async
 from channels.generic.websocket import AsyncWebsocketConsumer
 from django.contrib.auth.decorators import login_required
+
 from game.models import Player, Game
-from helpers import as_frontend, group_send, make_game
+from helpers import group_send
 
 # Maybe make a WalkConsumer class and inherit at 
 # SpecificWalkConsumer and GeneralWalksConsumer
