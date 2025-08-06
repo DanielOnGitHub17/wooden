@@ -1,0 +1,11 @@
+channels
+channels_redis
+daphne
+dj-database-url
+Django
+gunicorn
+psycopg2-binary
+python-dotenv
+requests
+uvicorn[standard]
+whitenoise
