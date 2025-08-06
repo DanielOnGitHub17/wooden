@@ -1,11 +1,13 @@
 import json
 import time
 
-from helpers import AuthenticateAsyncWebSocketConsumer
+from channels.generic.websocket import AsyncWebsocketConsumer
 
-class ChatConsumer(AuthenticateAsyncWebSocketConsumer):
+from helpers import authenticate_ws_connection
+
+class ChatConsumer(AsyncWebsocketConsumer):
     async def connect(self):
-        await super().authenticate()
+        await authenticate_ws_connection(self)
         await self.channel_layer.group_add("chat", self.channel_name)
         await self.accept()
     

@@ -19,7 +19,6 @@ import requests as req
 
 from asgiref.sync import async_to_sync
 from channels.exceptions import DenyConnection
-from channels.generic.websocket import AsyncWebsocketConsumer
 from channels.layers import get_channel_layer
 from django.contrib.auth.mixins import AccessMixin
 from django.contrib.auth.models import User
@@ -33,13 +32,6 @@ from django.shortcuts import redirect
 CHANNEL_LAYER = get_channel_layer()  # or maybe use channels "default" alias
 DEV_MAILS = (os.getenv("EMAIL_HOST_USER"),)
 
-
-class AuthenticateAsyncWebSocketConsumer(ABC, AsyncWebsocketConsumer):
-    """Websocket consumer with authentication check."""
-    @abstractmethod
-    async def authenticate(self):
-        if not self.scope["user"].is_authenticated:
-            raise DenyConnection("User not authenticated")
 
 class WoodenError(Exception):
     """Generic exception class for the app."""
@@ -75,6 +67,11 @@ async def group_send(group_name="lounge"
 
 # Copy of group_send for synchronous usage
 group_send_sync = async_to_sync(group_send)
+
+async def authenticate_ws_connection(consumer):
+    """Authenticate WebSocket connection on consumer"""
+    if not consumer.scope["user"].is_authenticated:
+        raise DenyConnection("User not authenticated")
 
 # To make email, which will be sent to devs
 def make_email(request, email):
