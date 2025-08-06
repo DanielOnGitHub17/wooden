@@ -7,7 +7,8 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
 from django.utils import timezone as tz
 
-from helpers import group_send_sync, make_game, MAX_WAIT_TIME
+from helpers import group_send_sync
+from game.helpers import make_game, MAX_WAIT_TIME
 
 
 PASSCODE_LENGTH = 5  # Length of the passcode for private games

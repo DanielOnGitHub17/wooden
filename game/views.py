@@ -7,9 +7,9 @@ from django.http import HttpResponse
 from django.shortcuts import redirect, render
 from django.views import View
 
+from game.helpers import make_game
 from game.models import Game
-from helpers import group_send_sync, make_game, WoodenError, handle_error
-
+from helpers import group_send_sync, WoodenError, handle_error
 
 class ChangeToPublic(LoginRequiredMixin, View):
     """View for changing a game to public."""

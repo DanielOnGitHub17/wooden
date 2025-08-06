@@ -7,9 +7,9 @@ from django.contrib.messages.views import SuccessMessageMixin
 from django.views.generic.edit import CreateView
 
 
+from game.helpers import online_players_context
 from game.models import Game
 from lounge.forms import GameForm
-from helpers import online_players_context
 
 
 class Lounge(LoginRequiredMixin, SuccessMessageMixin, CreateView):
