@@ -1,19 +1,18 @@
 import asyncio
 import json
 
-from asgiref.sync import async_to_sync, sync_to_async
+# from asgiref.sync import async_to_sync, sync_to_async  # Will be used for eventual consistency logic
 from channels.db import database_sync_to_async
 from channels.generic.websocket import AsyncWebsocketConsumer
 from django.contrib.auth.decorators import login_required
 
 from game.models import Player, Game
-from helpers import group_send
+from helpers import authenticate_ws_connection, group_send
 
-# Maybe make a WalkConsumer class and inherit at 
-# SpecificWalkConsumer and GeneralWalksConsumer
 class GameConsumer(AsyncWebsocketConsumer):
     async def connect(self):
-        # Specific to a particular walk
+        await authenticate_ws_connection(self)
+        # Add to group for this particular game
         self.group_name = self.scope["url_route"]["kwargs"]["game_id"]
         await self.channel_layer.group_add(self.group_name, self.channel_name)
         await self.accept()
@@ -67,8 +66,9 @@ class GameConsumer(AsyncWebsocketConsumer):
 
 
 class LoungeConsumer(AsyncWebsocketConsumer):
-    # @login_required
+    """Consumer for the lounge, where people can see other people online."""
     async def connect(self):
+        await authenticate_ws_connection(self)
         await self.channel_layer.group_add("lounge", self.channel_name)
 
         await self.accept()
