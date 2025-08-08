@@ -37,7 +37,7 @@ def make_grid(dim=15):
 
 def get_zeros(grid):
     """Get zeros from the grid."""
-    N = len(grid) + 1
+    N = len(grid) - 2
     return [(i, j) for j in range(1, N) for i in range(1, N) if not grid[i][j]]
 
 def make_game(n=7, users=None):
