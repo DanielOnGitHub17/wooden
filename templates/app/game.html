@@ -1,109 +1,116 @@
 {% load static %}
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta http-equiv="cache-control" content="no-cache">
-        <meta http-equiv="expires" content="0">
-        <meta http-equiv="pragma" content="no-cache">
-        <link rel="icon" type="image/svg+xml" href="{% static 'game/texture/comrade.svg' %}" />
-        <link rel="stylesheet" href="{% static 'game/game.css' %}">
-        <link rel="stylesheet" href="{% static 'both.css' %}">
-        <link rel="stylesheet" href="https://danielongithub17.github.io/loading.css">
-        <script src="https://danielongithub17.github.io/funcs.js"></script>
-        <title>WOODEN</title>
-    </head>
-    {% include "messages.html" %}
-    <div id="SETTINGS">
-        {% if multiplayer %}
-        <div id="WAIT_ROOM">
-            <h2>Hello, <span id="USERNAME">{{ user.username }}</span>.</h2>
-            {% if user.player.creator %}
-            <form action="/start/" method="post" id="CREATOR">
-                <p>You can start the game early when more players join.</p>
-                {% csrf_token %}
-                <button type="submit" disabled id="GAME_STARTER">Start early</button>
-            </form>
-                {% if game.passcode %}
-                <form id="PASSCODE_AREA">
-                    <p>Share this passcode to invite others: <span id="PASSCODE">{{ game.passcode }}</span></p>
-                    <p>Want to make the game public? You can't change it back to private.</p>
-                    <p>Click button: <button id="MAKE_PUBLIC" type="submit">Make public</button></p>
-                </form>
-                {% endif %}
-            {% endif %}
-            <h3>Players for game #<span id="ID">{{ game.id }}</span>:
-                <span id="NO_OF_PLAYERS">{{ game.joined }}</span>/<span id="N">{{ game.no_of_players }}</span> joined.
-            </h3>
-            <!-- You could overide Players_list.remove/removeChild/append/appendChild 
+
+<head>
+    <meta http-equiv="cache-control" content="no-cache">
+    <meta http-equiv="expires" content="0">
+    <meta http-equiv="pragma" content="no-cache">
+    <link rel="icon" type="image/svg+xml" href="{% static 'game/texture/comrade.svg' %}" />
+    <link rel="stylesheet" href="{% static 'game/game.css' %}">
+    <link rel="stylesheet" href="{% static 'both.css' %}">
+    <link rel="stylesheet" href="https://danielongithub17.github.io/loading.css">
+    <script src="https://danielongithub17.github.io/funcs.js"></script>
+    <title>WOODEN</title>
+</head>
+{% include "messages.html" %}
+<div id="SETTINGS">
+    {% if multiplayer %}
+    <div id="WAIT_ROOM">
+        <h2>Hello, <span id="USERNAME">{{ user.username }}</span>.</h2>
+        {% if user.player.creator %}
+        <form action="/start/" method="post" id="CREATOR">
+            <p>You can start the game early when more players join.</p>
+            {% csrf_token %}
+            <button type="submit" disabled id="GAME_STARTER">Start early</button>
+        </form>
+        {% if game.passcode %}
+        <form id="PASSCODE_AREA">
+            <p>Share this passcode to invite others: <span id="PASSCODE">{{ game.passcode }}</span></p>
+            <p>Want to make the game public? You can't change it back to private.</p>
+            <p>Click button: <button id="MAKE_PUBLIC" type="submit">Make public</button></p>
+        </form>
+        {% endif %}
+        {% endif %}
+        <h3>Players for game #<span id="ID">{{ game.id }}</span>:
+            <span id="NO_OF_PLAYERS">{{ game.joined }}</span>/<span id="N">{{ game.no_of_players }}</span> joined.
+        </h3>
+        <!-- You could overide Players_list.remove/removeChild/append/appendChild 
              to change NO_OF_PLAYERS. Or use MutationObserver-->
-            <table id="PLAYERS_LIST">
-                {{ players|json_script:"GAMERS" }}
-                <tr>
-                    <th>Username</th><th>Joined</th><th>Present</th>
-                </tr>
-                <!--
+        <table id="PLAYERS_LIST">
+            {{ players|json_script:"GAMERS" }}
+            <tr>
+                <th>Username</th>
+                <th>Joined</th>
+                <th>Present</th>
+            </tr>
+            <!--
                 - It Gamer.gamers will be a mapping from username to Gamer for easy control.
                 - Gamers will be connected to the players/bots from Game.start()
                  -->
-            </table>
-            <form action="/leave/" method="post">
-                {% csrf_token %}
-                <p>Can't wait for this game to start?</p>
-                <button type="submit" id="GAME_LEAVER">Leave game</button>
-            </form>
-        </div>
-        {% else %}
-        <form id="PRACTICE">
-            <h3>Practice playing with bots</h3>
-            <table>
-                <tr>
-                    <td><label>Number of bots: <input type="number" name="botCount" min="0", max="9" value=3 required></label></td>
-                    <td rowspan="2"><button id="START" type="submit">Start Practice</button></td>
-                </tr>
-                <tr>
-                    <td><label>Wood strength: <input type="number" name="woodStrength" min="2", max="7" value=4 required></label></td>
-                </tr>
-                <tr>
-                    <td><label>Bot speed (<span id="SPEED">230</span>): <input id="SETSPEED" type="range" name="speed" step="20" min="80", max="400" value=230 required></label></td>
-                </tr>
-            </table>
-        </form>
-        {% endif %}
-    </div>
-    <div id="WORLD"></div>
-    <div id="GAME_OVER">
-        <h1>GAME OVER</h1>
-        <h2>Top players for game</h2>
-        <ul id="WINNERS_LIST">
-            <!-- players will be added here -->
-        </ul>
-        {% if multiplayer %}
-        <p id="STATUS"></p>
-        <form action="/end/" method="post" id="SEND_STATUS">
+        </table>
+        <form action="/leave/" method="post">
             {% csrf_token %}
-            <input type="checkbox" name="won" hidden>
-            <button type="submit">CONTINUE TO LOUNGE</button>
+            <p>Can't wait for this game to start?</p>
+            <button type="submit" id="GAME_LEAVER">Leave game</button>
         </form>
-        {% else %}
-        <div>
-            <button type="button" onclick="load()">Practice again</button>
-            <button type="button" onclick="window.close()">Close</button>
-        </div>
-        {% endif %}
-        <!-- List best players with their username -->
     </div>
-    <div id="INITIALIZER">
-        <button type="button" id="INITIALIZE">ENTER GAME MODE</button>
-    </div>
-    {{ game_data|json_script:"GAME_DATA" }}
-    <script type="module" src="{% static 'game/block.js' %}"></script>
-    <script type="module" src="{% static 'game/player.js' %}"></script>
-    <script type="module" src="{% static 'game/bot.js' %}"></script>
-    <script type="module" src="{% static 'game/game.js' %}"></script>
-    <script type="module" src="{% static 'game/sound.js' %}"></script>
-    {% if multiplayer %}
-    <script type="module" src="{% static 'game/gamer.js' %}"></script>
-    <script type="module" src="{% static 'game/socket.js' %}"></script>
+    {% else %}
+    <form id="PRACTICE">
+        <h3>Practice playing with bots</h3>
+        <table>
+            <tr>
+                <td><label>Number of bots: <input type="number" name="botCount" min="0" , max="9" value=3
+                            required></label></td>
+                <td rowspan="2"><button id="START" type="submit">Start Practice</button></td>
+            </tr>
+            <tr>
+                <td><label>Wood strength: <input type="number" name="woodStrength" min="2" , max="7" value=4
+                            required></label></td>
+            </tr>
+            <tr>
+                <td><label>Bot speed (<span id="SPEED">230</span>): <input id="SETSPEED" type="range" name="speed"
+                            step="20" min="80" , max="400" value=230 required></label></td>
+            </tr>
+        </table>
+    </form>
     {% endif %}
-    <script type="module" src="{% static 'game/events.js' %}"></script>
+</div>
+<div id="WORLD"></div>
+<div id="GAME_OVER">
+    <h1>GAME OVER</h1>
+    <h2>Top players for game</h2>
+    <ul id="WINNERS_LIST">
+        <!-- players will be added here -->
+    </ul>
+    {% if multiplayer %}
+    <p id="STATUS"></p>
+    <form action="/end/" method="post" id="SEND_STATUS">
+        {% csrf_token %}
+        <input type="checkbox" name="won" hidden>
+        <button type="submit">CONTINUE TO LOUNGE</button>
+    </form>
+    {% else %}
+    <div>
+        <button type="button" onclick="load()">Practice again</button>
+        <button type="button" onclick="window.close()">Close</button>
+    </div>
+    {% endif %}
+    <!-- List best players with their username -->
+</div>
+<div id="INITIALIZER">
+    <button type="button" id="INITIALIZE">ENTER GAME MODE</button>
+</div>
+{{ game_data|json_script:"GAME_DATA" }}
+<script type="module" src="{% static 'game/block.js' %}"></script>
+<script type="module" src="{% static 'game/player.js' %}"></script>
+<script type="module" src="{% static 'game/bot.js' %}"></script>
+<script type="module" src="{% static 'game/game.js' %}"></script>
+<script type="module" src="{% static 'game/sound.js' %}"></script>
+{% if multiplayer %}
+<script type="module" src="{% static 'game/gamer.js' %}"></script>
+<script type="module" src="{% static 'game/socket.js' %}"></script>
+{% endif %}
+<script type="module" src="{% static 'game/events.js' %}"></script>
+
 </html>

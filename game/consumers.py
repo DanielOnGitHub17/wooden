@@ -9,6 +9,7 @@ from django.contrib.auth.decorators import login_required
 from game.models import Player, Game
 from helpers import authenticate_ws_connection, group_send
 
+
 class GameConsumer(AsyncWebsocketConsumer):
     async def connect(self):
         await authenticate_ws_connection(self)
@@ -19,9 +20,7 @@ class GameConsumer(AsyncWebsocketConsumer):
 
     async def receive(self, text_data=None, bytes_data=None):
         data = json.loads(text_data)
-        await group_send(
-            group_name=self.group_name, handler=data["handler"]
-            , data=data)
+        await group_send(group_name=self.group_name, handler=data["handler"], data=data)
         "If all players have joined, send game and positions with start time"
         "SO that everybody starts THAT TIME"
 
@@ -50,10 +49,10 @@ class GameConsumer(AsyncWebsocketConsumer):
         """
         await self.send(text_data=json.dumps(event["data"]))
 
-
     async def disconnect(self, close_code):
         # Leave game... group
         await self.channel_layer.group_discard(self.group_name, self.channel_name)
+
     """
     Whenever the message start is received by the frontend, game = Game() is created, the message will come with the data and positions.
     The data will be stored in game, game stored in database
@@ -67,6 +66,7 @@ class GameConsumer(AsyncWebsocketConsumer):
 
 class LoungeConsumer(AsyncWebsocketConsumer):
     """Consumer for the lounge, where people can see other people online."""
+
     async def connect(self):
         await authenticate_ws_connection(self)
         await self.channel_layer.group_add("lounge", self.channel_name)
@@ -75,9 +75,7 @@ class LoungeConsumer(AsyncWebsocketConsumer):
 
     async def disconnect(self, close_code):
         # Leave walk group
-        await self.channel_layer.group_discard(
-            "lounge", self.channel_name
-        )
+        await self.channel_layer.group_discard("lounge", self.channel_name)
 
     # Receive message from WebSocket
     async def receive(self, text_data):
@@ -91,7 +89,7 @@ class LoungeConsumer(AsyncWebsocketConsumer):
         event["data"]["message"] *= 3
         # Send message to WebSocket
         await self.send(text_data=json.dumps(event["data"]))
-    
+
     # default reception
     async def default(self, event):
         await self.send(text_data=json.dumps(event))

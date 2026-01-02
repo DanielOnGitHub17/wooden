@@ -1,4 +1,5 @@
 """The models of the game app - and logic that works on the database."""
+
 import json
 
 from django.contrib.auth.models import User
@@ -13,23 +14,30 @@ from game.helpers import make_game, MAX_WAIT_TIME
 
 PASSCODE_LENGTH = 5  # Length of the passcode for private games
 
+
 def num_valid(x, y):
     """Validates the number of players and wood strength."""
     return [MinValueValidator(x), MaxValueValidator(y)]
 
+
 def validate_passcode_length(value):
     """Validates the length of the passcode."""
     if len(value) != PASSCODE_LENGTH:
-        raise ValidationError('Passcode must be exactly 5 characters long.')
+        raise ValidationError("Passcode must be exactly 5 characters long.")
+
 
 def validate_passcode_availability(value):
     """Validates the availability of the passcode."""
-    if Game.objects.filter(passcode=value, ended=False).exists():  # pylint: disable=no-member
-        raise ValidationError('Passcode already in use.')
+    if Game.objects.filter(
+        passcode=value, ended=False
+    ).exists():  # pylint: disable=no-member
+        raise ValidationError("Passcode already in use.")
+
 
 # Create your models here.
 class Game(models.Model):
     """The Game model."""
+
     size = models.IntegerField(default=15)
     initial_grid = models.TextField(default="")
     grid = models.TextField(default="")
@@ -39,10 +47,12 @@ class Game(models.Model):
     ended_time = models.DateTimeField(null=True)
     started = models.BooleanField(default=False)
     ended = models.BooleanField(default=False)
-    passcode = models.CharField(max_length=PASSCODE_LENGTH, null=True
-                                , blank=True, validators=[
-                                    validate_passcode_length
-                                    ,validate_passcode_availability])
+    passcode = models.CharField(
+        max_length=PASSCODE_LENGTH,
+        null=True,
+        blank=True,
+        validators=[validate_passcode_length, validate_passcode_availability],
+    )
     # do passcode later for private games - join with passcode...
     # It will be so cool, the passcode becomes invalid when game starts
 
@@ -64,9 +74,11 @@ class Game(models.Model):
                 player.score = 0
                 player.save()
             self.save()
-            group_send_sync(group_name=self.pk, handler="start", data={
-                "handler": "start", "data": game_data
-            })
+            group_send_sync(
+                group_name=self.pk,
+                handler="start",
+                data={"handler": "start", "data": game_data},
+            )
         elif self.ongoing:
             game_data.update(self.get_data())
         return game_data
@@ -75,7 +87,9 @@ class Game(models.Model):
         """Returns the data of the game."""
         return {
             "grid": json.loads(self.grid),
-            "positions": {player.user.username: (player.r, player.c) for player in self.players},
+            "positions": {
+                player.user.username: (player.r, player.c) for player in self.players
+            },
             "time": self.started_time.timestamp(),
         }
 
@@ -130,8 +144,10 @@ class Game(models.Model):
     # The Game class will be frequently accessed by users, changed till there are no
     # '1s' in it's data.
 
+
 class Player(models.Model):
     """The Player model."""
+
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
     game = models.ForeignKey(Game, on_delete=models.PROTECT, null=True, blank=True)
     logged_in = models.BooleanField(default=False)
@@ -142,8 +158,12 @@ class Player(models.Model):
     won = models.IntegerField(default=0)
     creator = models.BooleanField(default=False)
     # Socket needs
-    joined = models.BooleanField(default=False)  # JOINED (checked once to see if joined)
-    present = models.BooleanField(default=False)  # Paused (temporarily unavailable)/Resume
+    joined = models.BooleanField(
+        default=False
+    )  # JOINED (checked once to see if joined)
+    present = models.BooleanField(
+        default=False
+    )  # Paused (temporarily unavailable)/Resume
 
     @staticmethod
     def from_username(username):
@@ -153,7 +173,7 @@ class Player(models.Model):
     @property
     def rank(self):
         """Returns the rank of the player."""
-        return 2*self.won
+        return 2 * self.won
 
     @property
     def full_name(self):

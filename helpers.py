@@ -36,6 +36,7 @@ DEV_MAILS = (os.getenv("EMAIL_HOST_USER"),)
 class WoodenError(Exception):
     """Generic exception class for the app."""
 
+
 class NotLoginRequiredMixin(AccessMixin):
     """Redirect user if user is authenticated.
     Mixin for Not login required
@@ -49,6 +50,7 @@ class NotLoginRequiredMixin(AccessMixin):
             return redirect(self.redirect_where)
         return super().dispatch(request, *args, **kwargs)
 
+
 def join_wspatterns(paths):
     """Resolve websocket_urlpatterns to be passed to asgi URLRouter."""
     patterns = []
@@ -57,21 +59,21 @@ def join_wspatterns(paths):
             patterns.append(pattern)
     return patterns
 
-async def group_send(group_name="lounge"
-        , handler="default"
-        , data=None):
+
+async def group_send(group_name="lounge", handler="default", data=None):
     """Send message to a group."""
-    await CHANNEL_LAYER.group_send(
-        str(group_name), {"type": handler, "data": data}
-    )
+    await CHANNEL_LAYER.group_send(str(group_name), {"type": handler, "data": data})
+
 
 # Copy of group_send for synchronous usage
 group_send_sync = async_to_sync(group_send)
+
 
 async def authenticate_ws_connection(consumer):
     """Authenticate WebSocket connection on consumer"""
     if not consumer.scope["user"].is_authenticated:
         raise DenyConnection("User not authenticated")
+
 
 # To make email, which will be sent to devs
 def make_email(request, email):
@@ -81,8 +83,8 @@ def make_email(request, email):
     if user.is_authenticated:
         sender = user.email
         full_name = user.get_full_name()
-    return f"From {sender}. Name: {full_name}\n"\
-           f"Message: {email}"
+    return f"From {sender}. Name: {full_name}\n" f"Message: {email}"
+
 
 def delete_users():
     """Delete all users."""
@@ -90,18 +92,22 @@ def delete_users():
     for x in User.objects.all():
         x.delete()
 
+
 def callon_last(model, method="end"):
     """Call a method on the last object of a model."""
     getattr([*model.objects.all()][-1], method)()
 
+
 # Show message in the browser by getting it from session
 # No need!!! use messages framework
+
 
 # Could come in handy
 def printurn(obj):
     """Print and return an object."""
     print(obj)
     return obj
+
 
 def handle_error(error, redirect_to=None):
     """Handle error by writing it into a file
@@ -111,7 +117,7 @@ def handle_error(error, redirect_to=None):
     error_details = traceback.format_exc()
     error_message = f"ERROR>>> {datetime.now()} | {error} |\n{error_details}\n"
 
-    with open("../errors.log", 'a', encoding="utf-8") as error_file:
+    with open("../errors.log", "a", encoding="utf-8") as error_file:
         error_file.write(error_message)
 
     print(error)
@@ -119,18 +125,22 @@ def handle_error(error, redirect_to=None):
     if redirect_to:
         return redirect(redirect_to)
 
+
 def time_to_m(t):
     """Convert time to .pm/am string."""
     return t.strftime("%H:%M %p").lower()
 
+
 def as_frontend(event_type):
     """Convert event type to frontend function."""
-    parts = event_type.split('_')
-    return parts[0].lower()+parts[1].capitalize()
+    parts = event_type.split("_")
+    return parts[0].lower() + parts[1].capitalize()
+
 
 def cls():
     """Clear the screen for windows and linux."""
     _ = os.system("cls") and os.system("clear")
+
 
 def verify_recaptcha(token):
     """Verify recaptcha token."""

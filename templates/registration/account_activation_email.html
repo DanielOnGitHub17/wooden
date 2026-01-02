@@ -1,15 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Wooden: Account Confirmation Email</title>
 </head>
+
 <body>
     <h2>Wooden: Account Confirmation Email</h2>
     <p>Howdy, {{ user.first_name }}.</p>
     <p>You recently created a Wooden account.<br>
-    Please use the link below to activate your wooden account</p>
+        Please use the link below to activate your wooden account</p>
     <button style="background: brown;">
         <a style="color: white;" href="{{ activate_url }}">Activate Wooden Account</a>
     </button><br>
@@ -17,8 +19,9 @@
     <p><small>If you did not create an account with us, please disregard this email.</small></p>
     <footer>
         <h4>Best regards,<br>
-        Daniel Enesi.<br>
-        Engineering Lead at Wooden</h4>
+            Daniel Enesi.<br>
+            Engineering Lead at Wooden</h4>
     </footer>
 </body>
+
 </html>

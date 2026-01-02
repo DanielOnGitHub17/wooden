@@ -1,7 +1,8 @@
-html{
+html {
     background: #ceaf86;
 }
-body{
+
+body {
     background: #ceaf86;
     display: flex;
     justify-content: center;
@@ -10,18 +11,18 @@ body{
     font-size: 1.1em;
 }
 
-*{
+* {
     background-position: center;
     /* background-repeat: no-repeat; */
     background-size: contain;
     transition: 0.2s;
 }
 
-.block{
+.block {
     transition: 0.5s;
 }
 
-button{
+button {
     background-color: #8b4b31;
     color: white;
     border-radius: 0.5em;
@@ -29,23 +30,26 @@ button{
     border: 1px solid burlywood;
     cursor: pointer;
 }
-button:hover{
+
+button:hover {
     background-color: black;
 }
 
-#INITIALIZER{
+#INITIALIZER {
     display: flex;
     align-items: center;
     justify-content: center;
 }
-#INITIALIZE{
+
+#INITIALIZE {
     width: 400px;
     height: 200px;
     font-size: xx-large;
 }
 
 /* Style settings */
-#SETTINGS, #GAME_OVER{
+#SETTINGS,
+#GAME_OVER {
     display: flex;
     flex-flow: column;
     background-color: white;
@@ -55,13 +59,14 @@ button:hover{
     box-shadow: inset 7px 6px 11px 0;
 }
 
-#SETTINGS:hover{
+#SETTINGS:hover {
     box-shadow: inset -7px -6px 11px 0;
 }
+
 /* End settings */
 
 /* GAME */
-#WORLD{
+#WORLD {
     width: 680px;
     height: 680px;
     display: flex;
@@ -69,79 +74,88 @@ button:hover{
     overflow: hidden;
     color: #ceaf86;
 }
+
 /* blocks */
-.block{
+.block {
     width: 40px;
     height: 40px;
     display: flex;
     justify-content: center;
     align-items: center;
 }
-.sand{
+
+.sand {
     background-color: #ceaf86;
     background-image: url("texture/sand.png");
 }
-.wood{
+
+.wood {
     background-color: #8b4b31;
     background-image: url("texture/wood.png");
 }
-.iron{
+
+.iron {
     background-color: silver;
     background-image: url("texture/iron.png");
 }
 
-.player{
+.player {
     background-image: url("texture/player.svg");
     width: 35px;
     height: 35px;
 }
 
-.enemy{
+.enemy {
     background-image: url("texture/enemy.svg");
 }
 
-.bot{
+.bot {
     background-image: url("texture/enemy.svg");
 }
 
-#gameInfo, #username{
+#gameInfo,
+#username {
     display: none;
 }
 
 /* End Game - HA! */
 
 /* Gameover */
-h2{
+h2 {
     margin: 0;
 }
-#WINNERS_LIST{
+
+#WINNERS_LIST {
     padding-left: 3em;
     list-style: decimal;
 }
 
-#WINNERS_LIST>li:nth-child(1){
+#WINNERS_LIST>li:nth-child(1) {
     font-size: 2em;
     font-weight: bold;
     color: gold;
 }
 
-#WINNERS_LIST>li:nth-child(2){
+#WINNERS_LIST>li:nth-child(2) {
     font-size: 1.7em;
     font-weight: bold;
     color: silver;
 }
 
-#WINNERS_LIST>li:nth-child(3){
+#WINNERS_LIST>li:nth-child(3) {
     font-size: 1.4em;
     font-weight: bold;
     color: #CD7F32;
 }
-[method="post"]{
+
+[method="post"] {
     display: flex;
     align-items: center;
     gap: 5px;
 }
-[disabled]{
+
+[disabled] {
     filter: grayscale(0.5) blur(1px);
 }
+
 /* End Gameover */

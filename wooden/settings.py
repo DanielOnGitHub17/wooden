@@ -9,6 +9,7 @@ https://docs.djangoproject.com/en/5.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
+
 import os
 import secrets
 from pathlib import Path
@@ -127,7 +128,8 @@ if IS_HEROKU_APP:
             env="DATABASE_URL",
             conn_max_age=600,
             conn_health_checks=True,
-            ssl_require=True)
+            ssl_require=True,
+        )
     }
 else:
     DATABASES = {
@@ -200,12 +202,14 @@ LOGOUT_REDIRECT_URL = "/"
 ASGI_APPLICATION = "wooden.asgi.application"
 
 CHANNEL_LAYERS = {
-  "default": {
-    "BACKEND": "channels_redis.core.RedisChannelLayer",
-    "CONFIG": {
-      "hosts":[{
-            "address": os.getenv("REDISCLOUD_URL"),
-        }]
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [
+                {
+                    "address": os.getenv("REDISCLOUD_URL"),
+                }
+            ]
+        },
     },
-  },
 }

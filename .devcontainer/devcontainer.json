@@ -1,5 +1,5 @@
 {
     "name": "Wooden Dev Container",
     "image": "mcr.microsoft.com/devcontainers/universal:latest", // Universal Codespaces base image
-    "postStartCommand": "echo 'export PS1=\"$ \"' >> ~/.bashrc"  // Changes bash prompt to "$ "
+    "postStartCommand": "echo 'export PS1=\"$ \"' >> ~/.bashrc" // Changes bash prompt to "$ "
 }
