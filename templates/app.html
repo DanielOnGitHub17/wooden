@@ -30,7 +30,7 @@
   <div id="START">
     <button onclick="document.firstElementChild.requestFullscreen()">Enter Game</button>
   </div>
-  <script type="module" id="USERNAME" src="{% static 'scripts.js' %}">{ { user.username } }</script>
+  <script type="module" id="USERNAME" src="{% static 'scripts.js' %}">{{ user.username }}</script>
 </body>
 
 </html>
