@@ -48,7 +48,7 @@ DEBUG = not IS_HEROKU_APP
 if IS_HEROKU_APP:
     ALLOWED_HOSTS = ["*"]
 else:
-    ALLOWED_HOSTS = [".localhost", "127.0.0.1", "[::1]", "0.0.0.0", "[::]"]
+    ALLOWED_HOSTS = ["localhost", "127.0.0.1", "[::1]", "0.0.0.0", "[::]", "127.0.0.1:5006", "localhost:5006", "127.0.0.1:6379", "localhost:6379"]
 
 # Email backend
 EMAIL_HOST = "smtp.gmail.com"
@@ -97,6 +97,7 @@ MIDDLEWARE = [
 
 CSRF_COOKIE_SECURE = IS_HEROKU_APP
 SESSION_COOKIE_SECURE = IS_HEROKU_APP
+CSRF_TRUSTED_ORIGINS = ["http://localhost:5006", "http://127.0.0.1:5006"]
 
 ROOT_URLCONF = "wooden.urls"
 

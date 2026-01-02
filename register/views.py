@@ -20,9 +20,10 @@ from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.views import View
 from django.views.generic.edit import CreateView
 
-from game.helpers import new_username
+from game.helpers import new_username, online_players_context
 from game.models import Player
 from helpers import NotLoginRequiredMixin, WoodenError, handle_error, verify_recaptcha
+
 from register.forms import SignUpForm  # , SignInForm
 
 
@@ -35,7 +36,7 @@ class Profile(LoginRequiredMixin, View):
 
     def get(self, request, *args, **kwargs):  # pylint: disable=W0613
         """Handle GET request to display profile."""
-        return render(request, "registration/profile.html")
+        return render(request, "registration/profile.html", online_players_context())
 
 
 class SignUp(NotLoginRequiredMixin, SuccessMessageMixin, CreateView):
