@@ -2,5 +2,5 @@ from django.apps import AppConfig
 
 
 class LoungeConfig(AppConfig):
-    default_auto_field = 'django.db.models.BigAutoField'
-    name = 'lounge'
+    default_auto_field = "django.db.models.BigAutoField"
+    name = "lounge"

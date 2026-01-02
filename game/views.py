@@ -11,8 +11,10 @@ from game.helpers import make_game
 from game.models import Game
 from helpers import group_send_sync, WoodenError, handle_error
 
+
 class ChangeToPublic(LoginRequiredMixin, View):
     """View for changing a game to public."""
+
     def post(self, request):
         """Change a game to public."""
         player = request.user.player
@@ -23,8 +25,10 @@ class ChangeToPublic(LoginRequiredMixin, View):
             return HttpResponse(status=200)
         return HttpResponse(status=400)
 
+
 class LeaveGame(LoginRequiredMixin, View):
     """View for leaving a game."""
+
     def post(self, request):
         """Leave a game."""
         player = request.user.player
@@ -35,20 +39,26 @@ class LeaveGame(LoginRequiredMixin, View):
         elif game.ongoing:
             message = "You need to stay in the game till it ends."
         elif player.creator and game.joined > 1:
-            message = "You can only leave if no one else has joined, start early instead."
+            message = (
+                "You can only leave if no one else has joined, start early instead."
+            )
         else:
             message = "Sorry you could not wait! Make a game/join one below."
             player.reset(end=player.creator)
             next_ = "/lounge/"
             # Tell other players.
-            group_send_sync(group_name=game.id, data={
-                "handler": "playerLeave", "data": request.user.username})
+            group_send_sync(
+                group_name=game.id,
+                data={"handler": "playerLeave", "data": request.user.username},
+            )
 
         msg.add_message(request, msg.ERROR, message)
         return redirect(next_)
 
+
 class StartEarly(LoginRequiredMixin, View):
     """View for starting a game early."""
+
     def post(self, request):
         """Start a game early."""
         player = request.user.player
@@ -60,7 +70,9 @@ class StartEarly(LoginRequiredMixin, View):
             msg.add_message(request, msg.ERROR, "You are not the creator of this game.")
             return redirect("/play/")
         elif game.joined < 2:
-            msg.add_message(request, msg.ERROR, "You need at least 2 players to start the game.")
+            msg.add_message(
+                request, msg.ERROR, "You need at least 2 players to start the game."
+            )
             return redirect("/play/")
 
         # Change the number of players required to start the game
@@ -68,6 +80,7 @@ class StartEarly(LoginRequiredMixin, View):
         game.save()
         msg.add_message(request, msg.SUCCESS, "Game will start soon.")
         return redirect("/play/")
+
 
 @login_required
 def play(request):
@@ -92,16 +105,20 @@ def play(request):
 
     context = {
         "multiplayer": True,
-        "players": {player.user.username: [
-            player.joined, player.present] for player in game.players},
+        "players": {
+            player.user.username: [player.joined, player.present]
+            for player in game.players
+        },
         "game": game,
-        "game_data": game.try_start()
+        "game_data": game.try_start(),
     }
 
     return render(request, "app/game.html", context)
 
+
 class JoinGame(LoginRequiredMixin, View):
     """View for joining a game."""
+
     def post(self, request):
         """Join a game."""
         player = request.user.player
@@ -113,8 +130,13 @@ class JoinGame(LoginRequiredMixin, View):
             # This could trigger the DoesNotExist exception
             passcode = request.POST.get("passcode", "")
             if passcode:
-                game = [game_obj for game_obj in Game.objects.filter(passcode=passcode)\
-                         if game_obj.available][0]  # pylint: disable=no-member
+                game = [
+                    game_obj
+                    for game_obj in Game.objects.filter(passcode=passcode)
+                    if game_obj.available
+                ][
+                    0
+                ]  # pylint: disable=no-member
                 game_id = game.id
             else:
                 game_id = int(request.POST["game_id"])
@@ -127,31 +149,44 @@ class JoinGame(LoginRequiredMixin, View):
             # Send the "Gamer's" username, with event "createGamer"
             # Channel to all (Message will create an object on
             #    all players' platforms with joined=false, present=false)
-            group_send_sync(group_name=game_id, data={
-                "handler": "createGamer", "data": request.user.username})
+            group_send_sync(
+                group_name=game_id,
+                data={"handler": "createGamer", "data": request.user.username},
+            )
             redirect_to = "/play/"
         except IndexError:
             msg.add_message(request, msg.ERROR, "Oops! That passcode is incorrect.")
         except Game.DoesNotExist:  # pylint: disable=no-member
-            msg.add_message(request, msg.ERROR, "Oops! That game does not exist. (NiceTryHacker)")
+            msg.add_message(
+                request, msg.ERROR, "Oops! That game does not exist. (NiceTryHacker)"
+            )
         except WoodenError as e:
             msg.add_message(request, msg.ERROR, str(e))
         except Exception as e:  # pylint: disable=broad-except
             handle_error(e)
-            msg.add_message(request, msg.ERROR
-                            , "An error occured so you could not join the game")
+            msg.add_message(
+                request, msg.ERROR, "An error occured so you could not join the game"
+            )
         return redirect(redirect_to)
+
 
 class EndGame(LoginRequiredMixin, View):
     """View for ending a game."""
+
     def post(self, request):
         """End a game."""
         won = +("won" in request.POST)
         request.user.player.reset(won)
-        msg.add_message(request, msg.SUCCESS
-            , ["Sorry about losing that game. Do better next time."
-            , "Congrats on winning that game! You've ranked up."][won])
+        msg.add_message(
+            request,
+            msg.SUCCESS,
+            [
+                "Sorry about losing that game. Do better next time.",
+                "Congrats on winning that game! You've ranked up.",
+            ][won],
+        )
         return redirect("/lounge/")
+
 
 # @login_required
 def practice(request):

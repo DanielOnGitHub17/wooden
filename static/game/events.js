@@ -14,7 +14,7 @@ function main(event) {
         change: [writeSpeed],
         // fullscreenchange: [gameMode]
     });
-    ["open", "close", "message", "error"].forEach(event=>window[event+"Socket"] = eval(event+"Socket"));
+    ["open", "close", "message", "error"].forEach(event => window[event + "Socket"] = eval(event + "Socket"));
 }
 
 function changeToPublic(event) {
@@ -46,7 +46,7 @@ function writeSpeed(event) {
     SPEED.textContent = SETSPEED.value;
 }
 
-function gameMode(event, next="WORLD", changeScreen=true) {
+function gameMode(event, next = "WORLD", changeScreen = true) {
     Sound.stopAll();
     INITIALIZER.next = next;
     if (changeScreen) switchScreen("INITIALIZER");
@@ -65,14 +65,14 @@ function submitStartForm(event) {
     if (Game.isMultiplayer || event.target != PRACTICE) return;
     event.preventDefault();
     let prac = PRACTICE.elements;
-    Game.game = new Game(+prac.botCount.value+1, +prac.woodStrength.value);
-    Game.game.speed = 480-parseInt(prac.speed.value);
+    Game.game = new Game(+prac.botCount.value + 1, +prac.woodStrength.value);
+    Game.game.speed = 480 - parseInt(prac.speed.value);
     Game.game.start();
 }
 
-function events(){
-    ["blur", "focus"].forEach((type, i)=>{
-        window.addEventListener(type, ()=>{
+function events() {
+    ["blur", "focus"].forEach((type, i) => {
+        window.addEventListener(type, () => {
             Gamer.user.present = i;
             Game.socket.sendGamer(["present"]);
         });
@@ -90,7 +90,7 @@ function reloadingPage(event) {
     return false;
 }
 
-function start(event){
+function start(event) {
     switchScreen("INITIALIZER");
     INITIALIZER.next = "SETTINGS";
     MESSAGES.style.display = "";
@@ -106,19 +106,19 @@ function start(event){
     // switchScreen("GAME_OVER");
 }
 
-function messageSocket (event){
+function messageSocket(event) {
     // console.log(event, event.data);
     let data = jsonObj(event.data);
     Game.socket[data.handler](data.data);
 };
 
-function closeSocket (event) {
+function closeSocket(event) {
     console.log("Game socket closed. Reforming connection...");
     // create another one
     createGameSocket();
 };
 
-function openSocket(event){
+function openSocket(event) {
     console.log("Connection established with channels");
     // Tell everyone I am here...
     Game.socket.sendGamer();
@@ -130,7 +130,7 @@ function errorSocket(event) {
     // event.target.close();
 }
 
-function preventRightClick(event){
+function preventRightClick(event) {
     event.preventDefault();
 }
 

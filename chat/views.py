@@ -3,6 +3,7 @@ from django.shortcuts import render
 
 from game.helpers import online_players_context
 
+
 @login_required
 def chat(request):
     return render(request, "app/chat.html", online_players_context())
