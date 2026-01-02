@@ -1,4 +1,5 @@
 """This module contains the view for the lounge page."""
+
 # import json
 
 from django.contrib import messages as msg
@@ -14,6 +15,7 @@ from lounge.forms import GameForm
 
 class Lounge(LoginRequiredMixin, SuccessMessageMixin, CreateView):
     """View for the lounge page."""
+
     template_name = "app/lounge.html"
     model = Game
     form_class = GameForm
@@ -26,19 +28,26 @@ class Lounge(LoginRequiredMixin, SuccessMessageMixin, CreateView):
         player.game = form.save()
         player.creator = True
         player.save()
-        msg.add_message(self.request, msg.SUCCESS
-                        , "You created and joined the game successfully")
+        msg.add_message(
+            self.request, msg.SUCCESS, "You created and joined the game successfully"
+        )
         return super().form_valid(form)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context.update(online_players_context())
         if not self.request.user.player.game:
-            context.update({
-                "games": [game for game in Game.objects.all()\
-                           if game.available and game.public]  # pylint: disable=no-member
-            })
+            context.update(
+                {
+                    "games": [
+                        game
+                        for game in Game.objects.all()
+                        if game.available and game.public
+                    ]  # pylint: disable=no-member
+                }
+            )
         return context
+
 
 # to implement 'watching' AIs + Me matches will have to be persisted (or indicated as non watchable)
 # i.e if game.n_real == 1
