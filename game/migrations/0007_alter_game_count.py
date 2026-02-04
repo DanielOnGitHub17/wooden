@@ -7,13 +7,19 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('game', '0006_game_count_alter_game_max_hits'),
+        ("game", "0006_game_count_alter_game_max_hits"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='game',
-            name='count',
-            field=models.IntegerField(default=2, validators=[django.core.validators.MinValueValidator(2), django.core.validators.MaxValueValidator(7)]),
+            model_name="game",
+            name="count",
+            field=models.IntegerField(
+                default=2,
+                validators=[
+                    django.core.validators.MinValueValidator(2),
+                    django.core.validators.MaxValueValidator(7),
+                ],
+            ),
         ),
     ]

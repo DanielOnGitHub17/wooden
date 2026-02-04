@@ -11,12 +11,11 @@ Rules
 import os
 import sys
 import traceback
+from abc import ABC, abstractmethod
 from datetime import datetime
 from importlib import import_module
-from abc import ABC, abstractmethod
 
 import requests as req
-
 from asgiref.sync import async_to_sync
 from channels.exceptions import DenyConnection
 from channels.layers import get_channel_layer

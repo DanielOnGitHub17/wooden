@@ -4,13 +4,12 @@ import json
 
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
-from django.core.validators import MinValueValidator, MaxValueValidator
+from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from django.utils import timezone as tz
 
+from game.helpers import MAX_WAIT_TIME, make_game
 from helpers import group_send_sync
-from game.helpers import make_game, MAX_WAIT_TIME
-
 
 PASSCODE_LENGTH = 5  # Length of the passcode for private games
 

@@ -1,6 +1,7 @@
 """Forms for the lounge app."""
 
 from django import forms
+
 from game.models import Game
 
 

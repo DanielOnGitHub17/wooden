@@ -1,11 +1,12 @@
-from django.shortcuts import render, redirect
-from django.views import View
-from django.http import HttpResponse
 from datetime import datetime
+
 from django.contrib import messages as msg
 from django.core.mail import send_mail
+from django.http import HttpResponse
+from django.shortcuts import redirect, render
+from django.views import View
 
-from helpers import make_email, DEV_MAILS
+from helpers import DEV_MAILS, make_email
 
 # Create your views here.
 

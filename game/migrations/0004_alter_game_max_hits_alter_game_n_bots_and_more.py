@@ -6,23 +6,23 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('game', '0003_alter_player_game'),
+        ("game", "0003_alter_player_game"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='game',
-            name='max_hits',
+            model_name="game",
+            name="max_hits",
             field=models.IntegerField(),
         ),
         migrations.AlterField(
-            model_name='game',
-            name='n_bots',
+            model_name="game",
+            name="n_bots",
             field=models.IntegerField(),
         ),
         migrations.AlterField(
-            model_name='game',
-            name='n_real',
+            model_name="game",
+            name="n_real",
             field=models.IntegerField(),
         ),
     ]

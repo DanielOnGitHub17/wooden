@@ -9,7 +9,7 @@ from django.views import View
 
 from game.helpers import make_game
 from game.models import Game
-from helpers import group_send_sync, WoodenError, handle_error
+from helpers import WoodenError, group_send_sync, handle_error
 
 
 class ChangeToPublic(LoginRequiredMixin, View):

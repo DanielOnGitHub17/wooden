@@ -8,23 +8,28 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('game', '0001_initial'),
+        ("game", "0001_initial"),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
     ]
 
     operations = [
         migrations.RemoveField(
-            model_name='player',
-            name='id',
+            model_name="player",
+            name="id",
         ),
         migrations.AddField(
-            model_name='player',
-            name='creator',
+            model_name="player",
+            name="creator",
             field=models.BooleanField(default=False),
         ),
         migrations.AlterField(
-            model_name='player',
-            name='user',
-            field=models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, primary_key=True, serialize=False, to=settings.AUTH_USER_MODEL),
+            model_name="player",
+            name="user",
+            field=models.OneToOneField(
+                on_delete=django.db.models.deletion.CASCADE,
+                primary_key=True,
+                serialize=False,
+                to=settings.AUTH_USER_MODEL,
+            ),
         ),
     ]
