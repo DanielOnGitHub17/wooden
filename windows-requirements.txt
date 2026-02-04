@@ -8,7 +8,7 @@ cffi==2.0.0
 channels==4.3.1
 channels_redis==4.3.0
 charset-normalizer==3.4.4
-click==8.2.1
+click==8.3.1
 constantly==23.10.4
 cryptography==45.0.6
 daphne==4.2.1
