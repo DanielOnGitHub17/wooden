@@ -50,7 +50,7 @@ class Chat {
         // Undo feature - does undo only one step back
         if (!(event.target == INPUT && event.ctrlKey && event.key == "z")) return;
         event.preventDefault();
-        INPUT.value = INPUT.saved;
+        INPUT.value = INPUT.saved || "";
     }
 
     static message(event) {
