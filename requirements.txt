@@ -1,4 +1,4 @@
-anyio==4.10.0
+anyio==4.12.1
 asgiref==3.9.1
 attrs==25.3.0
 autobahn==24.4.2
