@@ -1,6 +1,6 @@
 # Wooden
 
-**Final Product:** [Play Wooden!](https://playwooden.games/)
+**Final Product:** [Play Wooden!](https://wooden-548b2eb943b9.herokuapp.com/)
 
 ---
 
