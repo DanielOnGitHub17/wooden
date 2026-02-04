@@ -1,29 +1,28 @@
 """Views for user registration and authentication."""
 
 from django.contrib import messages as msg
-from django.contrib.auth.tokens import PasswordResetTokenGenerator
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
+from django.contrib.auth.tokens import PasswordResetTokenGenerator
 from django.contrib.auth.views import (
     LoginView,
     LogoutView,
-    PasswordResetView,
     PasswordResetConfirmView,
     PasswordResetDoneView,
+    PasswordResetView,
 )
 from django.contrib.messages.views import SuccessMessageMixin
 from django.core.mail import EmailMessage
-from django.shortcuts import render, redirect
+from django.shortcuts import redirect, render
 from django.template.loader import render_to_string
 from django.utils.encoding import force_bytes, smart_str
-from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 from django.views import View
 from django.views.generic.edit import CreateView
 
 from game.helpers import new_username, online_players_context
 from game.models import Player
 from helpers import NotLoginRequiredMixin, WoodenError, handle_error, verify_recaptcha
-
 from register.forms import SignUpForm  # , SignInForm
 
 

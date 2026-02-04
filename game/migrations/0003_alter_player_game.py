@@ -7,13 +7,18 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('game', '0002_remove_player_id_player_creator_alter_player_user'),
+        ("game", "0002_remove_player_id_player_creator_alter_player_user"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='player',
-            name='game',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.PROTECT, to='game.game'),
+            model_name="player",
+            name="game",
+            field=models.ForeignKey(
+                blank=True,
+                null=True,
+                on_delete=django.db.models.deletion.PROTECT,
+                to="game.game",
+            ),
         ),
     ]

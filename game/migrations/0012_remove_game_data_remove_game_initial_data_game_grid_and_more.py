@@ -6,26 +6,26 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('game', '0011_player_joined_player_present'),
+        ("game", "0011_player_joined_player_present"),
     ]
 
     operations = [
         migrations.RemoveField(
-            model_name='game',
-            name='data',
+            model_name="game",
+            name="data",
         ),
         migrations.RemoveField(
-            model_name='game',
-            name='initial_data',
+            model_name="game",
+            name="initial_data",
         ),
         migrations.AddField(
-            model_name='game',
-            name='grid',
-            field=models.TextField(default=''),
+            model_name="game",
+            name="grid",
+            field=models.TextField(default=""),
         ),
         migrations.AddField(
-            model_name='game',
-            name='initial_grid',
-            field=models.TextField(default=''),
+            model_name="game",
+            name="initial_grid",
+            field=models.TextField(default=""),
         ),
     ]
