@@ -47,7 +47,10 @@ class PowerAutomateEmailBackend(BaseEmailBackend):
                 if sent:
                     num_sent += 1
         finally:
-            print("SENT!")
+            if num_sent == len(email_messages):
+                print("SENT!")
+            else:
+                print("FALSE!")
 
         return num_sent
 
