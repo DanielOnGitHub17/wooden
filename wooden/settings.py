@@ -63,6 +63,7 @@ else:
 # Email backend
 # EMAIL_HOST = "smtp.gmail.com"
 # EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
+DEV_MAILS = os.getenv("DEV_MAILS").split(",")
 # EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
 # email_port_env = os.getenv("EMAIL_PORT", "587")  # Default to "587" if not set
 # if email_port_env.isdigit():

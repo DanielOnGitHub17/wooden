@@ -23,13 +23,9 @@ from django.contrib.auth.mixins import AccessMixin
 from django.contrib.auth.models import User
 from django.shortcuts import redirect
 
-# Load environment variables from .env during development
-# from dotenv import load_dotenv
-# load_dotenv()
 
 # Constants
 CHANNEL_LAYER = get_channel_layer()  # or maybe use channels "default" alias
-DEV_MAILS = (os.getenv("EMAIL_HOST_USER"),)
 
 
 class WoodenError(Exception):
