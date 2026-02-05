@@ -3,7 +3,7 @@ These functions (and class) will help other portions of the code.
 Some are generic, while others will be used at specific portions of the code.
 
 Rules
- - Double quote for strings, single quotes for characters in Python, JS (as in C).
+ - Double quote for strings, single quotes for characters (will have to give black formatter settings, or just leave it idk) in Python, JS (as in C).
  - Document functions with comments at their top.
 
 """
@@ -11,7 +11,6 @@ Rules
 import os
 import sys
 import traceback
-from abc import ABC, abstractmethod
 from datetime import datetime
 from importlib import import_module
 
@@ -19,6 +18,7 @@ import requests as req
 from asgiref.sync import async_to_sync
 from channels.exceptions import DenyConnection
 from channels.layers import get_channel_layer
+from django.contrib import messages as msg
 from django.contrib.auth.mixins import AccessMixin
 from django.contrib.auth.models import User
 from django.shortcuts import redirect
@@ -48,6 +48,20 @@ class NotLoginRequiredMixin(AccessMixin):
         if request.user.is_authenticated:
             return redirect(self.redirect_where)
         return super().dispatch(request, *args, **kwargs)
+
+
+class RecaptchaFormMixin:
+    """Mixin to add reCAPTCHA verification to form views."""
+
+    recaptcha_error_message = "Complete the reCAPTCHA."
+
+    def form_valid(self, form):
+        """Validate form and verify reCAPTCHA."""
+        recaptcha_token = self.request.POST.get("g-recaptcha-response")
+        if not (recaptcha_token and verify_recaptcha(recaptcha_token)):
+            msg.add_message(self.request, msg.ERROR, self.recaptcha_error_message)
+            return self.form_invalid(form)
+        return super().form_valid(form)
 
 
 def join_wspatterns(paths):

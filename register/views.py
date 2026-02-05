@@ -22,7 +22,7 @@ from django.views.generic.edit import CreateView
 
 from game.helpers import new_username, online_players_context
 from game.models import Player
-from helpers import NotLoginRequiredMixin, WoodenError, handle_error, verify_recaptcha
+from helpers import NotLoginRequiredMixin, RecaptchaFormMixin, WoodenError, handle_error
 from register.forms import SignUpForm  # , SignInForm
 
 
@@ -38,7 +38,9 @@ class Profile(LoginRequiredMixin, View):
         return render(request, "registration/profile.html", online_players_context())
 
 
-class SignUp(NotLoginRequiredMixin, SuccessMessageMixin, CreateView):
+class SignUp(
+    RecaptchaFormMixin, NotLoginRequiredMixin, SuccessMessageMixin, CreateView
+):
     """View for user sign-up."""
 
     template_name = "registration/signup.html"
@@ -46,16 +48,10 @@ class SignUp(NotLoginRequiredMixin, SuccessMessageMixin, CreateView):
     success_url = "/signin/"
     success_message = "Hello, %(first_name)s. Your account was created successfully.\
  Please click the link in your email to verify your account."
+    recaptcha_error_message = "Complete the reCAPTCHA to create account."
 
     def form_valid(self, form):
         """Handle valid form submission."""
-        recaptcha_token = self.request.POST.get("g-recaptcha-response")
-        if not (recaptcha_token and verify_recaptcha(recaptcha_token)):
-            msg.add_message(
-                self.request, msg.ERROR, "Complete the reCAPTCHA to create account."
-            )
-            return self.form_invalid(form)
-
         try:
             # Create User and assign to new Player
             new_user = form.save(commit=False)
@@ -84,22 +80,15 @@ class SignUp(NotLoginRequiredMixin, SuccessMessageMixin, CreateView):
         return super().form_invalid(form)
 
 
-class SignIn(SuccessMessageMixin, LoginView):
+class SignIn(RecaptchaFormMixin, SuccessMessageMixin, LoginView):
     """View for user sign-in."""
 
     success_message = "Signin successful!"
     redirect_authenticated_user = True
+    recaptcha_error_message = "Complete the reCAPTCHA to sign in."
 
     def form_valid(self, form):
         """Handle valid form submission."""
-        # DRY: Recaptcha verification
-        recaptcha_token = self.request.POST.get("g-recaptcha-response")
-        if not (recaptcha_token and verify_recaptcha(recaptcha_token)):
-            msg.add_message(
-                self.request, msg.ERROR, "Complete the reCAPTCHA to sign in."
-            )
-            return self.form_invalid(form)
-
         result = super().form_valid(form)
         player = self.request.user.player
         player.logged_in = True
@@ -175,21 +164,25 @@ class Confirm(View):
         email.send(fail_silently=False)
 
 
-class ResetPassword(PasswordResetView):
+class ResetPassword(RecaptchaFormMixin, PasswordResetView):
     """View for password reset."""
 
     html_email_template_name = PasswordResetView.email_template_name
+    recaptcha_error_message = "Complete the reCAPTCHA to reset password."
 
 
 class DoneResetPassword(PasswordResetDoneView):
     """View for password reset done."""
 
 
-class ConfirmResetPassword(SuccessMessageMixin, PasswordResetConfirmView):
+class ConfirmResetPassword(
+    RecaptchaFormMixin, SuccessMessageMixin, PasswordResetConfirmView
+):
     """View for confirming password reset."""
 
     success_url = "/signin/"
     success_message = "Your password was changed successfully. Please log in."
+    recaptcha_error_message = "Complete the reCAPTCHA to confirm password."
 
 
 class AccountActivationTokenGenerator(PasswordResetTokenGenerator):
