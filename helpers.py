@@ -21,11 +21,24 @@ from channels.layers import get_channel_layer
 from django.contrib import messages as msg
 from django.contrib.auth.mixins import AccessMixin
 from django.contrib.auth.models import User
+from django.core.exceptions import ValidationError
 from django.shortcuts import redirect
-
 
 # Constants
 CHANNEL_LAYER = get_channel_layer()  # or maybe use channels "default" alias
+
+
+def clear_temporary_players():
+    """Clear users that didn't go through traditional sign in, clear inactive users"""
+    # Go through all
+    # Make sure they're not in a game that's active
+    # Delete them
+
+
+def unique_username(username):
+    """checks if a username is unique - used for quick sign in"""
+    if User.objects.filter(username=username):
+        raise ValidationError("Username already exists!")
 
 
 class WoodenError(Exception):
