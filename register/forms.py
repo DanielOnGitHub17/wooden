@@ -4,6 +4,7 @@ from django import forms
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.auth.models import User
 from django.core.validators import MinLengthValidator
+from helpers import unique_username
 
 
 class EmailField(forms.EmailField):
@@ -16,6 +17,21 @@ class EmailField(forms.EmailField):
                 "That email address is already associated with an account"
             )
         return value
+
+
+class QuickSignInForm(forms.ModelForm):
+    """Register User without them confirming"""
+
+    username = forms.CharField(
+        validators=[
+            MinLengthValidator(3, "Must be at least 3 characters"),
+            unique_username,
+        ]
+    )
+
+    class Meta:
+        model = User
+        fields = ["username"]
 
 
 class SignUpForm(UserCreationForm):
