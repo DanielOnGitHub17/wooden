@@ -164,6 +164,8 @@ class Player(models.Model):
         default=False
     )  # Paused (temporarily unavailable)/Resume
 
+    temporary = models.BooleanField(default=False)  # For quick sign-in users
+
     @staticmethod
     def from_username(username):
         """Returns the player from the username."""
@@ -181,7 +183,7 @@ class Player(models.Model):
 
     def __str__(self):
         """Returns the string representation of the player."""
-        return self.full_name
+        return self.full_name or "Not specified" + (" - temporary" * self.temporary)
 
     def get_absolute_url(self):
         """Returns the absolute url of the player."""
