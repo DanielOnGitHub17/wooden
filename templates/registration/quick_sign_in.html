@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Play WOODEN!{% endblock%}
+{% block content %}
+<article class="main-sign-up">
+    <div class="sign-up-img"></div>
+    <form action="" class="register-form" method="POST">
+        <h2>Start Playing Wooden!</h2>
+        {% csrf_token %}
+        {{ form }}
+        <!-- Maybe add captcha later -->
+        <!-- <div class="g-recaptcha" data-sitekey="6LefxfcqAAAAAD_VXTiUUCOTSoAXwlLwtqAiFUaI"></div> -->
+        <button type="submit">Enter!</button>
+        <p>Want to save your progress? <a href="/signup/">Sign up!</a></p>
+    </form>
+    <!-- <p id="recaptcha-errors"></p> -->
+</article>
+<!-- <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+<script src="{% static 'register/captcha.js' %}"></script> -->
+{% endblock %}
