@@ -1,0 +1,36 @@
+#!/bin/sh
+source ../woodenv/bin/activate
+printf "Running checks before push...\n\n"
+
+# git config core.hooksPath .git
+# chmod +x .githooks/pre-push
+
+printf "Checking migrations:\n"
+python manage.py makemigrations --check
+if [ $? -ne 0 ]; then
+    printf "Migrations need to be made. Push aborted.\n\n"
+    exit 1
+fi
+
+printf "\n"
+
+printf "Running tests:\n\n"
+python manage.py test
+if [ $? -ne 0 ]; then
+    printf "Tests failed. Push aborted.\n\n"
+    exit 1
+fi
+
+printf "\n"
+
+printf "Testing requirements\n\n"
+python -m pip install -r requirements.txt
+if [ $? -ne 0 ]; then
+    printf "Requirments not resolved. Push aborted.\n\n"
+    exit 1
+fi
+
+printf "\n"
+
+printf "Checks passed. Pushing...\n\n"
+exit 0
