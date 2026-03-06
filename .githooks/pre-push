@@ -24,7 +24,7 @@ fi
 printf "\n"
 
 printf "Testing requirements\n\n"
-python -m pip install -r requirements.txt
+python -m pip install -r requirements.txt --require-virtualenv
 if [ $? -ne 0 ]; then
     printf "Requirments not resolved. Push aborted.\n\n"
     exit 1

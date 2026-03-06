@@ -15,6 +15,7 @@ commands["-r"]="python manage.py runserver 5006"
 commands["-s"]="python manage.py shell"
 commands["-st"]="python manage.py collectstatic --noinput"
 commands["-t"]="python manage.py test"
+commands["-req"]="python -m pip install -r requirements.txt --require-virtualenv"
 
 if [ "$run" ]; then
     eval "${commands[$run]}"
