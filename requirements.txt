@@ -16,7 +16,7 @@ dj-database-url==3.1.0
 Django==5.2.12
 gunicorn==23.0.0
 h11==0.16.0
-httptools==0.6.4
+httptools==0.7.1
 hyperlink==21.0.0
 idna==3.10
 incremental==24.7.2
