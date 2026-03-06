@@ -1,6 +1,7 @@
 """Views for user registration and authentication."""
 
 from django.contrib import messages as msg
+from django.contrib.auth import login
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
@@ -23,19 +24,45 @@ from django.views.generic.edit import CreateView
 from game.helpers import new_username, online_players_context
 from game.models import Player
 from helpers import NotLoginRequiredMixin, RecaptchaFormMixin, WoodenError, handle_error
-from register.forms import SignUpForm  # , SignInForm
+from register.forms import QuickSignInForm, SignUpForm  # , SignInForm
 
 
 class Profile(LoginRequiredMixin, View):
     """View for displaying and updating user profile."""
 
-    def post(self, request, *args, **kwargs):  # pylint: disable=W0613
+    def post(self, request, *args, **kwargs):
         """Handle POST request to update profile."""
         return len(request.POST) <= 1 and redirect("/profile/")
 
     def get(self, request, *args, **kwargs):  # pylint: disable=W0613
         """Handle GET request to display profile."""
         return render(request, "registration/profile.html", online_players_context())
+
+
+class QuickSignIn(NotLoginRequiredMixin, SuccessMessageMixin, CreateView):
+    """Authenticate User temporarily"""
+
+    template_name = "registration/quick_sign_in.html"
+    form_class = QuickSignInForm
+    success_url = "/lounge/"
+    success_message = "Hello, %(username)s. Enjoy playing!"
+
+    def form_valid(self, form):
+        """Handle valid form submission."""
+        try:
+            # Create User and assign to new Player
+            new_user = form.save(commit=False)
+            new_user.save()
+            Player(user=new_user, temporary=True).save()
+            login(self.request, new_user)
+        except Exception as e:
+            raise e
+        return super().form_valid(form)
+
+    def form_invalid(self, form):
+        """Handle invalid form submission."""
+        print("Form was invalid")
+        return super().form_invalid(form)
 
 
 class SignUp(

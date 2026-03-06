@@ -1,6 +1,6 @@
 {% extends "app.html" %}
 {% load static %}
-{% block title %}{{ user.first_name }}'s Lounge{% endblock %}
+{% block title %}{% if user.first_name %}{{ user.first_name }}{% else %}Wooden player{% endif %}'s Lounge{% endblock %}
 {% block content %}
 <table id="BIO">
     <tr>
