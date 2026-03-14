@@ -3,6 +3,24 @@
     width: 3em;
 }
 
+.public-games-table-wrapper {
+    max-height: 17.5rem; /* roughly 5 game rows + header */
+    overflow-y: auto;
+    margin-bottom: 1rem;
+}
+
+.public-games-table-wrapper table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.public-games-table-wrapper th,
+.public-games-table-wrapper td {
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    text-align: left;
+}
+
 #CREATEGAME ul {
     display: flex;
     gap: 4px;
