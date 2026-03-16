@@ -4,7 +4,8 @@
 }
 
 .public-games-table-wrapper {
-    max-height: 17.5rem; /* roughly 5 game rows + header */
+    max-height: 17.5rem;
+    /* roughly 5 game rows + header */
     overflow-y: auto;
     margin-bottom: 1rem;
 }

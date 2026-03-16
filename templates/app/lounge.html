@@ -2,43 +2,27 @@
 {% load static %}
 {% block title %}{{ user.username }}'s Lounge{% endblock %}
 {% block content %}
-<style>
-    .public-games-table-wrapper {
-        max-height: 17.5rem;
-        /* roughly 5 game rows + header */
-        overflow-y: auto;
-        margin-bottom: 1rem;
-    }
+<link rel="stylesheet" href="{% static 'lounge/lounge.css' %}">
 
-    .public-games-table-wrapper table {
-        width: 100%;
-        border-collapse: collapse;
-    }
-
-    .public-games-table-wrapper th,
-    .public-games-table-wrapper td {
-        padding: 0.5rem;
-        border: 1px solid #ccc;
-        text-align: left;
-    }
-</style>
-<table id="BIO">
-    <tr>
-        <td>Username:</td>
-        <td>{{ user.username }}</td>
-    </tr>
-    <tr>
-        <td>Rank:</td>
-        <td>{{ user.player.rank }}</td>
-    </tr>
-    <tr>
-        <td>Full Name:</td>
-        <td>{{ user.get_full_name }}</td>
-    </tr>
-    <tr>
-        <td colspan="2"><a class="button" href="/practice/" target="_blank">Practice</a></td>
-    </tr>
-</table>
+<div>
+    <table id="BIO">
+        <tr>
+            <td>Username:</td>
+            <td>{{ user.username }}</td>
+        </tr>
+        <tr>
+            <td>Rank:</td>
+            <td>{{ user.player.rank }}</td>
+        </tr>
+        <tr>
+            <td>Full Name:</td>
+            <td>{{ user.get_full_name }}</td>
+        </tr>
+        <tr>
+            <td colspan="2"><a class="button" href="/practice/" target="_blank">Practice</a></td>
+        </tr>
+    </table>
+</div>
 
 {% if user.player.game %}
 <div id="GAME">
@@ -75,9 +59,8 @@
         </div>
     </form>
     {% else %}
-    No public games available. Try creating one above.
+    <p>No public games available. Try creating one above.</p>
     {% endif %}
-
 </div>
 
 <div id="CREATE">
@@ -88,6 +71,22 @@
             {{ form.as_table }}
             <tr>
                 <td colspan="2"><button type="submit">Create</button></td>
+            </tr>
+        </table>
+    </form>
+</div>
+
+<div>
+    <h3>Have a code? Join private game</h3>
+    <form id="JOINGAME_PRIVATE" method="post" action="/join/">
+        {% csrf_token %}
+        <table id="PRIVATE_GAME">
+            <tr>
+                <td>Passcode:</td>
+                <td><input type="text" name="passcode" required></td>
+            </tr>
+            <tr>
+                <td colspan="2"><button type="submit">Join Private Game</button></td>
             </tr>
         </table>
     </form>
