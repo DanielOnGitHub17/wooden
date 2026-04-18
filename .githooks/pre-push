@@ -1,5 +1,5 @@
 #!/bin/sh
-source ../woodenv/bin/activate
+. ../woodenv/bin/activate
 printf "Running checks before push...\n\n"
 
 # git config core.hooksPath .git
