@@ -1,5 +1,20 @@
 #!/bin/sh
-source ../woodenv/bin/activate
+
+ACTIVATED_VENV=""
+for ACTIVATE_PATH in venv/bin/activate .venv/bin/activate env/bin/activate ENV/bin/activate woodenv/bin/activate ../woodenv/bin/activate; do
+    if [ -f "$ACTIVATE_PATH" ]; then
+        . "$ACTIVATE_PATH"
+        ACTIVATED_VENV="$ACTIVATE_PATH"
+        break
+    fi
+done
+
+if [ -z "$ACTIVATED_VENV" ]; then
+    printf "No virtual environment found (checked: venv, env, woodenv, ../woodenv). Push aborted.\n\n"
+    exit 1
+fi
+printf "Activated Virtual Environment $ACTIVATE_PATH\n\n"
+
 printf "Running checks before push...\n\n"
 
 # git config core.hooksPath .git

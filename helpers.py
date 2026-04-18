@@ -144,7 +144,7 @@ def handle_error(error, redirect_to=None):
 
     print(error)
     # raise error
-    if redirect_to:
+    if redirect_to is not None:
         return redirect(redirect_to)
 
 
@@ -166,14 +166,18 @@ def cls():
 
 def verify_recaptcha(token):
     """Verify recaptcha token."""
-    response = req.post(
-        "https://www.google.com/recaptcha/api/siteverify",
-        data={
-            "secret": os.getenv("RECAPTCHA_SECRET_KEY"),
-            "response": token,
-        },
-    )
-    return response.json().get("success", False)
+    try:
+        response = req.post(
+            "https://www.google.com/recaptcha/api/siteverify",
+            data={
+                "secret": os.getenv("RECAPTCHA_SECRET_KEY"),
+                "response": token,
+            },
+        )
+        return response.json().get("success", False)
+    except Exception as error:
+        handle_error(error)
+        return False
 
 
 if __name__ == "__main__":
