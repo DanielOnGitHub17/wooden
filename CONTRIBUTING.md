@@ -90,22 +90,22 @@ If you want to work on reCAPTCHA features, add:
 RECAPTCHA_SECRET_KEY=<your-recaptcha-secret>
 ```
 
-If you want a custom admin URL, add it as an optional setting:
+If you want a custom admin URL, add it as an optional setting. The path should not start with a slash and should end with a slash:
 
 ```env
-DJANGO_ADMIN_URL=/my-admin-path
+DJANGO_ADMIN_URL=my-admin-path/
 ```
 
 ## Local email setup
-For local testing, make sure the console email backend is enabled in `wooden/settings.py`.
+For local testing, the project defaults to the Django console email backend when `POWER_AUTOMATE_URL` is not set.
 
-Find the local testing section and uncomment the console backend line:
+That means email-related flows will print to the terminal instead of sending real email.
+
+If you want to explicitly enable local console email backend, verify that `wooden/settings.py` falls back to:
 
 ```python
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 ```
-
-This ensures email-related flows print to the terminal instead of trying to send real email.
 
 ## Running the server
 ### Standard Django development server
