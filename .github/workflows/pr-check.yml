@@ -1,0 +1,26 @@
+name: PR CI Checks
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  ci:
+    name: CI checks for pull requests to main
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+
+      - name: Make CI script executable
+        run: chmod +x scripts/ci_check.sh
+
+      - name: Run CI check script
+        run: ./scripts/ci_check.sh
