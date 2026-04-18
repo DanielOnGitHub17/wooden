@@ -21,7 +21,7 @@ from django.contrib import admin
 from django.urls import include, path
 
 urlpatterns = [
-    path(os.getenv("DJANGO_ADMIN_URL"), admin.site.urls),
+    path(os.getenv("DJANGO_ADMIN_URL", "admin/"), admin.site.urls),
     path("", include("homepage.urls"), name="General"),
     path("", include("register.urls"), name="Registration"),
     path("", include("chat.urls"), name="Chats"),

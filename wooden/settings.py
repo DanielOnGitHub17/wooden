@@ -60,10 +60,13 @@ else:
         "localhost:6379",
     ]
 
+DEV_MAILS = os.getenv("DEV_MAILS", "dev@example.com").split(",")
+
 # Email backend
+"""
+For when I was using SMTP with gmail
 # EMAIL_HOST = "smtp.gmail.com"
 # EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
-DEV_MAILS = os.getenv("DEV_MAILS").split(",")
 # EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
 # email_port_env = os.getenv("EMAIL_PORT", "587")  # Default to "587" if not set
 # if email_port_env.isdigit():
@@ -73,10 +76,16 @@ DEV_MAILS = os.getenv("DEV_MAILS").split(",")
 #     EMAIL_PORT = 587
 # EMAIL_USE_TLS = True
 # EMAIL_USE_SSL = False
-# EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 
+# EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+"""
+
+# What Prod is using: PowerAutomate powered email
 EMAIL_BACKEND = "register.email_backend.PowerAutomateEmailBackend"
 POWER_AUTOMATE_URL = os.getenv("POWER_AUTOMATE_URL")
+
+# Use for local testing, comment out for production
+# EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
 # Application definition
 INSTALLED_APPS = [
@@ -220,7 +229,7 @@ CHANNEL_LAYERS = {
         "CONFIG": {
             "hosts": [
                 {
-                    "address": os.getenv("REDISCLOUD_URL"),
+                    "address": os.getenv("REDISCLOUD_URL", "redis://127.0.0.1:6379"),
                 }
             ]
         },

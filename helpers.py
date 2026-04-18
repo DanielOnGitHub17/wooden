@@ -169,7 +169,7 @@ def verify_recaptcha(token):
     response = req.post(
         "https://www.google.com/recaptcha/api/siteverify",
         data={
-            "secret": os.getenv("RECAPTCHA_SECRET_KEY"),
+            "secret": os.getenv("RECAPTCHA_SECRET_KEY", "RECAPTCHA_SECRET_KEY"),
             "response": token,
         },
     )
