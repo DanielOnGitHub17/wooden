@@ -11,3 +11,40 @@ ideas_stuff
 merge_dependabot_prs
 **/staticfiles
 static/staticfiles.json
+*/__pycache__
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# Packaging
+build/
+dist/
+*.egg-info/
+.eggs/
+pip-wheel-metadata/
+
+# Testing and coverage
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+
+# Type checkers and linters
+.mypy_cache/
+.ruff_cache/
+.pyre/
+
+# Tooling
+.tox/
+.nox/
+.ipynb_checkpoints/
+
+
