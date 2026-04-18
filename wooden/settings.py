@@ -80,12 +80,20 @@ For when I was using SMTP with gmail
 # EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 """
 
-# What Prod is using: PowerAutomate powered email
-EMAIL_BACKEND = "register.email_backend.PowerAutomateEmailBackend"
+# Set email backend to use the URL during PROD, or if present in local
+# NOTE to owner: Comment from .env if you need to test without sending actual email
 POWER_AUTOMATE_URL = os.getenv("POWER_AUTOMATE_URL")
-
-# Use for local testing, comment out for production
-# EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+if POWER_AUTOMATE_URL is not None:
+    EMAIL_BACKEND = "register.email_backend.PowerAutomateEmailBackend"
+elif IS_HEROKU_APP:
+    raise ValueError(
+        "POWER_AUTOMATE_URL must be set when using the "
+        "register.email_backend.PowerAutomateEmailBackend email backend."
+    )
+else:
+    # Use a non-networking backend for local development and CI when Power Automate
+    # is not configured.
+    EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
 # Application definition
 INSTALLED_APPS = [
