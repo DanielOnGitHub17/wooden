@@ -85,7 +85,7 @@ EMAIL_BACKEND = "register.email_backend.PowerAutomateEmailBackend"
 POWER_AUTOMATE_URL = os.getenv("POWER_AUTOMATE_URL")
 
 # Use for local testing, comment out for production
-EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+# EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
 # Application definition
 INSTALLED_APPS = [
