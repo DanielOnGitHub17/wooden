@@ -15,30 +15,16 @@ python manage.py makemigrations --check
 # Run the unit test suite.
 python manage.py test
 
-# Ensure the settings file uses the expected production email backend.
+# Ensure the Django settings module uses the expected production email backend.
 python3 - <<'PY'
-from pathlib import Path
-import re
+from wooden import settings
 
-settings_file = Path('wooden/settings.py').read_text()
-active_email_backend = None
-for line in settings_file.splitlines():
-    stripped = line.strip()
-    if stripped.startswith('EMAIL_BACKEND') and not stripped.startswith('#'):
-        active_email_backend = stripped
-        break
+if not hasattr(settings, 'EMAIL_BACKEND'):
+    raise SystemExit('ERROR: settings.EMAIL_BACKEND is not defined')
 
-if active_email_backend is None:
-    raise SystemExit('ERROR: EMAIL_BACKEND is not configured in wooden/settings.py')
-
-if 'register.email_backend.PowerAutomateEmailBackend' not in active_email_backend:
+if settings.EMAIL_BACKEND != 'register.email_backend.PowerAutomateEmailBackend':
     raise SystemExit(
-        'ERROR: EMAIL_BACKEND must be set to "register.email_backend.PowerAutomateEmailBackend" in wooden/settings.py'
-    )
-
-if 'console.EmailBackend' in active_email_backend:
-    raise SystemExit(
-        'ERROR: EMAIL_BACKEND is currently set to a console backend; it must use PowerAutomateEmailBackend for this workflow.'
+        'ERROR: settings.EMAIL_BACKEND must be set to "register.email_backend.PowerAutomateEmailBackend"'
     )
 
 print('EMAIL_BACKEND is correctly configured.')
