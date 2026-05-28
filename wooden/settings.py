@@ -37,9 +37,10 @@ SECRET_KEY = os.getenv(
 # also explicitly exclude CI:
 # https://devcenter.heroku.com/articles/heroku-ci#immutable-environment-variables
 IS_HEROKU_APP = "DYNO" in os.environ and not "CI" in os.environ
+SWITCH_DEBUG = os.get("SWITCH_DEBUG") == "True"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = not IS_HEROKU_APP
+DEBUG = (not IS_HEROKU_APP) or SWITCH_DEBUG
 
 # On Heroku, it's safe to use a wildcard for `ALLOWED_HOSTS``, since the Heroku router performs
 # validation of the Host header in the incoming HTTP request. On other platforms you may need to
