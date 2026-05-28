@@ -258,3 +258,137 @@ a.button {
 #CREATE tr:last-child {
     justify-content: center;
 }
+
+/* ===== MOBILE RESPONSIVE STYLES ===== */
+
+/* Mobile (768px and below) */
+@media (max-width: 768px) {
+    body {
+        width: 100%;
+    }
+
+    header img {
+        scale: 0.65;
+    }
+
+    #APP {
+        width: 96%;
+        padding: 12px;
+        gap: 12px;
+        max-height: 85vh;
+    }
+
+    h3 {
+        font-size: 1.3em;
+        margin: 0 0 8px 0;
+    }
+
+    button,
+    a.button {
+        padding: 8px 12px;
+        font-size: 1em;
+    }
+
+    #INPUT {
+        width: 55%;
+        padding: 8px 10px;
+        font-size: 1em;
+    }
+
+    #APP #CHATS {
+        height: 35vh;
+    }
+
+    #ONLINE_PLAYERS {
+        height: 30vh;
+    }
+
+    th,
+    td {
+        min-width: 90px;
+        font-size: 0.95em;
+    }
+
+    .chat {
+        min-width: 45%;
+        max-width: 85%;
+    }
+
+    #GAMES [type="radio"] {
+        scale: 1.6;
+    }
+}
+
+/* Mobile Phones (480px and below) */
+@media (max-width: 480px) {
+    body {
+        width: 100%;
+    }
+
+    header img {
+        scale: 0.55;
+    }
+
+    #APP {
+        width: 98%;
+        padding: 10px;
+        gap: 10px;
+        max-height: 90vh;
+    }
+
+    h3 {
+        font-size: 1.15em;
+        margin: 0 0 5px 0;
+    }
+
+    button,
+    a.button {
+        padding: 6px 10px;
+        font-size: 0.9em;
+        min-width: 55px;
+    }
+
+    #INPUT {
+        width: 65%;
+        padding: 6px 8px;
+        font-size: 0.9em;
+    }
+
+    #APP>#CHATBOX {
+        gap: 0.8em;
+    }
+
+    #APP #CHATS {
+        height: 30vh;
+        padding: 8px;
+        gap: 0.4em;
+    }
+
+    #ONLINE_PLAYERS {
+        height: 25vh;
+    }
+
+    th,
+    td {
+        min-width: 75px;
+        font-size: 0.9em;
+    }
+
+    tr {
+        gap: 3px;
+    }
+
+    .chat {
+        min-width: 55%;
+        max-width: 90%;
+        font-size: 0.9em;
+    }
+
+    .chat>* {
+        font-size: 0.75em;
+    }
+
+    #GAMES [type="radio"] {
+        scale: 1.3;
+    }
+}

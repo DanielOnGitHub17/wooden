@@ -323,3 +323,160 @@ main {
   justify-content: space-between;
   align-items: center;
 }
+
+/* ===== MOBILE RESPONSIVE STYLES ===== */
+
+/* Mobile (768px and below) */
+@media (max-width: 768px) {
+  .header {
+    flex-direction: column;
+    padding: 1.5rem 1rem;
+    gap: 1.5rem;
+  }
+
+  .header img {
+    height: 4rem;
+  }
+
+  .header-ul {
+    flex-direction: column;
+    gap: 1rem;
+    width: 100%;
+  }
+
+  .nav-item {
+    width: 100%;
+  }
+
+  .nav-link:link,
+  .nav-link:visited {
+    width: 100%;
+    padding: 1.2rem 1.5rem;
+    font-size: 1.8rem;
+  }
+
+  .nav-sign-up {
+    width: 100%;
+    padding: 1.2rem 1.5rem;
+    font-size: 1.8rem;
+    text-align: center;
+  }
+
+  .main-sign-up {
+    width: 95%;
+    grid-template-columns: 1fr;
+    margin: 2rem auto;
+    padding: 0;
+  }
+
+  .sign-up-img {
+    display: none;
+  }
+
+  .register-form {
+    padding: 2rem 1.5rem;
+  }
+
+  .register-form h2 {
+    font-size: 3rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .register-form p {
+    font-size: 1.4rem;
+    line-height: 1.6;
+    margin-bottom: 1rem;
+  }
+
+  .register-form label {
+    font-size: 1.6rem;
+    margin-bottom: 0.8rem;
+  }
+
+  .register-form input {
+    padding: 1.2rem;
+    font-size: 1.6rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .register-form button {
+    padding: 1.2rem 2rem;
+    font-size: 1.6rem;
+    width: 100%;
+  }
+
+  .landing-article {
+    width: 95%;
+    margin: 2rem auto;
+    padding: 1.5rem;
+  }
+
+  .landing-article h3 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+  }
+
+  .landing-article p {
+    font-size: 1.4rem;
+    margin-bottom: 1.5rem;
+    line-height: 1.6;
+  }
+
+  .landing-article a {
+    font-size: 1.4rem;
+  }
+
+  .popup {
+    width: 90vw;
+    padding: 2rem;
+    font-size: 1.6rem;
+  }
+
+  .popup h1 {
+    font-size: 2.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .popup p {
+    font-size: 1.4rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .popup button {
+    width: 3rem;
+    height: 3rem;
+    right: 1rem;
+    top: 1rem;
+  }
+
+  .support-form {
+    width: 95%;
+    margin: 0 auto 5rem;
+  }
+
+  .support-textarea {
+    padding: 1.5rem;
+    font-size: 1.6rem;
+    margin-bottom: 1rem;
+  }
+
+  .support-button {
+    padding: 1.5rem 2rem;
+    font-size: 1.6rem;
+    width: 100%;
+  }
+
+  .body-form {
+    width: 90%;
+    left: 5%;
+    flex-direction: column;
+    padding: 1rem;
+    font-size: 1.4rem;
+  }
+
+  #MESSAGES {
+    width: 90%;
+    left: 5%;
+    font-size: 1.6rem;
+  }
+}
