@@ -162,6 +162,7 @@ if IS_HEROKU_APP:
             ssl_require=True,
         )
     }
+    DATABASES["default"]["CONN_MAX_AGE"] = 0
 else:
     DATABASES = {
         "default": {
