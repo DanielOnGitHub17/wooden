@@ -211,6 +211,13 @@ class ConfirmResetPassword(
     success_message = "Your password was changed successfully. Please log in."
     recaptcha_error_message = "Complete the reCAPTCHA to confirm password."
 
+    def form_valid(self, form):
+        """Handle valid form submission - set user as active during password reset."""
+        user = form.save(commit=False)
+        user.is_active = True
+        user.save()
+        return super().form_valid(form)
+
 
 class AccountActivationTokenGenerator(PasswordResetTokenGenerator):
     """Token generator for account activation."""
