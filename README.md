@@ -1,6 +1,6 @@
 # Wooden
 
-**Final Product:** [Play Wooden!](https://wooden-548b2eb943b9.herokuapp.com/)
+**Final Product:** [Play Wooden!](https://playwooden.net/)
 
 **Development progress:** [Closed PRs by @DanielOnGitHub17](https://github.com/DanielOnGitHub17/wooden/pulls?q=is%3Apr+is%3Aclosed+author%3ADanielOnGitHub17)
 

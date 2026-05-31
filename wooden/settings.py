@@ -24,7 +24,7 @@ load_dotenv()
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
-# Quick-start development settings - unsuitable for production
+# ------ QUICK START AND SECURITY ------
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
@@ -33,19 +33,16 @@ SECRET_KEY = os.getenv(
     default=secrets.token_urlsafe(nbytes=64),
 )
 
+# ------ DEVELOPMENT AND TESTING
 # The `DYNO` env var is set on Heroku CI, but it's not a real Heroku app, so we have to
 # also explicitly exclude CI:
 # https://devcenter.heroku.com/articles/heroku-ci#immutable-environment-variables
 IS_HEROKU_APP = "DYNO" in os.environ and not "CI" in os.environ
 SWITCH_DEBUG = os.getenv("SWITCH_DEBUG") == "True"
 
-# SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = (not IS_HEROKU_APP) or SWITCH_DEBUG
+GRID_SIZE_SETTER = os.getenv("SET_GRID_SIZE")
 
-# On Heroku, it's safe to use a wildcard for `ALLOWED_HOSTS``, since the Heroku router performs
-# validation of the Host header in the incoming HTTP request. On other platforms you may need to
-# list the expected hostnames explicitly in production to prevent HTTP Host header attacks. See:
-# https://docs.djangoproject.com/en/5.1/ref/settings/#std-setting-ALLOWED_HOSTS
 if IS_HEROKU_APP:
     ALLOWED_HOSTS = ["*"]
 else:
@@ -63,7 +60,8 @@ else:
 
 DEV_MAILS = os.getenv("DEV_MAILS", "dev@example.com").split(",")
 
-# Email backend
+
+# ------ EMAIL CONFIGURATION ------
 """
 For when I was using SMTP with gmail
 # EMAIL_HOST = "smtp.gmail.com"
@@ -82,7 +80,7 @@ For when I was using SMTP with gmail
 """
 
 # Set email backend to use the URL during PROD, or if present in local
-# NOTE to owner: Comment from .env if you need to test without sending actual email
+# NOTE to dev: Comment from .env if you need to test without sending actual email
 POWER_AUTOMATE_URL = os.getenv("POWER_AUTOMATE_URL")
 if POWER_AUTOMATE_URL is not None:
     EMAIL_BACKEND = "register.email_backend.PowerAutomateEmailBackend"
@@ -93,10 +91,11 @@ elif IS_HEROKU_APP:
     )
 else:
     # Use a non-networking backend for local development and CI when Power Automate
-    # is not configured.
     EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
-# Application definition
+
+# ------ INSTALLED APPS ------
+
 INSTALLED_APPS = [
     "channels",
     "homepage",
@@ -114,6 +113,9 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
 ]
 
+
+# ------ MIDDLEWARE ------
+
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
@@ -125,11 +127,20 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
+
+# ------ SECURITY SETTINGS ------
+
 CSRF_COOKIE_SECURE = IS_HEROKU_APP
 SESSION_COOKIE_SECURE = IS_HEROKU_APP
 CSRF_TRUSTED_ORIGINS = ["http://localhost:5006", "http://127.0.0.1:5006"]
 
+
+# ------ URL CONFIGURATION ------
+
 ROOT_URLCONF = "wooden.urls"
+
+
+# ------ TEMPLATES ------
 
 TEMPLATES = [
     {
@@ -150,8 +161,7 @@ TEMPLATES = [
 WSGI_APPLICATION = "wooden.wsgi.application"
 
 
-# Database
-# https://docs.djangoproject.com/en/5.1/ref/settings/#databases
+# ------ DATABASE -------
 
 if IS_HEROKU_APP:
     DATABASES = {
@@ -171,7 +181,8 @@ else:
         }
     }
 
-# Password validation
+
+# ------ PASSWORD VALIDATION ------
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
@@ -191,7 +202,8 @@ AUTH_PASSWORD_VALIDATORS = [
 
 PASSWORD_RESET_TIMEOUT_DAYS = 1
 
-# Internationalization
+
+# ------ INTERNATIONALIZATION ------
 # https://docs.djangoproject.com/en/5.1/topics/i18n/
 
 LANGUAGE_CODE = "en-us"
@@ -203,7 +215,7 @@ USE_I18N = True
 USE_TZ = True
 
 
-# Static files (CSS, JavaScript, Images)
+# ------ STATIC FILES ------
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
 STATIC_URL = "/static/"
@@ -219,18 +231,22 @@ if DEBUG:
 # https://whitenoise.readthedocs.io/en/stable/django.html#django
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
-# Default primary key field type
+
+# ------ DEFAULT SETTINGS ------
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 WHITENOISE_KEEP_ONLY_HASHED_FILES = True
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+
+# ------ LOGIN SETTINGS ------
 
 LOGIN_URL = "/signin/"
 LOGIN_REDIRECT_URL = "/lounge/"
 LOGOUT_REDIRECT_URL = "/"
 
 
-# Channels
+# ------ CHANNELS (WEBSOCKETS) ------
 ASGI_APPLICATION = "wooden.asgi.application"
 
 CHANNEL_LAYERS = {
