@@ -19,7 +19,7 @@ username_prefixes = (
     "potent",
 )
 DEFAULT_GRID_SIZE = 15
-DEFAULT_NO_OF_PLAYERS = 15
+DEFAULT_NO_OF_PLAYERS = 10
 
 
 def new_username(name):
@@ -51,7 +51,7 @@ def make_grid(dim=15):
     # set result to up and down borders
     return [
         [2] * (dim + 2),
-        [[2] + [randint(0, 1) for _ in range(dim)] + [2] for _ in range(dim)],
+        *[[2] + [randint(0, 1) for _ in range(dim)] + [2] for _ in range(dim)],
         [2] * (dim + 2),
     ]
 
