@@ -3,11 +3,13 @@
 from django.contrib import messages as msg
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpRequest
 from django.shortcuts import redirect, render
 from django.views import View
 
-from game.helpers import make_game
+from django.conf import settings
+
+from game.helpers import make_game, DEFAULT_NO_OF_PLAYERS
 from game.models import Game
 from helpers import WoodenError, group_send_sync, handle_error
 
@@ -15,7 +17,7 @@ from helpers import WoodenError, group_send_sync, handle_error
 class ChangeToPublic(LoginRequiredMixin, View):
     """View for changing a game to public."""
 
-    def post(self, request):
+    def post(self, request: HttpRequest):
         """Change a game to public."""
         player = request.user.player
         game = player.game
@@ -29,7 +31,7 @@ class ChangeToPublic(LoginRequiredMixin, View):
 class LeaveGame(LoginRequiredMixin, View):
     """View for leaving a game."""
 
-    def post(self, request):
+    def post(self, request: HttpRequest):
         """Leave a game."""
         player = request.user.player
         game = player.game
@@ -59,7 +61,7 @@ class LeaveGame(LoginRequiredMixin, View):
 class StartEarly(LoginRequiredMixin, View):
     """View for starting a game early."""
 
-    def post(self, request):
+    def post(self, request: HttpRequest):
         """Start a game early."""
         player = request.user.player
         game = player.game
@@ -83,7 +85,7 @@ class StartEarly(LoginRequiredMixin, View):
 
 
 @login_required
-def play(request):
+def play(request: HttpRequest):
     """View for playing a game."""
     player = request.user.player
     game = player.game
@@ -119,7 +121,7 @@ def play(request):
 class JoinGame(LoginRequiredMixin, View):
     """View for joining a game."""
 
-    def post(self, request):
+    def post(self, request: HttpRequest):
         """Join a game."""
         player = request.user.player
         redirect_to = "/lounge/"
@@ -173,7 +175,7 @@ class JoinGame(LoginRequiredMixin, View):
 class EndGame(LoginRequiredMixin, View):
     """View for ending a game."""
 
-    def post(self, request):
+    def post(self, request: HttpRequest):
         """End a game."""
         won = +("won" in request.POST)
         request.user.player.reset(won)
@@ -189,6 +191,11 @@ class EndGame(LoginRequiredMixin, View):
 
 
 # @login_required
-def practice(request):
+def practice(request: HttpRequest):
     """View for practicing a game."""
-    return render(request, "app/game.html", {"game_data": make_game(10)})
+    dimension = request.GET.get(settings.GRID_SIZE_SETTER, DEFAULT_NO_OF_PLAYERS)
+    return render(
+        request,
+        "app/game.html",
+        {"game_data": make_game(dimension=dimension, no_of_players=10)},
+    )
