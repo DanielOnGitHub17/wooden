@@ -89,7 +89,7 @@ class StartEarly(LoginRequiredMixin, View):
 def play(request: HttpRequest):
     """View for playing a game."""
     player = request.user.player
-    game = player.game
+    game: Game = player.game
     error_msg = (not game) * "You are not in a game.\n"
     error_msg = error_msg or (game.ended) * "You can no longer join that game."
     if error_msg:  # Can't join
