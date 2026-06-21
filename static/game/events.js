@@ -19,8 +19,7 @@ function main(event) {
 function deleteGame() {
     if (!Game.isMultiplayer) return;
     const ttl = get("TTL");
-    console.log("[event](deleteGame) Game.rawMaterial:", Game.rawMaterial);
-    const deadline = Game.rawMaterial.base_time_for_delete_countdown * 1000 + 60 * 1000;
+    const deadline = Game.rawMaterial.base_time_for_delete_countdown * 1000 + 30 * 60 * 1000;
     const interval = setInterval(() => {
         const remaining = Math.max(0, Math.floor((deadline - Date.now()) / 1000));
         const mins = Math.floor(remaining / 60);
@@ -32,7 +31,7 @@ function deleteGame() {
                 if (div.id != "GAME_DELETED") div.remove();
             });
             switchScreenKeepTtl("GAME_DELETED");
-            setTimeout(() => location.href = "/lounge/", 20000)
+            setTimeout(() => location.href = "/lounge/", 2000)
         }
     }, 1000);
 }
