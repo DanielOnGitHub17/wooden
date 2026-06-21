@@ -9,7 +9,6 @@ function main(event) {
         load: [start, compileMessages, Sound.load, deleteGame],
         click: [initialize],
         submit: [submitStartForm, changeToPublic],
-        unload: [leftPage],
         beforeunload: [reloadingPage],
         change: [writeSpeed],
         // fullscreenchange: [gameMode]
