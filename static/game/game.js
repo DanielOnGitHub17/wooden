@@ -12,7 +12,6 @@ class Game {
         this.grid = copyObj(Game.rawMaterial.grid);
         this.build_grid();
         Game.isMultiplayer && this.setPositions();
-        // Game.world.style.width = Game.world.style.height = this.length*Block.dimension + 'px';
     }
     build_grid() {
         this.blocks = []
@@ -25,8 +24,8 @@ class Game {
         });
         this.blocks.get = (r, c) => this.blocks[r][c];
         // Set game size: Useful for testing with different width
-        Game.world.style.height = (this.blocks.length + 2) * Game.blockWidth + "px"
-        Game.world.style.width = (this.blocks[0].length + 2) * Game.blockWidth + "px"
+        Game.world.style.height = this.blocks.length * Game.blockWidth + "px"
+        Game.world.style.width = this.blocks[0].length * Game.blockWidth + "px"
     }
     start() {
         switchScreenKeepTtl("WORLD");
