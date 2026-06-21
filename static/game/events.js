@@ -1,4 +1,4 @@
-import { compileMessages, switchScreenKeepTtl } from "../scripts.js";
+import { compileMessages } from "../scripts.js";
 import { Game } from "./game.js";
 import { Gamer } from "./gamer.js";
 import { createGameSocket } from "./socket.js";
@@ -6,7 +6,7 @@ import { Sound } from "./sound.js";
 
 function main(event) {
     configureEvents({
-        load: [start, compileMessages, Sound.load, Game.deleteGame],
+        load: [start, compileMessages, Sound.load, deleteGame],
         click: [initialize],
         submit: [submitStartForm, changeToPublic],
         unload: [leftPage],
@@ -15,6 +15,26 @@ function main(event) {
         // fullscreenchange: [gameMode]
     });
     ["open", "close", "message", "error"].forEach(event => window[event + "Socket"] = eval(event + "Socket"));
+}
+
+function deleteGame() {
+    if (!Game.isMultiplayer) return;
+    const ttl = get("TTL");
+    const deadline = Game.rawMaterial.time * 1000 + 30 * 60 * 1000;
+    const interval = setInterval(() => {
+        const remaining = Math.max(0, Math.floor((deadline - Date.now()) / 1000));
+        const mins = Math.floor(remaining / 60);
+        const secs = remaining % 60;
+        ttl.textContent = `${mins}m${secs ? ` ${secs}s` : ""}`;
+        if (!remaining) {
+            clearInterval(interval);
+            document.body.querySelectorAll("div").forEach(div => {
+                if (div.id != "GAME_DELETED") div.remove();
+            });
+            switchScreenKeepTtl("GAME_DELETED");
+            setTimeout(() => location.href = "/lounge/", 2000)
+        }
+    }, 1000);
 }
 
 function changeToPublic(event) {
@@ -68,6 +88,13 @@ function submitStartForm(event) {
     Game.game = new Game(+prac.botCount.value + 1, +prac.woodStrength.value);
     Game.game.speed = 480 - parseInt(prac.speed.value);
     Game.game.start();
+}
+function switchScreenKeepTtl(screenID) {
+    switchScreen(screenID);
+    if (Game.isMultiplayer) {
+        GAME_TTL = get("GAME_TTL");
+        if (GAME_TTL) GAME_TTL.style.display = "";
+    }
 }
 
 function events() {
@@ -136,4 +163,4 @@ function preventRightClick(event) {
 
 main();
 
-export { gameMode }
+export { gameMode, switchScreenKeepTtl }

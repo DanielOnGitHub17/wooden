@@ -1,11 +1,6 @@
 identify();
 const username = window.USERNAME ? USERNAME.textContent : "player";
 
-function switchScreenKeepTtl(screenID) {
-    switchScreen(screenID);
-    get("GAME_TTL")?.style.display = "";
-}
-
 function main(event) {
     let cheat = [];
     if (window.CHEATS) {
@@ -68,4 +63,4 @@ function showCheats(event) {
 
 main();
 
-export { username, compileMessages, switchScreenKeepTtl };
+export { username, compileMessages };
