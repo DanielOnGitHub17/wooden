@@ -1,5 +1,6 @@
 """Views for the game app."""
 
+import json
 from django.contrib import messages as msg
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -188,6 +189,38 @@ class EndGame(LoginRequiredMixin, View):
             ][won],
         )
         return redirect("/lounge/")
+
+
+class DeleteGame(LoginRequiredMixin, View):
+    """API to delete a game."""
+
+    def post(self, request: HttpRequest):
+        """Delete a game by id using a JSON payload."""
+        try:
+            data = json.loads(request.body)
+        except (TypeError, ValueError):
+            return HttpResponse(content=b"Invalid JSON payload", status=400)
+
+        game_id = data.get("game_id")
+        if data.get("GAME_DELETE_TOKEN") != getattr(
+            settings, "DELETE_GAME_TOKEN", None
+        ):
+            return HttpResponse(content=b"Invalid delete token", status=403)
+
+        try:
+            game = Game.objects.get(id=game_id)
+        except (Game.DoesNotExist, TypeError, ValueError):
+            return HttpResponse(content=b"Game not found", status=404)
+
+        self.delete_game(game)
+        return HttpResponse(status=200)
+
+    @staticmethod
+    def delete_game(game: Game):
+        """Reset players in the game and delete it."""
+        for player in game.players.all():
+            player.reset(end=False)
+        game.delete()
 
 
 # @login_required
