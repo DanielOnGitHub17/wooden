@@ -34,7 +34,7 @@ class Lounge(LoginRequiredMixin, SuccessMessageMixin, CreateView):
             self.request, msg.SUCCESS, "You created and joined the game successfully"
         )
 
-        if settings.IS_HEROKU_APP:
+        if settings.IS_HEROKU_APP or settings.USE_PROD_DATABASE:
             delete_url = getattr(settings, "DELETE_GAME_EXTERNAL_API_URL", None)
             if delete_url:
                 payload = {"game_id": new_game.pk}

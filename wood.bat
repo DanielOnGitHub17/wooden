@@ -33,12 +33,12 @@ if "!command!"=="/c" (
 )
 
 if "!command!"=="/cd" (
-    python manage.py check -/deploy
+    python manage.py check --deploy
     exit /b 0
 )
 
 if "!command!"=="/d" (
-    docker run --rm /p 6379:6379 redis:latest
+    docker run --rm -p 6379:6379 redis:latest
     exit /b 0
 )
 
