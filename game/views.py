@@ -191,7 +191,7 @@ class EndGame(LoginRequiredMixin, View):
         return redirect("/lounge/")
 
 
-class DeleteGame(LoginRequiredMixin, View):
+class DeleteGame(View):
     """API to delete a game."""
 
     def post(self, request: HttpRequest):
