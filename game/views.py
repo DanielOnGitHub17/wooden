@@ -194,15 +194,12 @@ class EndGame(LoginRequiredMixin, View):
 class DeleteGame(View):
     """API to delete a game."""
 
-    def post(self, request: HttpRequest):
+    def get(self, request: HttpRequest):
         """Delete a game by id using a JSON payload."""
-        try:
-            data = json.loads(request.body)
-        except (TypeError, ValueError):
-            return HttpResponse(content=b"Invalid JSON payload", status=400)
-
-        game_id = data.get("game_id")
-        if data.get("GAME_DELETE_TOKEN") != getattr(
+        game_id = request.GET.get("game_id")
+        print("request", request.GET.get("DELETE_GAME_TOKEN"))
+        print("truth", settings.DELETE_GAME_TOKEN)
+        if request.GET.get("DELETE_GAME_TOKEN") != getattr(
             settings, "DELETE_GAME_TOKEN", None
         ):
             return HttpResponse(content=b"Invalid delete token", status=403)
