@@ -6,7 +6,7 @@ import { Sound } from "./sound.js";
 
 function main(event) {
     configureEvents({
-        load: [start, compileMessages, Sound.load],
+        load: [start, compileMessages, Sound.load, Game.deleteGame],
         click: [initialize],
         submit: [submitStartForm, changeToPublic],
         unload: [leftPage],
@@ -49,7 +49,7 @@ function writeSpeed(event) {
 function gameMode(event, next = "WORLD", changeScreen = true) {
     Sound.stopAll();
     INITIALIZER.next = next;
-    if (changeScreen) switchScreen("INITIALIZER");
+    if (changeScreen) switchScreenKeepTtl("INITIALIZER");
 }
 
 function initialize(event) {
@@ -57,7 +57,7 @@ function initialize(event) {
     if (!Sound.loaded) Sound.load();
     document.body.requestFullscreen().catch(load);
     Sound.loop(INITIALIZER.next == "SETTINGS" ? "waiting_music" : "game_music");
-    switchScreen(INITIALIZER.next);
+    switchScreenKeepTtl(INITIALIZER.next);
     INITIALIZER.next = "SETTINGS";
 }
 
@@ -91,7 +91,7 @@ function reloadingPage(event) {
 }
 
 function start(event) {
-    switchScreen("INITIALIZER");
+    switchScreenKeepTtl("INITIALIZER");
     INITIALIZER.next = "SETTINGS";
     MESSAGES.style.display = "";
     loader();
@@ -103,7 +103,7 @@ function start(event) {
         }
         return;
     }
-    // switchScreen("GAME_OVER");
+    // switchScreenKeepTtl("GAME_OVER");
 }
 
 function messageSocket(event) {

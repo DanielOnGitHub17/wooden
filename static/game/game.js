@@ -26,7 +26,7 @@ class Game {
         this.blocks.get = (r, c) => this.blocks[r][c];
     }
     start() {
-        switchScreen("WORLD");
+        switchScreenKeepTtl("WORLD");
         if (Game.isMultiplayer) {
             // Associate Gamers with Players
             Bot.bots.concat(Player.players).forEach(obj => Gamer.gamers[obj.name].player = obj);
@@ -72,7 +72,7 @@ class Game {
     end() {
         Sound.stopAll();
         // with button to 'save game' -> Maybe get the path you took... (for multiplayer only)
-        switchScreen("GAME_OVER");
+        switchScreenKeepTtl("GAME_OVER");
         // setTimeout to fix bug. Bug: When players' scores are too close, lower might appear upper than higher.
         setTimeout(() => this.listWinners(), 500);
         WINNERS_LIST.textContent = "Compiling winners...";
@@ -98,6 +98,25 @@ class Game {
         SEND_STATUS.elements.won.checked = won;
         STATUS.textContent = won ? "CONGRATULATIONS!!! You won the game!"
             : "Sorry, you did not win. Break more wood next time.";
+    }
+    static deleteGame() {
+        if (!Game.isMultiplayer) return;
+        const ttl = get("TTL");
+        const deadline = Game.rawMaterial.time * 1000 + 30 * 60 * 1000;
+        const interval = setInterval(() => {
+            const remaining = Math.max(0, Math.floor((deadline - Date.now()) / 1000));
+            const mins = Math.floor(remaining / 60);
+            const secs = remaining % 60;
+            ttl.textContent = `${mins}m${secs ? ` ${secs}s` : ""}`;
+            if (!remaining) {
+                clearInterval(interval);
+                document.body.querySelectorAll("div").forEach(div => {
+                    if (div.id != "GAME_DELETED") div.remove();
+                });
+                switchScreenKeepTtl("GAME_DELETED");
+                setTimeout(() => location.href = "/lounge/", 2000)
+            }
+        }, 1000);
     }
 
     static world = WORLD;

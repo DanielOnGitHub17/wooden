@@ -148,6 +148,21 @@ h2 {
     color: #CD7F32;
 }
 
+#GAME_TTL {
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+    z-index: 1000;
+    background-color: #8b4b31;
+    color: white;
+    border: 1px solid burlywood;
+    border-radius: 0.5em;
+    padding: 0.45rem 0.75rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+    font-weight: bold;
+    font-size: 0.95rem;
+}
+
 [method="post"] {
     display: flex;
     align-items: center;

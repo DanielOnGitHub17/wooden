@@ -1,6 +1,11 @@
 identify();
 const username = window.USERNAME ? USERNAME.textContent : "player";
 
+function switchScreenKeepTtl(screen) {
+    switchScreenKeepTtl(screen);
+    get("GAME_TTL")?.style.display = "";
+}
+
 function main(event) {
     let cheat = [];
     if (window.CHEATS) {
@@ -47,9 +52,9 @@ function compileMessages(event) {
 }
 
 function forceFullScreen(event) {
-    switchScreen("START");
+    switchScreenKeepTtl("START");
     document.addEventListener("fullscreenchange", (event) => {
-        switchScreen(document.fullscreenElement == document.firstElementChild ? "APP" : "START")
+        switchScreenKeepTtl(document.fullscreenElement == document.firstElementChild ? "APP" : "START")
     });
 }
 
