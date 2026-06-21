@@ -1,3 +1,6 @@
+aiohappyeyeballs==2.6.2
+aiohttp==3.14.1
+aiosignal==1.4.0
 anyio==4.12.1
 asgiref==3.11.1
 attrs==25.4.0
@@ -15,6 +18,7 @@ cryptography==46.0.5
 daphne==4.2.1
 dj-database-url==3.1.2
 Django==6.0.3
+frozenlist==1.8.0
 gunicorn==25.1.0
 h11==0.16.0
 httptools==0.7.1
@@ -22,7 +26,9 @@ hyperlink==21.0.0
 idna==3.11
 Incremental==24.11.0
 msgpack==1.1.2
+multidict==6.7.1
 packaging==26.0
+propcache==0.5.2
 psycopg2-binary==2.9.11
 py-ubjson==0.16.1
 pyasn1==0.6.2
@@ -45,4 +51,5 @@ uvloop==0.22.1
 watchfiles==1.1.1
 websockets==16.0
 whitenoise==6.12.0
+yarl==1.24.2
 zope.interface==8.2
