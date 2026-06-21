@@ -1,11 +1,13 @@
 """This module contains the view for the lounge page."""
 
-# import json
+import requests
 
 from django.contrib import messages as msg
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.views.generic.edit import CreateView
+
+from django.conf import settings
 
 from game.helpers import online_players_context
 from game.models import Game
@@ -24,12 +26,23 @@ class Lounge(LoginRequiredMixin, SuccessMessageMixin, CreateView):
         player = self.request.user.player
         if player.game is not None:
             return None
-        player.game = form.save()
+        new_game: Game = form.save()
+        player.game = new_game
         player.creator = True
         player.save()
         msg.add_message(
             self.request, msg.SUCCESS, "You created and joined the game successfully"
         )
+
+        if settings.IS_HEROKU_APP:
+            delete_url = getattr(settings, "DELETE_GAME_EXTERNAL_API_URL", None)
+            if delete_url:
+                payload = {"game_id": new_game.pk}
+                try:
+                    requests.post(delete_url, json=payload, timeout=5)
+                except Exception:
+                    pass
+
         return super().form_valid(form)
 
     def get_context_data(self, **kwargs):
