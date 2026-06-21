@@ -164,8 +164,9 @@ WSGI_APPLICATION = "wooden.wsgi.application"
 
 
 # ------ DATABASE -------
+USE_PROD_DATABASE = os.getenv("USE_PROD_DATABASE") == "True"
 
-if IS_HEROKU_APP:
+if IS_HEROKU_APP or USE_PROD_DATABASE:
     DATABASES = {
         "default": dj_database_url.config(
             env="DATABASE_URL",
