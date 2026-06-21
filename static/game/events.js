@@ -1,11 +1,11 @@
-import { makeEvents, compileMessages } from "../scripts.js";
+import { compileMessages } from "../scripts.js";
 import { Game } from "./game.js";
 import { Gamer } from "./gamer.js";
 import { createGameSocket } from "./socket.js";
 import { Sound } from "./sound.js";
 
 function main(event) {
-    makeEvents({
+    configureEvents({
         load: [start, compileMessages, Sound.load],
         click: [initialize],
         submit: [submitStartForm, changeToPublic],
