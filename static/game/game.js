@@ -24,6 +24,9 @@ class Game {
             });
         });
         this.blocks.get = (r, c) => this.blocks[r][c];
+        // Set game size: Useful for testing with different width
+        Game.world.style.height = (this.blocks.length + 2) * Game.blockWidth + "px"
+        Game.world.style.width = (this.blocks[0].length + 2) * Game.blockWidth + "px"
     }
     start() {
         switchScreenKeepTtl("WORLD");
@@ -104,6 +107,7 @@ class Game {
     static player = 0;
     static isMultiplayer = Boolean(get("WAIT_ROOM"));
     static rawMaterial = jsonObj(GAME_DATA.textContent);
+    static blockWidth = 40;
 }
 
 export { Game }
