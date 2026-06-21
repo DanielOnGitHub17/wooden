@@ -9,7 +9,7 @@ from django.views import View
 
 from django.conf import settings
 
-from game.helpers import make_game, DEFAULT_NO_OF_PLAYERS
+from game.helpers import make_game, DEFAULT_GRID_SIZE
 from game.models import Game
 from helpers import WoodenError, group_send_sync, handle_error
 
@@ -193,9 +193,9 @@ class EndGame(LoginRequiredMixin, View):
 # @login_required
 def practice(request: HttpRequest):
     """View for practicing a game."""
-    dimension = request.GET.get(settings.GRID_SIZE_SETTER, DEFAULT_NO_OF_PLAYERS)
+    dimension = int(request.GET.get(settings.GRID_SIZE_SETTER, DEFAULT_GRID_SIZE))
     return render(
         request,
         "app/game.html",
-        {"game_data": make_game(dimension=dimension, no_of_players=10)},
+        {"game_data": make_game(dimension=dimension)},
     )

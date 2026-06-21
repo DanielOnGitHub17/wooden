@@ -41,7 +41,7 @@ IS_HEROKU_APP = "DYNO" in os.environ and not "CI" in os.environ
 SWITCH_DEBUG = os.getenv("SWITCH_DEBUG") == "True"
 
 DEBUG = (not IS_HEROKU_APP) or SWITCH_DEBUG
-GRID_SIZE_SETTER = os.getenv("SET_GRID_SIZE")
+GRID_SIZE_SETTER = os.getenv("GRID_SIZE_SETTER")
 
 if IS_HEROKU_APP:
     ALLOWED_HOSTS = ["*"]
