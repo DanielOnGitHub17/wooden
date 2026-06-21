@@ -101,6 +101,14 @@
 <div id="INITIALIZER">
     <button type="button" id="INITIALIZE">ENTER GAME MODE</button>
 </div>
+<div id="GAME_DELETED">
+    <h2>Game has been deleted</h2>
+    <p>Sorry, it's been 30 minutes since this game was created so it has now been deleted.
+        Please create or join another one.<br>You will be redirected soon.
+    </p>
+    <p><a href="/lounge/">Go to lounge</a></p>
+</div>
+<div id="GAME_TTL">Ends in: <span id="TTL">30m</span></div>
 {{ game_data|json_script:"GAME_DATA" }}
 <script type="module" src="{% static 'game/block.js' %}"></script>
 <script type="module" src="{% static 'game/player.js' %}"></script>

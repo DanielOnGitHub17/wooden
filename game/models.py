@@ -42,6 +42,7 @@ class Game(models.Model):
     grid = models.TextField(default="")
     no_of_players = models.IntegerField(default=2, validators=num_valid(2, 7))
     wood_strength = models.IntegerField(default=3, validators=num_valid(2, 7))
+    created_at = models.DateTimeField(auto_now_add=True, null=True)
     started_time = models.DateTimeField(null=True)
     ended_time = models.DateTimeField(null=True)
     started = models.BooleanField(default=False)
@@ -58,7 +59,10 @@ class Game(models.Model):
     def try_start(self, force=False):
         """Tries to start the game.
         If the game is not started and can be started, it starts the game."""
-        game_data = {"hits": self.wood_strength}
+        game_data = {
+            "hits": self.wood_strength,
+            "base_time_for_delete_countdown": self.created_at.timestamp(),
+        }
         if not self.started and (self.can_start or force):
             self.started = True
             game_data.update(

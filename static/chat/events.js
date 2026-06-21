@@ -1,7 +1,6 @@
-import { makeEvents } from "../scripts.js"
 import { Chat } from "./chat.js"
 
-makeEvents({
+configureEvents({
     submit: [Chat.send]
     , load: [Chat.close]
     , keyup: [Chat.undo]

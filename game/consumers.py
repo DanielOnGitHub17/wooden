@@ -1,5 +1,7 @@
 import asyncio
 import json
+import aiohttp
+from django.conf import settings
 
 # from asgiref.sync import async_to_sync, sync_to_async  # Will be used for eventual consistency logic
 from channels.db import database_sync_to_async
@@ -37,8 +39,31 @@ class GameConsumer(AsyncWebsocketConsumer):
         await self.default(event)
         # PS: PLEASE Remember to await your coroutines when necessary - 'bug' took my time.
 
+    async def _delete_game_in_background(self, delete_url, payload):
+        try:
+            async with aiohttp.ClientSession() as session:
+                await session.post(delete_url, json=payload)
+        except Exception:
+            # silently ignore failures for now
+            pass
+
     async def start(self, event):
-        await asyncio.sleep(1)  # Waiting for the last player's page to load...
+        # Wait for the last player's page to load - or imagine to :)
+        await asyncio.sleep(1)
+        if not settings.IS_HEROKU_APP:
+            return await self.default(event)
+
+        # Send request to delete the game after some time (external API)
+        delete_url = getattr(settings, "DELETE_GAME_EXTERNAL_API_URL", None)
+        if not delete_url:
+            return await self.default(event)
+
+        try:
+            payload = {"game_id": self.group_name}
+            asyncio.create_task(self._delete_game_in_background(delete_url, payload))
+        except Exception as e:
+            print(e)
+
         await self.default(event)
 
     async def default(self, event):

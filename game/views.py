@@ -1,5 +1,6 @@
 """Views for the game app."""
 
+import json
 from django.contrib import messages as msg
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -9,7 +10,7 @@ from django.views import View
 
 from django.conf import settings
 
-from game.helpers import make_game, DEFAULT_NO_OF_PLAYERS
+from game.helpers import make_game, DEFAULT_GRID_SIZE
 from game.models import Game
 from helpers import WoodenError, group_send_sync, handle_error
 
@@ -88,7 +89,7 @@ class StartEarly(LoginRequiredMixin, View):
 def play(request: HttpRequest):
     """View for playing a game."""
     player = request.user.player
-    game = player.game
+    game: Game = player.game
     error_msg = (not game) * "You are not in a game.\n"
     error_msg = error_msg or (game.ended) * "You can no longer join that game."
     if error_msg:  # Can't join
@@ -190,12 +191,41 @@ class EndGame(LoginRequiredMixin, View):
         return redirect("/lounge/")
 
 
+class DeleteGame(View):
+    """API to delete a game."""
+
+    def get(self, request: HttpRequest):
+        """Delete a game by id using a JSON payload."""
+        game_id = request.GET.get("game_id")
+        print("request", request.GET.get("DELETE_GAME_TOKEN"))
+        print("truth", settings.DELETE_GAME_TOKEN)
+        if request.GET.get("DELETE_GAME_TOKEN") != getattr(
+            settings, "DELETE_GAME_TOKEN", None
+        ):
+            return HttpResponse(content=b"Invalid delete token", status=403)
+
+        try:
+            game = Game.objects.get(id=game_id)
+        except (Game.DoesNotExist, TypeError, ValueError):
+            return HttpResponse(content=b"Game not found", status=404)
+
+        self.delete_game(game)
+        return HttpResponse(status=200)
+
+    @staticmethod
+    def delete_game(game: Game):
+        """Reset players in the game and delete it."""
+        for player in game.players.all():
+            player.reset(end=False)
+        game.delete()
+
+
 # @login_required
 def practice(request: HttpRequest):
     """View for practicing a game."""
-    dimension = request.GET.get(settings.GRID_SIZE_SETTER, DEFAULT_NO_OF_PLAYERS)
+    dimension = int(request.GET.get(settings.GRID_SIZE_SETTER, DEFAULT_GRID_SIZE))
     return render(
         request,
         "app/game.html",
-        {"game_data": make_game(dimension=dimension, no_of_players=10)},
+        {"game_data": make_game(dimension=dimension)},
     )

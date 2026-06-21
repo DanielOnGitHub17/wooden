@@ -7,7 +7,7 @@ function main(event) {
         CHEATS.style.display = "none";
         cheat.push(showCheats);
     }
-    makeEvents({
+    configureEvents({
         load: [changeNavStyle, compileMessages]
         , click: [makeMenu, showOnline, hideOnline]
         , keyup: cheat
@@ -47,9 +47,9 @@ function compileMessages(event) {
 }
 
 function forceFullScreen(event) {
-    switchScreen("START");
+    switchScreenKeepTtl("START");
     document.addEventListener("fullscreenchange", (event) => {
-        switchScreen(document.fullscreenElement == document.firstElementChild ? "APP" : "START")
+        switchScreenKeepTtl(document.fullscreenElement == document.firstElementChild ? "APP" : "START")
     });
 }
 
@@ -60,14 +60,7 @@ function showCheats(event) {
     }
 }
 
-function makeEvents(events) {
-    for (let type in events) {
-        for (let handler of events[type]) {
-            window.addEventListener(type, handler);
-        }
-    }
-}
 
 main();
 
-export { makeEvents, username, compileMessages };
+export { username, compileMessages };

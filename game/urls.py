@@ -10,4 +10,5 @@ urlpatterns = [
     path("leave/", views.LeaveGame.as_view(), name="leave"),
     path("start/", views.StartEarly.as_view(), name="start"),
     path("change/", views.ChangeToPublic.as_view(), name="change"),
+    path("delete/", views.DeleteGame.as_view(), name="delete"),
 ]

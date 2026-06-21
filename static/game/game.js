@@ -1,4 +1,4 @@
-import { gameMode } from "./events.js";
+import { gameMode, switchScreenKeepTtl } from "./events.js";
 import { Player } from "./player.js";
 import { Bot } from "./bot.js";
 import { Block } from "./block.js";
@@ -12,7 +12,6 @@ class Game {
         this.grid = copyObj(Game.rawMaterial.grid);
         this.build_grid();
         Game.isMultiplayer && this.setPositions();
-        // Game.world.style.width = Game.world.style.height = this.length*Block.dimension + 'px';
     }
     build_grid() {
         this.blocks = []
@@ -24,9 +23,12 @@ class Game {
             });
         });
         this.blocks.get = (r, c) => this.blocks[r][c];
+        // Set game size: Useful for testing with different width
+        Game.world.style.height = this.blocks.length * Game.blockWidth + "px"
+        Game.world.style.width = this.blocks[0].length * Game.blockWidth + "px"
     }
     start() {
-        switchScreen("WORLD");
+        switchScreenKeepTtl("WORLD");
         if (Game.isMultiplayer) {
             // Associate Gamers with Players
             Bot.bots.concat(Player.players).forEach(obj => Gamer.gamers[obj.name].player = obj);
@@ -72,7 +74,7 @@ class Game {
     end() {
         Sound.stopAll();
         // with button to 'save game' -> Maybe get the path you took... (for multiplayer only)
-        switchScreen("GAME_OVER");
+        switchScreenKeepTtl("GAME_OVER");
         // setTimeout to fix bug. Bug: When players' scores are too close, lower might appear upper than higher.
         setTimeout(() => this.listWinners(), 500);
         WINNERS_LIST.textContent = "Compiling winners...";
@@ -104,6 +106,7 @@ class Game {
     static player = 0;
     static isMultiplayer = Boolean(get("WAIT_ROOM"));
     static rawMaterial = jsonObj(GAME_DATA.textContent);
+    static blockWidth = 40;
 }
 
 export { Game }

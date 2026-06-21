@@ -1,20 +1,39 @@
-import { makeEvents, compileMessages } from "../scripts.js";
+import { compileMessages } from "../scripts.js";
 import { Game } from "./game.js";
 import { Gamer } from "./gamer.js";
 import { createGameSocket } from "./socket.js";
 import { Sound } from "./sound.js";
 
 function main(event) {
-    makeEvents({
-        load: [start, compileMessages, Sound.load],
+    configureEvents({
+        load: [start, compileMessages, Sound.load, deleteGame],
         click: [initialize],
         submit: [submitStartForm, changeToPublic],
-        unload: [leftPage],
         beforeunload: [reloadingPage],
         change: [writeSpeed],
         // fullscreenchange: [gameMode]
     });
     ["open", "close", "message", "error"].forEach(event => window[event + "Socket"] = eval(event + "Socket"));
+}
+
+function deleteGame() {
+    if (!Game.isMultiplayer) return;
+    const ttl = get("TTL");
+    const deadline = Game.rawMaterial.base_time_for_delete_countdown * 1000 + 30 * 60 * 1000;
+    const interval = setInterval(() => {
+        const remaining = Math.max(0, Math.floor((deadline - Date.now()) / 1000));
+        const mins = Math.floor(remaining / 60);
+        const secs = remaining % 60;
+        ttl.textContent = `${mins}m${secs ? ` ${secs}s` : ""}`;
+        if (!remaining) {
+            clearInterval(interval);
+            document.body.querySelectorAll("div").forEach(div => {
+                if (div.id != "GAME_DELETED") div.remove();
+            });
+            switchScreenKeepTtl("GAME_DELETED");
+            setTimeout(() => location.href = "/lounge/", 2000)
+        }
+    }, 1000);
 }
 
 function changeToPublic(event) {
@@ -49,7 +68,7 @@ function writeSpeed(event) {
 function gameMode(event, next = "WORLD", changeScreen = true) {
     Sound.stopAll();
     INITIALIZER.next = next;
-    if (changeScreen) switchScreen("INITIALIZER");
+    if (changeScreen) switchScreenKeepTtl("INITIALIZER");
 }
 
 function initialize(event) {
@@ -57,7 +76,7 @@ function initialize(event) {
     if (!Sound.loaded) Sound.load();
     document.body.requestFullscreen().catch(load);
     Sound.loop(INITIALIZER.next == "SETTINGS" ? "waiting_music" : "game_music");
-    switchScreen(INITIALIZER.next);
+    switchScreenKeepTtl(INITIALIZER.next);
     INITIALIZER.next = "SETTINGS";
 }
 
@@ -68,6 +87,13 @@ function submitStartForm(event) {
     Game.game = new Game(+prac.botCount.value + 1, +prac.woodStrength.value);
     Game.game.speed = 480 - parseInt(prac.speed.value);
     Game.game.start();
+}
+function switchScreenKeepTtl(screenID) {
+    switchScreen(screenID);
+    if (Game.isMultiplayer) {
+        GAME_TTL = get("GAME_TTL");
+        if (GAME_TTL) GAME_TTL.style.display = "";
+    }
 }
 
 function events() {
@@ -91,7 +117,7 @@ function reloadingPage(event) {
 }
 
 function start(event) {
-    switchScreen("INITIALIZER");
+    switchScreenKeepTtl("INITIALIZER");
     INITIALIZER.next = "SETTINGS";
     MESSAGES.style.display = "";
     loader();
@@ -103,7 +129,7 @@ function start(event) {
         }
         return;
     }
-    // switchScreen("GAME_OVER");
+    // switchScreenKeepTtl("GAME_OVER");
 }
 
 function messageSocket(event) {
@@ -136,4 +162,4 @@ function preventRightClick(event) {
 
 main();
 
-export { gameMode }
+export { gameMode, switchScreenKeepTtl }
