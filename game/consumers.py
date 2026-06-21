@@ -50,6 +50,9 @@ class GameConsumer(AsyncWebsocketConsumer):
     async def start(self, event):
         # Wait for the last player's page to load - or imagine to :)
         await asyncio.sleep(1)
+        if not settings.IS_HEROKU_APP:
+            return await self.default(event)
+
         # Send request to delete the game after some time (external API)
         delete_url = getattr(settings, "DELETE_GAME_EXTERNAL_API_URL", None)
         if not delete_url:

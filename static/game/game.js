@@ -1,4 +1,4 @@
-import { gameMode } from "./events.js";
+import { gameMode, switchScreenKeepTtl } from "./events.js";
 import { Player } from "./player.js";
 import { Bot } from "./bot.js";
 import { Block } from "./block.js";
