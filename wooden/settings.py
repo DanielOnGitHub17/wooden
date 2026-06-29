@@ -44,7 +44,7 @@ DEBUG = (not IS_HEROKU_APP) or SWITCH_DEBUG
 GRID_SIZE_SETTER = os.getenv("GRID_SIZE_SETTER")
 DELETE_GAME_TOKEN = os.getenv("DELETE_GAME_TOKEN")
 DELETE_GAME_EXTERNAL_API_URL = os.getenv("DELETE_GAME_EXTERNAL_API_URL")
-
+RECAPTCHA_SECRET_KEY = os.getenv("RECAPTCHA_SECRET_KEY")
 if IS_HEROKU_APP:
     ALLOWED_HOSTS = ["*"]
 else:
@@ -92,7 +92,7 @@ elif IS_HEROKU_APP:
         "register.email_backend.PowerAutomateEmailBackend email backend."
     )
 else:
-    # Use a non-networking backend for local development and CI when Power Automate
+    # Use console when POWER_AUTOMATE_URL not set and not prod
     EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
 
