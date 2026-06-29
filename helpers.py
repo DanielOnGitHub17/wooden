@@ -14,12 +14,9 @@ import traceback
 from datetime import datetime
 from importlib import import_module
 
-import requests as req
 from asgiref.sync import async_to_sync
 from channels.exceptions import DenyConnection
 from channels.layers import get_channel_layer
-from django.contrib import messages as msg
-from django.contrib.auth.mixins import AccessMixin
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.shortcuts import redirect
@@ -43,34 +40,6 @@ def unique_username(username):
 
 class WoodenError(Exception):
     """Generic exception class for the app."""
-
-
-class NotLoginRequiredMixin(AccessMixin):
-    """Redirect user if user is authenticated.
-    Mixin for Not login required
-    """
-
-    redirect_where = "/lounge/"
-
-    def dispatch(self, request, *args, **kwargs):
-        """Dispatch method for the class."""
-        if request.user.is_authenticated:
-            return redirect(self.redirect_where)
-        return super().dispatch(request, *args, **kwargs)
-
-
-class RecaptchaFormMixin:
-    """Mixin to add reCAPTCHA verification to form views."""
-
-    recaptcha_error_message = "Complete the reCAPTCHA."
-
-    def form_valid(self, form):
-        """Validate form and verify reCAPTCHA."""
-        recaptcha_token = self.request.POST.get("g-recaptcha-response")
-        if not (recaptcha_token and verify_recaptcha(recaptcha_token)):
-            msg.add_message(self.request, msg.ERROR, self.recaptcha_error_message)
-            return self.form_invalid(form)
-        return super().form_valid(form)
 
 
 def join_wspatterns(paths):
@@ -162,22 +131,6 @@ def as_frontend(event_type):
 def cls():
     """Clear the screen for windows and linux."""
     _ = os.system("cls") and os.system("clear")
-
-
-def verify_recaptcha(token):
-    """Verify recaptcha token."""
-    try:
-        response = req.post(
-            "https://www.google.com/recaptcha/api/siteverify",
-            data={
-                "secret": os.getenv("RECAPTCHA_SECRET_KEY"),
-                "response": token,
-            },
-        )
-        return response.json().get("success", False)
-    except Exception as error:
-        handle_error(error)
-        return False
 
 
 if __name__ == "__main__":
