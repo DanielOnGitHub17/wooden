@@ -31,12 +31,10 @@ def new_username(name):
 def online_players_context():
     """Get online players to be given to app views."""
     # To avoid circular import
-    from game.models import Player  # pylint: disable=import-outside-toplevel
+    from game.models import Player
 
     return {
-        "online_players": Player.objects.filter(logged_in=True).order_by(
-            "-won"
-        ),  # pylint: disable=no-member
+        "online_players": Player.objects.filter(logged_in=True).order_by("-won"),
     }
 
 
