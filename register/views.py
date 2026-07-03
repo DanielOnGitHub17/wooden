@@ -4,7 +4,6 @@ from django.contrib import messages as msg
 from django.contrib.auth import login
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
-from django.contrib.auth.tokens import PasswordResetTokenGenerator
 from django.contrib.auth.views import (
     LoginView,
     LogoutView,
@@ -13,18 +12,24 @@ from django.contrib.auth.views import (
     PasswordResetView,
 )
 from django.contrib.messages.views import SuccessMessageMixin
-from django.core.mail import EmailMessage
 from django.shortcuts import redirect, render
-from django.template.loader import render_to_string
-from django.utils.encoding import force_bytes, smart_str
-from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
+from django.utils.encoding import smart_str
+from django.utils.http import urlsafe_base64_decode
 from django.views import View
 from django.views.generic.edit import CreateView
 
 from game.helpers import new_username, online_players_context
 from game.models import Player
-from helpers import NotLoginRequiredMixin, RecaptchaFormMixin, WoodenError, handle_error
+from helpers import WoodenError, handle_error
 from register.forms import QuickSignInForm, SignUpForm  # , SignInForm
+
+from .helpers import (
+    NeedsConfirmationMixin,
+    NotLoginRequiredMixin,
+    RecaptchaFormMixin,
+    account_activation_token,
+    send_confirmation_email,
+)
 
 
 class Profile(LoginRequiredMixin, View):
@@ -45,7 +50,9 @@ class QuickSignIn(NotLoginRequiredMixin, SuccessMessageMixin, CreateView):
     template_name = "registration/quick_sign_in.html"
     form_class = QuickSignInForm
     success_url = "/lounge/"
-    success_message = "Hello, %(username)s. Enjoy playing!"
+    success_message = (
+        "Hello, %(username)s. Enjoy playing! Note that you cannot reuse this username"
+    )
 
     def form_valid(self, form):
         """Handle valid form submission."""
@@ -66,7 +73,11 @@ class QuickSignIn(NotLoginRequiredMixin, SuccessMessageMixin, CreateView):
 
 
 class SignUp(
-    RecaptchaFormMixin, NotLoginRequiredMixin, SuccessMessageMixin, CreateView
+    NeedsConfirmationMixin,
+    RecaptchaFormMixin,
+    NotLoginRequiredMixin,
+    SuccessMessageMixin,
+    CreateView,
 ):
     """View for user sign-up."""
 
@@ -86,7 +97,7 @@ class SignUp(
             new_user.save()
             Player(user=new_user).save()
             self.request.session["user_id"] = new_user.pk
-            Confirm.send_confirmation_email(
+            send_confirmation_email(
                 new_user, self.request.scheme, self.request.get_host()
             )
         except Exception as e:
@@ -107,7 +118,9 @@ class SignUp(
         return super().form_invalid(form)
 
 
-class SignIn(RecaptchaFormMixin, SuccessMessageMixin, LoginView):
+class SignIn(
+    NeedsConfirmationMixin, RecaptchaFormMixin, SuccessMessageMixin, LoginView
+):
     """View for user sign-in."""
 
     success_message = "Signin successful!"
@@ -138,7 +151,7 @@ class SignOut(LoginRequiredMixin, SuccessMessageMixin, LogoutView):
         player.save()
         return super().post(request)
 
-    def get(self, request, *args, **kwargs):  # pylint: disable=W0613
+    def get(self, request, *args, **kwargs):
         """Handle GET request to sign out."""
         if request.user.player.game:
             msg.add_message(
@@ -154,44 +167,24 @@ class Confirm(View):
     def post(self, request):
         """Handle POST request to resend activation email."""
         if "user_id" not in request.session:
-            try:
-                new_user = User.objects.get(pk=request.session["user_id"])
-                if new_user.is_active:
-                    msg.add_message(
-                        request, msg.INFO, "Your account is already activated."
-                    )
-                else:
-                    Confirm.send_confirmation_email(
-                        new_user, request.scheme, request.get_host()
-                    )
-            except WoodenError as e:
-                handle_error(request, e)
-                del request.session["user_id"]
-        else:
             msg.add_message(request, msg.ERROR, "That page is inaccessible")
+            return redirect("/signin/")
+
+        try:
+            new_user = User.objects.get(pk=request.session["user_id"])
+            if new_user.is_active:
+                msg.add_message(request, msg.INFO, "Your account is already activated.")
+            else:
+                print("should send confirmation email")
+                send_confirmation_email(new_user, request.scheme, request.get_host())
+        except WoodenError as e:
+            handle_error(request, e)
+            del request.session["user_id"]
 
         return redirect("/signin/")
 
-    @staticmethod
-    def send_confirmation_email(new_user, scheme, host):
-        """Send account activation email."""
-        uidb64 = urlsafe_base64_encode(force_bytes(new_user.pk))
-        token = account_activation_token.make_token(new_user)
-        activate_url = f"{scheme}://{host}/activate/{uidb64}/{token}/"
-        context = {"user": new_user, "activate_url": activate_url}
-        email_html_message = render_to_string(
-            "registration/account_activation_email.html", context
-        )
-        email = EmailMessage(
-            subject="Wooden: Activate Your Account",
-            body=email_html_message,
-            to=[new_user.email],
-        )
-        email.content_subtype = "html"
-        email.send(fail_silently=False)
 
-
-class ResetPassword(RecaptchaFormMixin, PasswordResetView):
+class ResetPassword(NeedsConfirmationMixin, RecaptchaFormMixin, PasswordResetView):
     """View for password reset."""
 
     html_email_template_name = PasswordResetView.email_template_name
@@ -219,17 +212,6 @@ class ConfirmResetPassword(
         return super().form_valid(form)
 
 
-class AccountActivationTokenGenerator(PasswordResetTokenGenerator):
-    """Token generator for account activation."""
-
-    def _make_hash_value(self, user, timestamp):
-        """Generate hash value for token."""
-        return str(user.pk) + str(timestamp) + str(user.is_active)
-
-
-account_activation_token = AccountActivationTokenGenerator()
-
-
 def activate(request, uidb64, token):
     """Activate user account."""
     try:
@@ -240,7 +222,7 @@ def activate(request, uidb64, token):
         ValueError,
         OverflowError,
         User.DoesNotExist,
-    ):  # pylint: disable=E1101
+    ):
         user = None
 
     if user and account_activation_token.check_token(user, token):
