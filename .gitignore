@@ -1,3 +1,6 @@
+# Wooden PostgreSQL Backup
+wooden-db-backup.dump
+
 *.pyc
 db.sqlite3
 wooden.bat
@@ -46,5 +49,3 @@ htmlcov/
 .tox/
 .nox/
 .ipynb_checkpoints/
-
-
