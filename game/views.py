@@ -199,9 +199,7 @@ class DeleteGame(View):
         game_id = request.GET.get("game_id")
         print("request", request.GET.get("DELETE_GAME_TOKEN"))
         print("truth", settings.DELETE_GAME_TOKEN)
-        if request.GET.get("DELETE_GAME_TOKEN") != getattr(
-            settings, "DELETE_GAME_TOKEN", None
-        ):
+        if request.GET.get("DELETE_GAME_TOKEN") != settings.DELETE_GAME_TOKEN:
             return HttpResponse(content=b"Invalid delete token", status=403)
 
         try:
