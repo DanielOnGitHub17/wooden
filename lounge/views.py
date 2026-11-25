@@ -35,7 +35,7 @@ class Lounge(LoginRequiredMixin, SuccessMessageMixin, CreateView):
         )
 
         if settings.IS_HEROKU_APP or settings.USE_PROD_DATABASE:
-            delete_url = getattr(settings, "DELETE_GAME_EXTERNAL_API_URL", None)
+            delete_url = settings.DELETE_GAME_EXTERNAL_API_URL
             if delete_url:
                 payload = {"game_id": new_game.pk}
                 try:
